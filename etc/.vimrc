@@ -22,7 +22,7 @@ Plugin 'majutsushi/tagbar'
 
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/ListToggle'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'SirVer/ultisnips'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -111,7 +111,7 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     " 设置字体
-    set guifont=Consolas:h12
+    "set guifont=Consolas:h12
 endif
 
 " 总是显示状态栏
@@ -165,14 +165,14 @@ set fileformats=unix,dos,mac
 set nobackup nowritebackup noswapfile
 set encoding=utf8
 set termencoding=utf8
-set fileencodings=utf8,gbk,gb18030
+set fileencodings=utf8,gbk
 set backspace=eol,start,indent
 set smarttab
 set autoindent smartindent
 "set foldlevel=2
 set foldcolumn=0
 set autochdir
-set tags=./tags,../tags,/home/munie/src/kernel/linux-stable/tags
+set tags=./tags,/usr/include/tags
 set path=/home/munie/src/kernel/linux-stable/include,.,/usr/include,,
 set helplang=cn
 
