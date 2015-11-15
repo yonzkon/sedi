@@ -1,62 +1,55 @@
 #!/bin/bash
-# Shell Script:    network
-# Auther & Email:  myk <xccmu@hotmail.com>
-# Since From:      2013/11/16
-# Last Change:     2014/7/29
-# Version:         0.4
-#   
 
-    # I) - Set environment
-export PATH=/sbin/:/bin/:/usr/sbin/:/usr/bin/:/usr/local/sbin/:/usr/local/bin/
-export LANG=C
-
-    # II) - Usage & Variable
+    # I) - Usage & Variable
 usage() {
     echo "Usage: {network.sh \$COMMAND ...}"
-    echo "Usage: {network.sh \$client \$ADDR \$ROUTE \$DEV}"
-    echo "Usage: {network.sh \$subnet \$SUBNET_NET \$SUBNET_ADDR \$SUBNET_DEV \$INTERNET_DEV}"
+    echo "Usage: {network.sh \$wifi \$ADDR \$GATE \$CARD \$SSID \$PASS}"
+    echo "Usage: {network.sh \$subnet \$ADDR \$NET \$CARD \$CARD_INTERNET}"
     echo "Usage: {network.sh \$bridge \$NAME \$DEV0...}"
-    echo "Usage: \$COMMAND {client | subnet | bridge}"
+    echo "Usage: \$COMMAND {wifi | subnet | bridge}"
     echo "Usage: \$ADDR {192.168.0.12/24}"
-    echo "Usage: \$ROUTE {192.168.0.1}"
-    echo "Usage: \$DEV {eth0... | wlan0...}"
+    echo "Usage: \$GATE {192.168.0.1}"
+    echo "Usage: \$CARD {eth0 | wlan0}"
     echo "Usage: \$NET {10.12.96.0/20}"
 }
 
 if test "$#" -lt "3"; then
     usage && exit -1
 else
-    MODE=$(tr [A-Z] [a-z] <<<"$1")
+    COMMAND=$(tr [A-Z] [a-z] <<<"$1")
 fi
 
-    # III) - configure network
-case "$MODE" in
-client)
-    #if test -z "$(ps -el |grep -iewpa)"; then
-    #    echo "wpa_supplicant is ready!"
-    #else
-    #    echo echo "wpa_supplicant is running! kill it and try again..." & exit -1
-    #fi
+    # II) - configure network
+case "$COMMAND" in
+wifi)
+    if test -n "$(ps -el |grep -iewpa)"; then
+        echo echo "wpa_supplicant is running! kill it and try again..." & exit -1
+    fi
     ADDR="$2"
-    ROUTE="$3"
-    DEV="$4"
-    #wpa_supplicant -BDnl80211,wext -i$DEV -c/etc/wpa_supplicant/wpa_supplicant.conf
-    ip addr add $ADDR broadcast + dev $DEV
-    ip link set dev $DEV up
-    ip route add default via $ROUTE dev $DEV
+    GATE="$3"
+    CARD="$4"
+    SSID="$5"
+    PASS="$6"
+    CONF=/tmp/wpa_${CARD}.conf
+    ip addr add $ADDR broadcast + dev $CARD
+    ip link set dev $CARD up
+    ip route add default via $GATE dev $CARD
+    wpa_passphrase $SSID $PASS > $CONF
+    wpa_supplicant -B -i$CARD -c$CONF
+    rm $CONF
 ;;
 subnet)
-    SUBNET_NET="$2"
-    SUBNET_ADDR="$3"
-    SUBNET_DEV="$4"
-    INTERNET_DEV="$5"
-    ip addr add $SUBNET_ADDR broadcast + dev $SUBNET_DEV
-    ip link set dev $SUBNET_DEV up
-    iptables -tnat -APOSTROUTING -s$SUBNET_NET -o$INTERNET_DEV -jMASQUERADE
+    ADDR="$2"
+    NET="$3"
+    CARD="$4"
+    CARD_INTERNET="$5"
+    ip addr add $ADDR broadcast + dev $CARD
+    ip link set dev $CARD up
+    iptables -tnat -APOSTROUTING -s$NET -o$CARD_INTERNET -jMASQUERADE
     echo "1" >/proc/sys/net/ipv4/ip_forward
     #systemctl restart iptables
-    #/home/munie/bin/iptables.sh filter $SUBNET_DEV $SUBNET_NET $INTERNET_DEV
-    #/home/munie/bin/iptables.sh nat $SUBNET_DEV $SUBNET_NET $INTERNET_DEV
+    #/home/munie/bin/iptables.sh filter $CARD $NET $CARD_INTERNET
+    #/home/munie/bin/iptables.sh nat $CARD $NET $CARD_INTERNET
     #systemctl restart dhcpd4
 ;;
 bridge)
