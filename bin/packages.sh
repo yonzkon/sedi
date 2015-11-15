@@ -65,7 +65,7 @@ xorg)
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu #xf86-video-intel xf86-video-nouveau
         $MANAGER $INSTALL cinnamon gnome-terminal gvim
         $MANAGER $INSTALL ibus-pinyin evince #firefox flashplugin
-        $MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
+        #$MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
         # 1) - CentOS & Fedora
     elif test "$MANAGER" = "yum"; then
         $MANAGER -y groupinstall "X Window System"
