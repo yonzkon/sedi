@@ -31,11 +31,12 @@ wifi)
     SSID="$5"
     PASS="$6"
     CONF=/tmp/wpa_${CARD}.conf
-    sudo ip addr add $ADDR broadcast + dev $CARD
+    sudo ip addr add  dev $CARD $ADDR broadcast +
     sudo ip link set dev $CARD up
-    sudo ip route add default via $GATE dev $CARD
+    sudo ip route add default via $GATE
     wpa_passphrase $SSID $PASS > $CONF
-    sudo wpa_supplicant -B -i$CARD -c$CONF
+    sudo wpa_supplicant -BDwext -i$CARD -c$CONF
+    #sudo wpa_supplicant -B -i$CARD -c$CONF
     rm $CONF
 ;;
 subnet)
