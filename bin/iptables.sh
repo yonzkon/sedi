@@ -6,11 +6,7 @@
 # Version:         0.3
 #   
 
-    # I) - Set environment
-export PATH=/sbin/:/bin/:/usr/sbin/:/usr/bin/:/usr/local/sbin/:/usr/local/bin/
-export LANG=C
-
-    # II) - Usage & Variable
+    # I) - Usage & Variable
 usage()
 {
     echo "Usage: {iptables.sh \$TABLE ARGS...}"
@@ -30,7 +26,7 @@ else
     INTERNET_DEV="$3"
 fi
 
-    #III) - iptables.rules
+    #II) - iptables.rules
 case "$TABLE" in
 filter)
         # 1) - flush existing rules & set chain policy setting to DROP
@@ -118,5 +114,5 @@ nat)
 ;;
 esac
 
-    # IV) - iptables-save
+    # III) - iptables-save
 iptables-save >/etc/iptables/iptables.rules
