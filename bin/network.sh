@@ -13,23 +13,23 @@ usage() {
     echo "Usage: \$NET {10.12.96.0/20}"
 }
 
-if test "$#" -lt "3"; then
+if test $# -lt 3; then
     usage && exit -1
 else
-    COMMAND=$(tr [A-Z] [a-z] <<<"$1")
+    COMMAND=$(tr [A-Z] [a-z] <<<$1)
 fi
 
     # II) - configure network
-case "$COMMAND" in
+case $COMMAND in
 wifi)
     if test -n "$(ps -el |grep -iewpa)"; then
         echo echo "wpa_supplicant is running! kill it and try again..." & exit -1
     fi
-    ADDR="$2"
-    GATE="$3"
-    CARD="$4"
-    SSID="$5"
-    PASS="$6"
+    ADDR=$2
+    GATE=$3
+    CARD=$4
+    SSID=$5
+    PASS=$6
     CONF=/tmp/wpa_${CARD}.conf
     sudo ip addr add  dev $CARD $ADDR broadcast +
     sudo ip link set dev $CARD up
@@ -40,10 +40,10 @@ wifi)
     rm $CONF
 ;;
 subnet)
-    ADDR="$2"
-    NET="$3"
-    CARD="$4"
-    CARD_INTERNET="$5"
+    ADDR=$2
+    NET=$3
+    CARD=$4
+    CARD_INTERNET=$5
     ip addr add $ADDR broadcast + dev $CARD
     ip link set dev $CARD up
     iptables -tnat -APOSTROUTING -s$NET -o$CARD_INTERNET -jMASQUERADE
@@ -54,9 +54,9 @@ subnet)
     #systemctl restart dhcpd4
 ;;
 bridge)
-    NAME="$2"
+    NAME=$2
     brctl addbr $NAME
-    while test -n "$3"; do
+    while [ -n "$3" ]; do
         #ifconfig $3 0.0.0.0 up
         brctl addif $NAME $3
         shift

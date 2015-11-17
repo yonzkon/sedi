@@ -8,14 +8,14 @@ usage()
     echo "Usage: \$COMMAND {base | devel | xorg}"
 }
 
-if test "$1" = "" || test "$2" = ""; then
+if [ -z "$1" ] || [ -z "$2" ]; then
     usage && exit -1
 else
-    MANAGER=$(tr [A-Z] [a-z] <<<"$1");
-    COMMAND=$(tr [A-Z] [a-z] <<<"$2");
+    MANAGER=$(tr [A-Z] [a-z] <<<$1);
+    COMMAND=$(tr [A-Z] [a-z] <<<$2);
 fi
 
-case "$MANAGER" in
+case $MANAGER in
 pacman)
     UPDATE="-Syu"
     INSTALL="-S --needed"
@@ -30,10 +30,10 @@ yum)
 esac
 
     # II) - install packages
-case "$COMMAND" in
+case $COMMAND in
 base)
         # 0) - archlinux
-    if test "$MANAGER" = "pacman"; then
+    if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $UPDATE
         $MANAGER $INSTALL grub efibootmgr pciutils usbutils
         $MANAGER $INSTALL iputils net-tools wpa_supplicant iptables iproute2
@@ -41,7 +41,7 @@ base)
         $MANAGER $INSTALL openssh ntp
         $MANAGER $INSTALL alsa-utils mplayer
         # 1) - CentOS & Fedora
-    elif test "$MANAGER" = "yum"; then
+    elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $UPDATE
         $MANAGER $INSTALL grub pciutils usbutils file openssl bc tree lvm2 ntp unzip
         $MANAGER $INSTALL vim ctags grep sed gawk diffutils patch
@@ -50,24 +50,24 @@ base)
     ;;
 devel)
         # 0) - archlinux
-    if test "$MANAGER" = "pacman"; then
+    if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers ctags make clang gcc gdb cgdb minicom perl python2
         $MANAGER $INSTALL git maven mariadb
         # 1) - CentOS & Fedora
-    elif test "$MANAGER" = "yum"; then
+    elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $INSTALL make gcc gdb bison flex dialog minicom perl python2
         $MANAGER $INSTALL kernel-devel ncurses-devel bind-utils
     fi
     ;;
 xorg)
         # 0) - archlinux
-    if test "$MANAGER" = "pacman"; then
+    if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu #xf86-video-intel xf86-video-nouveau
         $MANAGER $INSTALL cinnamon gnome-terminal gvim
         $MANAGER $INSTALL ibus-pinyin evince #firefox flashplugin
         #$MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
         # 1) - CentOS & Fedora
-    elif test "$MANAGER" = "yum"; then
+    elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
         $MANAGER -y -xNetworkManager* groupinstall gnome-desktop3
