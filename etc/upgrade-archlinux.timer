@@ -1,0 +1,11 @@
+[Unit]
+Description=upgrade archlinux script
+
+[Timer]
+#OnCalendar=daily
+OnCalendar=weekly
+AccuracySec=12h
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target
