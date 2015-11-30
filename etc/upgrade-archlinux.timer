@@ -1,5 +1,5 @@
 [Unit]
-Description=upgrade archlinux script
+Description=Weekly upgrade of archlinux
 
 [Timer]
 #OnCalendar=daily
