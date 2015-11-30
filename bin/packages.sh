@@ -39,7 +39,7 @@ base)
         $MANAGER $INSTALL iputils net-tools wpa_supplicant iptables iproute2
         $MANAGER $INSTALL tcpdump nmap #netcat traceroute dnsutils
         $MANAGER $INSTALL openssh ntp
-        $MANAGER $INSTALL alsa-utils mplayer
+        #$MANAGER $INSTALL alsa-utils mplayer
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $UPDATE
