@@ -1,0 +1,12 @@
+[Unit]
+Description=connect to wifi
+
+[Service]
+Type=idle
+ExecStart=/bin/bash -c "/usr/bin/sleep 2 && /usr/bin/ifconfig wlan0 10.12.111.36/20 up && \
+    /usr/bin/route add default gw 10.12.111.254 && \
+    /usr/bin/wpa_passphrase munie 8806250014 > /tmp/wpa.conf && \
+    /usr/bin/wpa_supplicant -iwlan0 -c /tmp/wpa.conf"
+
+[Install]
+WantedBy=multi-user.target
