@@ -20,6 +20,7 @@ else
 fi
 
     # II) - configure network
+    [ "$(id -u)" != 0 ] && echo "only root can execute this script..." && exit -1
 case $COMMAND in
 wifi)
     if test -n "$(ps -el |grep -iewpa)"; then
@@ -31,12 +32,12 @@ wifi)
     SSID=$5
     PASS=$6
     CONF=/tmp/wpa_${CARD}.conf
-    sudo ip addr add  dev $CARD $ADDR broadcast +
-    sudo ip link set dev $CARD up
-    sudo ip route add default via $GATE
+    ip addr add  dev $CARD $ADDR broadcast +
+    ip link set dev $CARD up
+    ip route add default via $GATE
     wpa_passphrase $SSID $PASS > $CONF
-    sudo wpa_supplicant -BDwext -i$CARD -c$CONF
-    #sudo wpa_supplicant -B -i$CARD -c$CONF
+    wpa_supplicant -BDwext -i$CARD -c$CONF
+    #wpa_supplicant -B -i$CARD -c$CONF
     rm $CONF
 ;;
 subnet)
