@@ -3,5 +3,5 @@ Description=upgrade archlinux
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "pacman -Syu --noconfirm && pacman -Scc --noconfirm"
+ExecStart=/bin/bash -c "sleep 5 && pacman -Syu --noconfirm && pacman -Scc --noconfirm"
 Nice=19
