@@ -35,8 +35,8 @@ base)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $UPDATE
-        $MANAGER $INSTALL grub efibootmgr
-        $MANAGER $INSTALL bash zsh vim pciutils usbutils iputils net-tools wpa_supplicant
+        $MANAGER $INSTALL grub #efibootmgr
+        $MANAGER $INSTALL vim bash zsh pciutils usbutils iputils net-tools wpa_supplicant
         $MANAGER $INSTALL iptables iproute2 tcpdump nmap #netcat traceroute dnsutils
         $MANAGER $INSTALL openssh ntp
         # 1) - CentOS & Fedora
@@ -69,7 +69,7 @@ xorg)
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
-        $MANAGER -y -xNetworkManager* groupinstall gnome-desktop3
+        $MANAGER -y -xNetworkManager* groupinstall gnome
         $MANAGER -y --enablerepo=RPMForge install ibus-pinyin evince firefox flash-plugin
     fi
     ;;

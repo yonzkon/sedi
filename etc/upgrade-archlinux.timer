@@ -1,9 +1,8 @@
 [Unit]
-Description=Weekly upgrade of archlinux
+Description=Daily upgrade of archlinux
 
 [Timer]
-#OnCalendar=daily
-OnCalendar=weekly
+OnCalendar=daily
 AccuracySec=12h
 Persistent=true
 
