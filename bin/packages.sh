@@ -35,11 +35,10 @@ base)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $UPDATE
-        $MANAGER $INSTALL grub efibootmgr pciutils usbutils
-        $MANAGER $INSTALL iputils net-tools wpa_supplicant iptables iproute2
-        $MANAGER $INSTALL tcpdump nmap #netcat traceroute dnsutils
+        $MANAGER $INSTALL grub efibootmgr
+        $MANAGER $INSTALL bash zsh vim pciutils usbutils iputils net-tools wpa_supplicant
+        $MANAGER $INSTALL iptables iproute2 tcpdump nmap #netcat traceroute dnsutils
         $MANAGER $INSTALL openssh ntp
-        #$MANAGER $INSTALL alsa-utils mplayer
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $UPDATE
@@ -63,7 +62,7 @@ xorg)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu #xf86-video-intel xf86-video-nouveau
-        $MANAGER $INSTALL cinnamon gnome-terminal gvim
+        $MANAGER $INSTALL cinnamon gvim lilyterm mplayer smplayer #alsa-utils
         $MANAGER $INSTALL ibus-pinyin evince firefox flashplugin libvdpau
         #$MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
         # 1) - CentOS & Fedora

@@ -112,6 +112,8 @@ if has("gui_running")
     set guioptions-=T
     " 设置字体
     "set guifont=Consolas:h12
+else
+    colorscheme molokai
 endif
 
 " 总是显示状态栏
