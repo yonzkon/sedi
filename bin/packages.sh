@@ -3,16 +3,20 @@
     # I) - Usage & Variable
 usage()
 {
-    echo "Usage: {package.sh \$MANAGER \$COMMAND}"
-    echo "Usage: \$MANAGER {pacman | yum}"
+    echo "Usage: {package.sh \$COMMAND \$MANAGER}"
     echo "Usage: \$COMMAND {base | devel | xorg}"
+    echo "Usage: \$MANAGER {pacman | yum}"
 }
 
-if [ -z "$1" ] || [ -z "$2" ]; then
+if [ -z "$1" ]; then
     usage && exit -1
 else
-    MANAGER=$(tr [A-Z] [a-z] <<<$1);
-    COMMAND=$(tr [A-Z] [a-z] <<<$2);
+    COMMAND=$(tr [A-Z] [a-z] <<<$1);
+    if [ -z "$2" ]; then
+        MANAGER=pacman;
+    else
+        MANAGER=$(tr [A-Z] [a-z] <<<$2);
+    fi
 fi
 
 case $MANAGER in
@@ -62,7 +66,7 @@ xorg)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu #xf86-video-intel xf86-video-nouveau
-        $MANAGER $INSTALL cinnamon gvim lilyterm mplayer smplayer #alsa-utils
+        $MANAGER $INSTALL cinnamon gvim lilyterm gnome-terminal gnome-mplayer mplayer #alsa-utils smplayer
         $MANAGER $INSTALL ibus-pinyin evince firefox flashplugin libvdpau
         #$MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
         # 1) - CentOS & Fedora
