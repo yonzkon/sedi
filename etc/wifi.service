@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch wifi 
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sleep 1
+ExecStart=/usr/bin/ifconfig $CARD $IPADDRESS up
+ExecStart=/usr/bin/route add default gw $GATE
+ExecStart=/bin/bash -c "/usr/bin/wpa_passphrase $SSID $PASSWORD > /tmp/wpa.conf"
+ExecStart=/usr/bin/wpa_supplicant -i $CARD -c /tmp/wpa.conf
+
+[Install]
+WantedBy=multi-user.target
