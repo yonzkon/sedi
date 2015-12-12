@@ -52,6 +52,12 @@ echo "\
     nmap -sP 10.10.10.0/20
     tcpdump -niwlp4s0 -X 'tcp port 21 and src host 192.168.1.24 and dst net 192.168'
 # 4) - programming
+    aclocal
+    autoconf
+    autoheader
+    libtoolize --automake
+    automake -a
+    mkdir build && cd build && ../configure && make
 # 5) - server_postgresql
     su -l postgres -c 'initdb --locale=utf8 -Eutf8 -D /var/lib/postgres/data/'
     sed -ie \"s/^#listen_addresses.*/listen_addresses = \'\*\'/g\" /var/lib/postgres/data/postgresql.conf
