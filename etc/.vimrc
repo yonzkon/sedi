@@ -3,7 +3,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -75,7 +75,7 @@ let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
 
 map <Leader>b :buffers<cr>
-map <Leader>e :NERDTreeToggle<cr>
+"map <Leader>e :NERDTreeToggle<cr>
 map <Leader>t :TagbarToggle<cr>
 let tagbar_width=30
 let NERDTreeWinSize=24
@@ -142,6 +142,8 @@ set tabstop=4
 set shiftwidth=4
 " 让vim把连续数量的空格视为一个制表符
 set softtabstop=4
+" copied from spf13
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
 " 随vim自启动
 let g:indent_guides_enable_on_vim_startup=1
