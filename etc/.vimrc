@@ -75,10 +75,10 @@ let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
 
 map <Leader>b :buffers<cr>
-"map <Leader>e :NERDTreeToggle<cr>
+map <C-e> :NERDTreeToggle<cr>
 map <Leader>t :TagbarToggle<cr>
 let tagbar_width=30
-let NERDTreeWinSize=24
+let NERDTreeWinSize=30
 let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
@@ -143,6 +143,7 @@ set shiftwidth=4
 " 让vim把连续数量的空格视为一个制表符
 set softtabstop=4
 " copied from spf13
+set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
 " 随vim自启动
