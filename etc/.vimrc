@@ -111,7 +111,9 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     " 设置字体
-    "set guifont=Consolas:h12
+    if (has("win32") || has("win64") || has("win95") || has("win16"))
+        set guifont=Consolas:h11
+    endif
 else
     colorscheme molokai
 endif
@@ -142,9 +144,6 @@ set tabstop=4
 set shiftwidth=4
 " 让vim把连续数量的空格视为一个制表符
 set softtabstop=4
-" copied from spf13
-set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 
 " 随vim自启动
 let g:indent_guides_enable_on_vim_startup=1
@@ -171,6 +170,9 @@ set nobackup nowritebackup noswapfile
 set encoding=utf8
 set termencoding=utf8
 set fileencodings=utf8,gbk
+" list & listchars that copied from spf13 and should be added after 'set encoding=utf8'
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 set backspace=eol,start,indent
 set smarttab
 set autoindent smartindent
