@@ -1,5 +1,5 @@
 [Unit]
-Description=Launch wifi 
+Description=Launch wifi
 
 [Service]
 Type=oneshot

@@ -1,6 +1,29 @@
+" .vimrc
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Environment {
+    " Identify platform {
+        silent function! OSX()
+            return has('macunix')
+        endfunction
+        silent function! LINUX()
+            return has('unix') && !has('macunix') && !has('win32unix')
+        endfunction
+        silent function! WINDOWS()
+            return (has('win16') || has('win32') || has('win64'))
+        endfunction
+    " }
+
+    " Basics {
+        set nocompatible " Must be first line
+        filetype off                  " required
+    " }
+
+    " Windows Compatible {
+        if WINDOWS()
+            set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+        endif
+    " }
+" }
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim/
@@ -24,7 +47,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/ListToggle'
 "Plugin 'Valloric/YouCompleteMe'
 
-Plugin 'SirVer/ultisnips'
+"Plugin 'SirVer/ultisnips'
 Plugin 'nathanaelkane/vim-indent-guides'
 
 " The following are examples of different formats supported.
@@ -93,8 +116,6 @@ else
     set background=dark
 endif
 
-if (has("win32") || has("win64") || has("win95") || has("win16"))
-endif
 if has("gui_running")
     " 设置行列数
     set lines=45
@@ -111,7 +132,7 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     " 设置字体
-    if (has("win32") || has("win64") || has("win95") || has("win16"))
+    if WINDOWS()
         set guifont=Consolas:h11
     endif
 else
