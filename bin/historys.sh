@@ -58,6 +58,7 @@ echo "\
     libtoolize --automake
     automake -a
     mkdir build && cd build && ../configure && make
+    ./configure --enable-packver=20130807 --disable-renewal
 # 5) - server_postgresql
     su -l postgres -c 'initdb --locale=utf8 -Eutf8 -D /var/lib/postgres/data/'
     sed -ie \"s/^#listen_addresses.*/listen_addresses = \'\*\'/g\" /var/lib/postgres/data/postgresql.conf
