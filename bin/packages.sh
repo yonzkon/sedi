@@ -54,7 +54,7 @@ base)
 devel)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
-        $MANAGER $INSTALL linux-headers ctags make clang gcc gdb cgdb minicom perl python2
+        $MANAGER $INSTALL linux-headers ctags make clang boost gcc gdb cgdb minicom perl python2
         $MANAGER $INSTALL git maven mariadb
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
