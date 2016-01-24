@@ -118,8 +118,8 @@ endif
 
 if has("gui_running")
     " 设置行列数
-    set lines=45
-    set columns=160
+    set lines=38
+    set columns=118
     " 禁止光标闪烁
     set gcr=a:block-blinkon0
     " 禁止显示滚动条
@@ -132,6 +132,7 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     " 设置字体
+    set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
     if WINDOWS()
         set guifont=Consolas:h11
     endif
