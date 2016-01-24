@@ -202,6 +202,8 @@ set foldcolumn=0
 set autochdir
 set tags=./tags,/usr/include/tags
 set path=/home/munie/src/kernel/linux-stable/include,.,/usr/include,,
+"set spell spelllang=en_us
+set nospell
 set helplang=cn
 
 "set t_Co=256

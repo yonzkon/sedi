@@ -12,5 +12,6 @@ endif
 
 set foldmethod=syntax
 set tags=./tags,/usr/include/tags
+set nospell
 
 "let g:spf13_bundle_groups=['general', 'programming', 'misc', 'scala', 'youcompleteme']
