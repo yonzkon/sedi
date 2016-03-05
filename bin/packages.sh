@@ -54,8 +54,9 @@ base)
 devel)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
-        $MANAGER $INSTALL linux-headers ctags make clang boost gcc gdb cgdb minicom perl python2
-        $MANAGER $INSTALL git maven mariadb
+        $MANAGER $INSTALL git vim ctags gcc clang gdb cgdb make cmake perl python2 lua mariadb minicom
+        $MANAGER $INSTALL linux-headers boost
+        $MANAGER $INSTALL java maven
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $INSTALL make gcc gdb bison flex dialog minicom perl python2

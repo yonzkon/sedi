@@ -9,13 +9,13 @@
 #    fi
 #fi
 
-if [ -d "$HOME/mss" ] && [ -z "$MSS" ]; then
-    export MSS=$HOME/mss
+if [ -d "$HOME/.mss/" ] && [ -z "$MSS" ]; then
+    export MSS=$HOME/.mss/
     PATH=$PATH:$MSS/bin
 fi
 
-if [ -d "/home/munie" ]; then
-    export M=/home/munie
+if [ -d "/home/munie/" ]; then
+    export M=/home/munie/
 fi
 
 export HISTSIZE=2400
