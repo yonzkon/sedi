@@ -34,6 +34,8 @@ echo "\
     ntpdate asia.pool.ntp.org
     nohup ./start &>/dev/null &
     nohup ./start 1>/dev/null 2>&1
+    export SVN_EDITOR='vim' && svn propedit svn:ignore .
+    find . -type f -exec chmod -x {} \\;
 # 2) - edit
     iconv -fgb2312 -tutf8 quintessence
     ctags -R --languages=c++ --c++-kinds=+px --fields=+aiKSz --extra=+q
