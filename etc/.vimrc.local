@@ -10,8 +10,14 @@ else
     set background=dark
 endif
 
+set lines=34
+set columns=105
 set foldmethod=syntax
 set tags=./tags,/usr/include/tags
 set nospell
+"set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+let g:indent_guides_enable_on_vim_startup = 0
 
 "let g:spf13_bundle_groups=['general', 'programming', 'misc', 'scala', 'youcompleteme']
+
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
