@@ -54,9 +54,12 @@ base)
 devel)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
-        $MANAGER $INSTALL git vim ctags gcc clang gdb cgdb make cmake perl python2 lua mariadb minicom
+        $MANAGER $INSTALL git vim ctags gcc clang gdb make cmake minicom
         $MANAGER $INSTALL linux-headers boost
-        $MANAGER $INSTALL java maven
+        $MANAGER $INSTALL perl python2 lua nodejs ruby clisp
+        #$MANAGER $INSTALL gcc-objc gnustep-core
+        #$MANAGER $INSTALL jdk maven
+        $MANAGER $INSTALL mariadb
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER $INSTALL make gcc gdb bison flex dialog minicom perl python2
@@ -69,7 +72,7 @@ xorg)
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu #xf86-video-intel xf86-video-nouveau
         $MANAGER $INSTALL cinnamon gvim lilyterm gnome-terminal gnome-mplayer mplayer #alsa-utils smplayer
         $MANAGER $INSTALL ibus-pinyin evince firefox flashplugin libvdpau
-        #$MANAGER $INSTALL virtualbox wireshark-gtk eclipse-java netbeans
+        #$MANAGER $INSTALL qt4 virtualbox wireshark-gtk eclipse-java netbeans
         # 1) - CentOS & Fedora
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
