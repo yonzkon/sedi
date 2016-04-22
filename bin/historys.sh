@@ -61,13 +61,14 @@ echo "\
     automake -a
     mkdir build && cd build && ../configure && make
     ./configure --enable-packver=20130807 --disable-renewal
-# 5) - server_postgresql
+# 5) - server_postgresql & mysql
     su -l postgres -c 'initdb --locale=utf8 -Eutf8 -D /var/lib/postgres/data/'
     sed -ie \"s/^#listen_addresses.*/listen_addresses = \'\*\'/g\" /var/lib/postgres/data/postgresql.conf
     sed -ie 's/127\.0\.0\.1\/32/10\.0\.0\.0\/8/g' /var/lib/postgres/data/pg_hba.conf
     systemctl enable postgres && systemctl start postgres
     psql -Upostgres -dpostgres #\? #\h #CREATE ROLE mu LOGIN CREATEDB PASSWORD = 'mu8291936';
     makepkg(uuid, postgresql-uuid-ossp) #CREATE EXTENSION "uuid-ossp";
+    mysql_install_db --user=mysql --basedir=/usr --datadir=/varlib/mysql
 # 6) - server_svnserve
     sed -ie 's/^SVNSERVE_ARGS=.*/SVNSERVE_ARGS=\"-r \/var\/lib\/svn\"/g' /etc/conf.d/svnserve
     svnadmin create /home/mu/svn/musar_server
