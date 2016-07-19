@@ -14,8 +14,8 @@ if [ -d "$HOME/.mss/" ] && [ -z "$MSS" ]; then
     PATH=$PATH:$MSS/bin
 fi
 
-if [ -d "/home/munie/" ]; then
-    export M=/home/munie/
+if [ -d "/home/yiend/" ]; then
+    export Y=/home/yiend/
 fi
 
 export HISTSIZE=2400
