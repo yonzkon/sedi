@@ -1,0 +1,10 @@
+[Unit]
+Description=Launch sslocal
+
+[Service]
+Type=simple
+User=nobody
+ExecStart=/usr/bin/sslocal -s ss.yiend.com -k 250014
+
+[Install]
+WantedBy=multi-user.target
