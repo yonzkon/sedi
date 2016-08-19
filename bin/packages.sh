@@ -55,6 +55,7 @@ devel)
         # 0) - archlinux
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL git vim ctags gcc clang gdb make cmake minicom
+        $MANAGER $INSTALL base-devel #autoconf automake bison fakeroot flex m4 pkg-config
         $MANAGER $INSTALL linux-headers boost
         $MANAGER $INSTALL perl python2 lua nodejs ruby clisp
         #$MANAGER $INSTALL gcc-objc gnustep-core
