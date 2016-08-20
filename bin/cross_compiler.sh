@@ -24,7 +24,7 @@ PREFIX=/tmp/cross
 TARGET=arm-linux-gnueabi
 BASE_DIR=$(pwd)
 
-export PATH=$PREFIX/bin:$PATH
+[[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
 mkdir -p build-binutils
 mkdir -p build-gcc
 mkdir -p build-glibc
@@ -58,7 +58,7 @@ gcc_compilers()
 glibc_headers_and_startupfiles()
 {
 	cd $BASE_DIR/build-glibc
-	../glibc/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	../src/glibc/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
 	make install-bootstrap-headers=yes install-headers
 	make -j4 csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
