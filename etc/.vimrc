@@ -125,7 +125,7 @@ set helplang=cn
 
 " for c/c++ code
 set tags=./tags,/usr/include/tags
-set path+=/opt/qt-x86,/home/myu/Downloads/rtx_v2.2/src
+set path+=./include
 
 
 " leader
@@ -163,11 +163,19 @@ let ctrlp_working_path_mode=0
 let ctrlp_match_window_bottom=1
 
 " youcompleteme
+set completeopt=longest,menu
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 let ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 let ycm_confirm_extra_conf=0
 let syntastic_always_populate_loc_list=1
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 
 " terminal / gvim
 if !has("gui_running")
