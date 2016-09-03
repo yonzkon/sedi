@@ -2,7 +2,7 @@
 
 usage()
 {
-	echo "Usage: toolchian.sh {COMMAND} [PREFIX]"
+	echo "Usage: toolchian.sh {COMMAND} [PREFIX, [SRC_DIR]]"
 	echo ""
 	echo "    {COMMAND} linux_kernel_headers"
 	echo "              binutils"
@@ -12,7 +12,8 @@ usage()
 	echo "              glibc"
 	echo "              gcc"
 	echo "              lib_install"
-	echo "    [PREFIX]  where to install the toolchain [default: ./_install]"
+	echo "    [PREFIX]  where to install the toolchain [default: $(pwd)/_install]"
+	echo "    [SRC_DIR] base directory which include the source files [default: $(pwd)/src]"
 }
 
 # usage
@@ -20,78 +21,80 @@ usage()
 
 # environment
 SCRIPT_PATH=$0
-BASEDIR=${SCRIPT_PATH%/*}
-cd $BASEDIR; [ ! -z "$2" ] && PREFIX=$(pwd)/$2 || PREFIX=$(pwd)/_install; cd -
+SCRIPT_DIR=${SCRIPT_PATH%/*}
+PWD=$(pwd)
+[ ! -z "$2" ] && PREFIX=$2 || PREFIX=$(pwd)/_install
+[ ! -z "$3" ] && SRC_DIR=$3 || SRC_DIR=$(pwd)/src
 COMMAND=$(tr [A-Z] [a-z] <<<$1)
 TARGET=arm-linux-gnueabi
 JOBS=$(grep -c ^processor /proc/cpuinfo)
 
 [[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
 mkdir -p $PREFIX
-mkdir -p build-binutils
-mkdir -p build-gcc
-mkdir -p build-glibc
+mkdir build-binutils
+mkdir build-gcc
+mkdir build-glibc
 
 # main
 linux_kernel_headers()
 {
-	cd $BASEDIR/src/linux
+	cd $SRC_DIR/linux
 	make ARCH=arm INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
-	cd $BASEDIR
+	cd $PWD
 }
 
 binutils()
 {
-	cd $BASEDIR/build-binutils
-	../src/binutils/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
+	cd build-binutils
+	$SRC_DIR/binutils/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
-	cd $BASEDIR
+	cd ..
 }
 
 gcc_compilers()
 {
-	cd $BASEDIR/build-gcc
-	../src/gcc/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
+	cd build-gcc
+	$SRC_DIR/gcc/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
 	make -j$JOBS all-gcc
 	make install-gcc
-	cd $BASEDIR
+	cd ..
 }
 
 glibc_headers_and_startupfiles()
 {
-	cd $BASEDIR/build-glibc
-	../src/glibc/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	cd build-glibc
+	$SRC_DIR/glibc/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
 	make install-bootstrap-headers=yes install-headers
 	make -j$JOBS csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
 	$TARGET-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o $PREFIX/$TARGET/lib/libc.so
 	touch $PREFIX/$TARGET/include/gnu/stubs.h
-	cd $BASEDIR
+	cd ..
 }
 
 gcc_libgcc()
 {
-	cd $BASEDIR/build-gcc
+	cd build-gcc
 	make -j$JOBS all-target-libgcc
 	make install-target-libgcc
-	cd $BASEDIR
+	cd ..
 }
 
 glibc()
 {
-	cd $BASEDIR/build-glibc
+	cd build-glibc
 	make -j$JOBS
 	make install
-	cd $BASEDIR
+	cd ..
 }
 
 gcc()
 {
-	cd $BASEDIR/build-gcc
+	cd build-gcc
 	make -j$JOBS
 	make install
-	cd $BASEDIR
+	cd ..
 }
 
 lib_install()

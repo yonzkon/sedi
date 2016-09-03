@@ -2,9 +2,9 @@
 
 usage()
 {
-	echo "Usage: toolchian.sh {COMMAND} [PREFIX]"
+	echo "Usage: rootfs.sh {COMMAND} [PREFIX]"
 	echo ""
-	echo "    {COMMAND}"
+	echo "    {COMMAND} base | etc"
 	echo "    [PREFIX]  where to install the toolchain [default: ./_install]"
 }
 
@@ -13,9 +13,9 @@ usage()
 
 # environment
 SCRIPT_PATH=$0
-BASEDIR=${SCRIPT_PATH%/*}
-#cd $BASEDIR; [ ! -z "$2" ] && PREFIX=$(pwd)/$2 || PREFIX=$(pwd)/_install; cd -
-[ ! -z "$2" ] && PREFIX=$BASEDIR/$2 || PREFIX=$BASEDIR/_install
+SCRIPT_DIR=${SCRIPT_PATH%/*}
+PWD=$(pwd)
+[ ! -z "$2" ] && PREFIX=$PWD/$2 || PREFIX=$PWD/_install
 COMMAND=$(tr [A-Z] [a-z] <<<$1)
 
 build_rootfs()
@@ -61,6 +61,15 @@ build_rootfs()
 	cd -
 }
 
-build_rootfs
+copy_etc()
+{
+	sudo cp -pr $SCRIPT_DIR/rootfs_etc/* $PREFIX
+}
+
+if [ "$1" == 'base' ]; then
+	build_rootfs
+elif [ "$1" == 'etc' ]; then
+	copy_etc
+fi
 
 sudo chown -R 0:0 $PREFIX
