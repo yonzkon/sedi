@@ -1,3 +1,12 @@
 #!/bin/sh
 
-mount -a
+mount mdev /dev -t tmpfs
+mkdir /dev/pts
+mount devpts /dev/pts -t devpts
+echo /bin/mdev > /proc/sys/kernel/hotplug
+mdev -s
+
+syslogd
+inetd
+crond -b
+ntpd -p time.windows.com

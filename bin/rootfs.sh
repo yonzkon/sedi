@@ -24,11 +24,11 @@ build_rootfs()
 	cd $PREFIX
 
 	# /
-	mkdir -p bin sbin lib etc usr var dev proc sys tmp && chmod 1777 tmp
+	mkdir -p bin sbin lib etc usr var dev proc sys root home mnt tmp && chmod 1777 tmp
 
 	# /etc
 	mkdir -p etc/init.d etc/udev/rules.d
-	touch etc/inittab etc/fstab etc/profile etc/passwd etc/group
+	touch etc/inittab etc/fstab etc/profile etc/passwd etc/group etc/resolv.conf etc/inetd.conf
 	touch etc/init.d/rcS etc/udev/rules.d/99-custom.rules
 	chmod +x etc/init.d/rcS
 	chmod 0600 etc/passwd etc/group
@@ -49,6 +49,8 @@ build_rootfs()
 	sudo mknod -m 600 dev/ttyS0 c 4 64
 	sudo mknod -m 666 dev/tty c 5 0
 	sudo mknod -m 600 dev/console c 5 1
+	sudo mknod -m 666 dev/ptmx c 5 2
+	mkdir dev/pts
 	ln -sf /proc/self/fd/ dev/fd
 	ln -sf /proc/self/fd/0 dev/stdin
 	ln -sf /proc/self/fd/1 dev/stdout
