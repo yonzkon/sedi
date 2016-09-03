@@ -1,0 +1,11 @@
+# profile
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+export TZ=CST-8
+export HISTSIZE=2400
+
+alias ll='ls -l --color=auto'
+alias l.='ls -dl .* --color=auto'
+alias grep='grep --color=auto'
+
+test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
