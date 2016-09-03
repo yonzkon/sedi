@@ -63,7 +63,7 @@ build_rootfs()
 
 copy_etc()
 {
-	sudo cp -pr $SCRIPT_DIR/rootfs_etc/* $PREFIX
+	sudo cp -pr $SCRIPT_DIR/rootfs_etc/* $PREFIX/etc/
 }
 
 if [ "$1" == 'base' ]; then
