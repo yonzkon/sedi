@@ -23,17 +23,32 @@ usage()
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
 PWD=$(pwd)
-[ ! -z "$2" ] && PREFIX=$2 || PREFIX=$(pwd)/_install
-[ ! -z "$3" ] && SRC_DIR=$3 || SRC_DIR=$(pwd)/src
+
+if [ -z "$2" ]; then
+	PREFIX=$(pwd)/_install
+elif [ -z $(grep -e '^/' <<<$2) ]; then
+	PREFIX=$(pwd)/$2
+else
+	PREFIX=$2
+fi
+
+if [ -z "$3" ]; then
+	SRC_DIR=$(pwd)/src
+elif [ -z $(grep -e '^/' <<<$3) ]; then
+	SRC_DIR=$(pwd)/$3
+else
+	SRC_DIR=$3
+fi
+
 COMMAND=$(tr [A-Z] [a-z] <<<$1)
 TARGET=arm-linux-gnueabi
 JOBS=$(grep -c ^processor /proc/cpuinfo)
 
 [[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
 mkdir -p $PREFIX
-mkdir build-binutils
-mkdir build-gcc
-mkdir build-glibc
+mkdir -p build-binutils
+mkdir -p build-gcc
+mkdir -p build-glibc
 
 # main
 linux_kernel_headers()
