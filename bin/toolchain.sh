@@ -117,11 +117,13 @@ lib_install()
 	local fromlib=$PREFIX/$TARGET/lib/
 	local tolib=$PREFIX/arm-lib/
 	mkdir -p $tolib
-	for item in libc libcrypt libdl libm libpthread libresolv libutil; do
+	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
 		cp $fromlib/$item-*.so $tolib
 		cp -d $fromlib/$item.so.[*0-9] $tolib
 	done
 	cp -d $fromlib/ld*.so* $tolib
+	cp -d $fromlib/libgcc_s.so* $tolib
+	cp -d $fromlib/libstdc++.so* $tolib
 }
 
 echo "start build and install to $PREFIX"
