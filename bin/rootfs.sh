@@ -12,9 +12,9 @@ usage()
 [ -z "$1" ] || [ "$1" == "--help" ] && usage && exit
 
 # environment
+PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
-PWD=$(pwd)
 [ ! -z "$2" ] && PREFIX=$PWD/$2 || PREFIX=$PWD/_install
 COMMAND=$(tr [A-Z] [a-z] <<<$1)
 

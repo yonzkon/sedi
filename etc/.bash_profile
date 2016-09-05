@@ -25,8 +25,8 @@ fi
 #export LIBRARY_PATH=
 # for ld
 #export LD_LIBRARY_PATH=
+#export HISTSIZE=2400
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
-export HISTSIZE=2400
 
 # alias
 alias ls="ls --color=auto"
@@ -35,7 +35,7 @@ alias l.="ls -dl .* --color=auto"
 alias la="ls -al --color=auto"
 alias grep="grep --color=auto"
 alias jobs="jobs -l"
-[ $(id -u) -eq 0 ] && alias his="history 2400" || alias his="history 50"
+[ $(id -u) -eq 0 ] && alias his="history 50" || alias his="history 2400"
 alias df="df -T"
 
 alias vimd="vim -c 'colorscheme default'"

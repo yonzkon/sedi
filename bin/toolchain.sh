@@ -2,8 +2,9 @@
 
 usage()
 {
-	echo "Usage: toolchian.sh {COMMAND} [PREFIX, [SRC_DIR]]"
+	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [SRC_DIR]]"
 	echo ""
+	echo "    {ARCH}    arm | x86 | ..."
 	echo "    {COMMAND} linux_kernel_headers"
 	echo "              binutils"
 	echo "              gcc_compilers"
@@ -12,7 +13,7 @@ usage()
 	echo "              glibc"
 	echo "              gcc"
 	echo "              lib_install"
-	echo "    [PREFIX]  where to install the toolchain [default: $(pwd)/_install]"
+	echo "    [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
 	echo "    [SRC_DIR] base directory which include the source files [default: $(pwd)/src]"
 }
 
@@ -20,28 +21,30 @@ usage()
 [ -z "$1" ] || [ "$1" == "--help" ] && usage && exit
 
 # environment
+PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
-PWD=$(pwd)
 
-if [ -z "$2" ]; then
-	PREFIX=$(pwd)/_install
-elif [ -z $(grep -e '^/' <<<$2) ]; then
-	PREFIX=$(pwd)/$2
-else
-	PREFIX=$2
-fi
+ARCH=$1
+COMMAND=$(tr [A-Z] [a-z] <<<$2)
 
 if [ -z "$3" ]; then
-	SRC_DIR=$(pwd)/src
+	PREFIX=/opt/cross_$ARCH
 elif [ -z $(grep -e '^/' <<<$3) ]; then
-	SRC_DIR=$(pwd)/$3
+	PREFIX=$(pwd)/$3
 else
-	SRC_DIR=$3
+	PREFIX=$3
 fi
 
-COMMAND=$(tr [A-Z] [a-z] <<<$1)
-TARGET=arm-linux-gnueabi
+if [ -z "$4" ]; then
+	SRC_DIR=$(pwd)/src
+elif [ -z $(grep -e '^/' <<<$4) ]; then
+	SRC_DIR=$(pwd)/$4
+else
+	SRC_DIR=$4
+fi
+
+TARGET=$ARCH-linux-gnueabi
 JOBS=$(grep -c ^processor /proc/cpuinfo)
 
 [[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
@@ -49,15 +52,9 @@ mkdir -p $PREFIX
 mkdir -p build-binutils
 mkdir -p build-gcc
 mkdir -p build-glibc
+mkdir -p build-glibc_install
 
 # main
-linux_kernel_headers()
-{
-	cd $SRC_DIR/linux
-	make ARCH=arm INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
-	cd $PWD
-}
-
 binutils()
 {
 	cd build-binutils
@@ -65,6 +62,13 @@ binutils()
 	make -j$JOBS
 	make install
 	cd ..
+}
+
+linux_kernel_headers()
+{
+	cd $SRC_DIR/linux
+	make ARCH=$ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
+	cd $PWD
 }
 
 gcc_compilers()
@@ -112,26 +116,33 @@ gcc()
 	cd ..
 }
 
-lib_install()
+glibc_install()
 {
-	local fromlib=$PREFIX/$TARGET/lib/
-	local tolib=$PREFIX/arm-lib/
+	cd build-glibc_install
+	$SRC_DIR/glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	make -j$JOBS
+	make install install_root=$PREFIX/glibc_install
+	cd ..
+}
+
+glibc_install_simplify()
+{
+	local fromlib=$PREFIX/glibc_install/lib
+	local tolib=$PREFIX/glibc_install/lib_simplify/
 	mkdir -p $tolib
 	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
 		cp $fromlib/$item-*.so $tolib
 		cp -d $fromlib/$item.so.[*0-9] $tolib
 	done
 	cp -d $fromlib/ld*.so* $tolib
-	cp -d $fromlib/libgcc_s.so* $tolib
-	cp -d $fromlib/libstdc++.so* $tolib
 }
 
 echo "start build and install to $PREFIX"
 
-if [ "$COMMAND" == "linux_kernel_headers" ]; then
-	linux_kernel_headers # 1
-elif [ "$COMMAND" == "binutils" ]; then
-	binutils # 2
+if [ "$COMMAND" == "binutils" ]; then
+	binutils # 1
+elif [ "$COMMAND" == "linux_kernel_headers" ]; then
+	linux_kernel_headers # 2
 elif [ "$COMMAND" == "gcc_compilers" ]; then
 	gcc_compilers # 3
 elif [ "$COMMAND" == "glibc_headers_and_startupfiles" ]; then
@@ -142,8 +153,10 @@ elif [ "$COMMAND" == "glibc" ]; then
 	glibc # 6
 elif [ "$COMMAND" == "gcc" ]; then
 	gcc # 7
-elif [ "$COMMAND" == "lib_install" ]; then
-	lib_install # 8
+elif [ "$COMMAND" == "glibc_install" ]; then
+	glibc_install # 8
+elif [ "$COMMAND" == "glibc_install_simplify" ]; then
+	glibc_install_simplify # 9
 else
 	usage && exit
 fi
