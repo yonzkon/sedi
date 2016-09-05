@@ -51,6 +51,7 @@ build_rootfs()
 	sudo mknod -m 600 dev/console c 5 1
 	sudo mknod -m 666 dev/ptmx c 5 2
 	mkdir dev/pts
+	mkdir dev/shm
 	ln -sf /proc/self/fd/ dev/fd
 	ln -sf /proc/self/fd/0 dev/stdin
 	ln -sf /proc/self/fd/1 dev/stdout

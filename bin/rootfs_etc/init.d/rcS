@@ -1,8 +1,12 @@
 #!/bin/sh
 
+umount /dev/pts
+umount /dev/shm
 mount mdev /dev -t tmpfs
 mkdir /dev/pts
 mount devpts /dev/pts -t devpts
+mkdir /dev/shm
+mount tmpfs /dev/shm -t tmpfs
 echo /bin/mdev > /proc/sys/kernel/hotplug
 mdev -s
 
