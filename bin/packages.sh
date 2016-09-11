@@ -34,6 +34,10 @@ yum)
 esac
 
     # II) - install packages
+	# gcc make vim openssh grub gentoo-sources git sudo pciutils usbutils lshw net-tools iputils ntp minicom
+	# nmap tcpdump telnet-bsd ftp
+	# clisp perl python lua boost clang cmake
+	# xorg-server xinit wqy-zenhei dejavu gtk+extra cinnamon lilyterm firefox-bin evince gvim emacs
 case $COMMAND in
 base)
         # 0) - archlinux
