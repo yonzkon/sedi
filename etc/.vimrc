@@ -95,7 +95,7 @@ if (strftime("%H") >= 8 && strftime("%H") < 18)
     set background=light
 endif
 
-" tab & indent & fold
+" tab & indent & fold & search
 "set expandtab
 set smarttab
 set tabstop=4     "for tab
@@ -107,6 +107,8 @@ set foldmethod=syntax
 "set foldlevel=2
 set foldcolumn=0
 set nofoldenable
+set ignorecase
+set smartcase
 
 " file & directory
 set autochdir
