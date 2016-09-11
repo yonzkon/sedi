@@ -34,10 +34,10 @@ yum)
 esac
 
     # II) - install packages
-	# gcc make vim openssh grub gentoo-sources git sudo pciutils usbutils lshw net-tools iputils ntp minicom
+	# gcc make vim gdb clang cmake boost grub gentoo-sources git sudo pciutils usbutils lshw net-tools iputils ntp minicom
 	# nmap tcpdump telnet-bsd ftp
-	# clisp perl python lua boost clang cmake
-	# xorg-server xinit wqy-zenhei dejavu gtk+extra cinnamon lilyterm firefox-bin
+	# clisp perl python lua
+	# xorg-server xinit wqy-zenhei dejavu gtk+extra cinnamon lilyterm firefox-bin adobe-flash
 	# fcitx fcitx-configtool fcitx-sunpinyin evince wps-office gvim emacs
 case $COMMAND in
 base)
