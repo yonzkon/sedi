@@ -34,8 +34,8 @@ yum)
 esac
 
     # II) - install packages
-	# gcc make vim git gdb clang cmake boost
-	# gentoo-sources grub sudo pciutils usbutils lshw net-tools iputils wpa_supplicant ntp minicom
+	# gcc make vim git gdb clang cmake boost minicom
+	# gentoo-sources grub sudo pciutils usbutils lshw net-tools iputils wpa_supplicant ntp
 	# nmap tcpdump telnet-bsd ftp
 	# clisp perl python lua
 	# xorg-server xinit wqy-zenhei dejavu gtk+extra cinnamon lilyterm firefox adobe-flash

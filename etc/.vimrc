@@ -133,16 +133,16 @@ set path+=./include
 " leader
 let mapleader=','
 nmap <leader>, :!
+nmap <leader>h :h<space>
 " switch between .h and .cpp file
 nmap <Leader>a :A<cr>
 " open new child window for display .h or .cpp file
 nmap <Leader>as :AS<cr>
 
 " buffer & nerdtree & tagbar
-nmap <C-h> :bp<cr>
-nmap <C-l> :bn<cr>
-nmap <C-d> :bd<cr>
-nmap <Leader>b :buffers<cr>
+nmap <C-l><C-l> :ls<cr>:b
+nmap <C-l><C-d> :bd<cr>
+nmap <C-l><C-u> :bun<cr>
 let tagbar_width=30
 nmap <C-t> :TagbarToggle<cr>
 let NERDTreeWinSize=30
@@ -151,18 +151,20 @@ let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 nmap <C-e> :NERDTreeToggle<cr>
 
-" indent guides
-let indent_guides_enable_on_vim_startup=1
-let indent_guides_start_level=2
-let indent_guides_guide_size=1
-
 " ctrlp
-let ctrlp_map='<leader>p'
-let ctrlp_cmd='CtrlP'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip "MacOSX / Linux
-let ctrlp_custom_ignore='\.git$\|\.hg$\|\.svn$\|.rvm$'
-let ctrlp_working_path_mode=0
-let ctrlp_match_window_bottom=1
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
+set wildignore+=*.tar*,*.zip,*.rar
+set wildignore+=*.pdf,*.doc,*.docx
+"let ctrlp_by_filename=1
+"let ctrlp_regexp=1
+"let ctrlp_show_hidden=1
+"let ctrlp_custom_ignore='\.(cache|config|ssh)$'
+nmap <leader>pp :CtrlP<cr>
+nmap <leader>pd :CtrlP<space>
+nmap <leader>pb :CtrlPBuffer<cr>
+nmap <leader>pm :CtrlPMRU<cr>
+nmap <leader>pl :CtrlPLastMode<cr>
+nmap <leader>pr :CtrlPRoot<cr>
 
 " youcompleteme
 set completeopt=longest,menu
