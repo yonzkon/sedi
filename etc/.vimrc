@@ -208,3 +208,17 @@ else
 	    set guifont=Consolas:h11
 	endif
 endif
+
+function Resize(line, column)
+	let &lines=a:line
+	let &columns=a:column
+endfunction
+
+function Tunesize(line, column)
+	let &lines+=a:line
+	let &columns+=a:column
+endfunction
+
+nmap <A-p> :call Resize(38,118)<cr>
+nmap <A-i> :call Tunesize(3,12)<cr>
+nmap <A-o> :call Tunesize(-3,-12)<cr>
