@@ -3,6 +3,12 @@
 import os
 import ycm_core
 
+#HEADER_EXTENSIONS = ['.h', '.hxx', '.hpp', '.hh']
+#SOURCE_EXTENSIONS = ['.cpp', '.cxx', '.cc', '.c', '.m', '.mm']
+HEADER_EXTENSIONS = ['.h']
+SOURCE_EXTENSIONS = ['.c']
+KERNEL_DIR = '/usr/src/linux'
+
 flags = [
 '-Wall',
 '-Wextra',
@@ -18,18 +24,14 @@ flags = [
 '-D__KERNEL__',
 '-DMODULE',
 '-x', 'c',
-'-std=gnu89',
+'-std=gnu99',
 '-nostdinc',
 '-Iinclude',
-'-Iarch/x86/include',
-'-Iarch/x86/include/generated',
-'-iquote', 'include/linux/kconfig.h',
+'-isystem', os.path.join(KERNEL_DIR, 'include'),
+'-isystem', os.path.join(KERNEL_DIR, 'arch/x86/include'),
+'-isystem', os.path.join(KERNEL_DIR, 'arch/x86/include/generated'),
+'-iquote', os.path.join(KERNEL_DIR, 'include/linux/kconfig.h'),
 ]
-
-#HEADER_EXTENSIONS = ['.h', '.hxx', '.hpp', '.hh']
-#SOURCE_EXTENSIONS = ['.cpp', '.cxx', '.cc', '.c', '.m', '.mm']
-HEADER_EXTENSIONS = ['.h']
-SOURCE_EXTENSIONS = ['.c']
 
 compilation_database_folder = ''
 
