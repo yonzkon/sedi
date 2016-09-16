@@ -1,4 +1,4 @@
-" .vimrc
+" .vimrc by yiend
 
 " identify platform
 function OSX()
@@ -11,6 +11,19 @@ function WINDOWS()
 	return (has('win16') || has('win32') || has('win64'))
 endfunction
 
+" Resize gvim window
+function Resize(line, column)
+	let &lines=a:line
+	let &columns=a:column
+endfunction
+function Tunesize(line, column)
+	let &lines+=a:line
+	let &columns+=a:column
+endfunction
+
+" script functions start ==================================================
+
+function s:vundle()
 " basics
 set nocompatible " Must be first line
 filetype off     " required
@@ -19,7 +32,6 @@ filetype off     " required
 if WINDOWS()
 	set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
 endif
-
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim/
@@ -77,9 +89,9 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+endfunction
 
-
-"function Base()
+function s:basics()
 set laststatus=2 "always show the status bar
 set ruler
 set number
@@ -129,42 +141,40 @@ set helplang=cn
 " for c/c++ code
 set tags=./tags,/usr/include/tags
 set path+=./include
-"endfunction
+endfunction
 
-function Leader()
-	let mapleader=','
-	nmap <leader>, :!
-	nmap <leader>h :h<space>
+function s:leader()
+	let g:mapleader=','
 	" switch between .h and .cpp file
 	nmap <Leader>a :A<cr>
 	" open new child window for display .h or .cpp file
 	nmap <Leader>as :AS<cr>
 endfunction
 
-function BufferNerdtreeTagbar()
+function s:buffer_nerdtree_tagbar()
 	nmap <C-l><C-l> :ls<cr>:b
 	nmap <C-l><C-d> :bd<cr>
 	nmap <C-l><C-u> :bun<cr>
 	nmap <C-l><C-n> :bn<cr>
 
-	let tagbar_width=30
+	let g:tagbar_width=30
 	nmap <C-t> :TagbarToggle<cr>
 
-	let NERDTreeWinSize=30
-	let NERDTreeShowHidden=1
-	let NERDTreeMinimalUI=1
-	let NERDTreeAutoDeleteBuffer=1
+	let g:NERDTreeWinSize=30
+	let g:NERDTreeShowHidden=1
+	let g:NERDTreeMinimalUI=1
+	let g:NERDTreeAutoDeleteBuffer=1
 	nmap <C-e> :NERDTreeToggle<cr>
 endfunction
 
-function CtrlP()
+function s:ctrlp()
 	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
 	set wildignore+=*.tar*,*.zip,*.rar
 	set wildignore+=*.pdf,*.doc,*.docx
-	"let ctrlp_by_filename=1
-	"let ctrlp_regexp=1
-	"let ctrlp_show_hidden=1
-	"let ctrlp_custom_ignore='\.(cache|config|ssh)$'
+	"let g:ctrlp_by_filename=1
+	"let g:ctrlp_regexp=1
+	"let g:ctrlp_show_hidden=1
+	"let g:ctrlp_custom_ignore='\.(cache|config|ssh)$'
 	nmap <leader>pp :CtrlP<cr>
 	nmap <leader>pd :CtrlP<space>
 	nmap <leader>pb :CtrlPBuffer<cr>
@@ -173,7 +183,7 @@ function CtrlP()
 	nmap <leader>pr :CtrlPRoot<cr>
 endfunction
 
-function Youcompleteme()
+function s:youcompleteme()
 	set completeopt=menu,longest
 	autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 	inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<CR>"
@@ -181,24 +191,15 @@ function Youcompleteme()
 	inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
 	inoremap <expr><PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
 	inoremap <expr><PageUp> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-	let ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-	let ycm_confirm_extra_conf=0
-	let syntastic_always_populate_loc_list=1
+	let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+	let g:ycm_confirm_extra_conf=0
+	let g:syntastic_always_populate_loc_list=1
 	nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 	nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 endfunction
 
-function Resize(line, column)
-	let &lines=a:line
-	let &columns=a:column
-endfunction
 
-function Tunesize(line, column)
-	let &lines+=a:line
-	let &columns+=a:column
-endfunction
-
-function Term_special()
+function s:term_special()
 	colorscheme molokai
 	set t_Co=256
 	hi MatchParen ctermfg=white ctermbg=black
@@ -206,7 +207,7 @@ function Term_special()
 	hi Folded ctermfg=darkgrey ctermbg=none cterm=bold
 endfunction
 
-function Gui_special()
+function s:gui_special()
 	" prohibit cursor blinking
 	set gcr=a:block-blinkon0
 	" prohibit to show scrollbar
@@ -219,9 +220,14 @@ function Gui_special()
 	set guioptions-=m
 	set guioptions-=T
 
-	if !WINDOWS()
-		set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
-	else
+	if LINUX() || OSX()
+		"set guifont=MonoSpace\ Regular\ 12
+		"set guifont=Courier\ New\ Regular\ 14
+		set guifont=Inconsolata\ Regular\ 14
+		nmap <leader>fm :set guifont=MonoSpace\ Regular\ 12<cr>
+		nmap <leader>fc :set guifont=Courier\ New\ Regular\ 14<cr>
+		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 14<cr>
+	elseif WINDOWS()
 	    set guifont=Consolas:h11
 	endif
 
@@ -231,12 +237,14 @@ function Gui_special()
 	nmap <A-0> :call Tunesize(-3,-12)<cr>
 endfunction
 
-call Leader()
-call BufferNerdtreeTagbar()
-call CtrlP()
-call Youcompleteme()
+call s:vundle()
+call s:basics()
+call s:leader()
+call s:buffer_nerdtree_tagbar()
+call s:ctrlp()
+call s:youcompleteme()
 if !has("gui_running")
-	call Term_special()
+	call s:term_special()
 else
-	call Gui_special()
+	call s:gui_special()
 endif
