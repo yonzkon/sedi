@@ -12,24 +12,23 @@
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
 if [ -d "/home/yiend/" ]; then
-	export Y=/home/yiend/
-	export YD=/home/yiend/data
+	export Y=/home/yiend
+	export YD=/home/yiend/yd
 fi
 
 if [ -d "$HOME/.mss/" ] && [ -z "$MSS" ]; then
-	export MSS=$HOME/.mss/
+	export MSS=$HOME/.mss
 	export PATH=$PATH:$MSS/bin
 fi
 
-# for gcc
+# for gcc & ld
 #export C_INCLUDE_PATH=
 #export CPLUS_INCLUDE_PATH=
 #export LIBRARY_PATH=
-# for ld
 #export LD_LIBRARY_PATH=
+#export HISTSIZE=2400
 
 # alias
-#export HISTSIZE=2400
 [ $(id -u) -eq 0 ] && alias his="history 50" || alias his="history 2400"
 alias ls="ls --color=auto"
 alias ll="ls -l --color=auto"

@@ -79,6 +79,7 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 
+"function Base()
 set laststatus=2 "always show the status bar
 set ruler
 set number
@@ -128,86 +129,64 @@ set helplang=cn
 " for c/c++ code
 set tags=./tags,/usr/include/tags
 set path+=./include
+"endfunction
 
+function Leader()
+	let mapleader=','
+	nmap <leader>, :!
+	nmap <leader>h :h<space>
+	" switch between .h and .cpp file
+	nmap <Leader>a :A<cr>
+	" open new child window for display .h or .cpp file
+	nmap <Leader>as :AS<cr>
+endfunction
 
-" leader
-let mapleader=','
-nmap <leader>, :!
-nmap <leader>h :h<space>
-" switch between .h and .cpp file
-nmap <Leader>a :A<cr>
-" open new child window for display .h or .cpp file
-nmap <Leader>as :AS<cr>
+function BufferNerdtreeTagbar()
+	nmap <C-l><C-l> :ls<cr>:b
+	nmap <C-l><C-d> :bd<cr>
+	nmap <C-l><C-u> :bun<cr>
+	nmap <C-l><C-n> :bn<cr>
 
-" buffer & nerdtree & tagbar
-nmap <C-l><C-l> :ls<cr>:b
-nmap <C-l><C-d> :bd<cr>
-nmap <C-l><C-u> :bun<cr>
-let tagbar_width=30
-nmap <C-t> :TagbarToggle<cr>
-let NERDTreeWinSize=30
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI=1
-let NERDTreeAutoDeleteBuffer=1
-nmap <C-e> :NERDTreeToggle<cr>
+	let tagbar_width=30
+	nmap <C-t> :TagbarToggle<cr>
 
-" ctrlp
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
-set wildignore+=*.tar*,*.zip,*.rar
-set wildignore+=*.pdf,*.doc,*.docx
-"let ctrlp_by_filename=1
-"let ctrlp_regexp=1
-"let ctrlp_show_hidden=1
-"let ctrlp_custom_ignore='\.(cache|config|ssh)$'
-nmap <leader>pp :CtrlP<cr>
-nmap <leader>pd :CtrlP<space>
-nmap <leader>pb :CtrlPBuffer<cr>
-nmap <leader>pm :CtrlPMRU<cr>
-nmap <leader>pl :CtrlPLastMode<cr>
-nmap <leader>pr :CtrlPRoot<cr>
+	let NERDTreeWinSize=30
+	let NERDTreeShowHidden=1
+	let NERDTreeMinimalUI=1
+	let NERDTreeAutoDeleteBuffer=1
+	nmap <C-e> :NERDTreeToggle<cr>
+endfunction
 
-" youcompleteme
-set completeopt=longest,menu
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-let ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
-let ycm_confirm_extra_conf=0
-let syntastic_always_populate_loc_list=1
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
+function CtrlP()
+	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
+	set wildignore+=*.tar*,*.zip,*.rar
+	set wildignore+=*.pdf,*.doc,*.docx
+	"let ctrlp_by_filename=1
+	"let ctrlp_regexp=1
+	"let ctrlp_show_hidden=1
+	"let ctrlp_custom_ignore='\.(cache|config|ssh)$'
+	nmap <leader>pp :CtrlP<cr>
+	nmap <leader>pd :CtrlP<space>
+	nmap <leader>pb :CtrlPBuffer<cr>
+	nmap <leader>pm :CtrlPMRU<cr>
+	nmap <leader>pl :CtrlPLastMode<cr>
+	nmap <leader>pr :CtrlPRoot<cr>
+endfunction
 
-" terminal / gvim
-if !has("gui_running")
-	colorscheme molokai
-	set t_Co=256
-	hi MatchParen ctermfg=white ctermbg=black
-	hi Comment ctermfg=brown cterm=bold
-	hi Folded ctermfg=darkgrey ctermbg=none cterm=bold
-else
-	set lines=38
-	set columns=118
-	" prohibit cursor blinking
-	set gcr=a:block-blinkon0
-	" prohibit to show scrollbar
-	set guioptions-=l
-	set guioptions-=L
-	set guioptions-=r
-	set guioptions-=R
-	set guioptions-=b
-	" prohibit to show menu & toolbar
-	set guioptions-=m
-	set guioptions-=T
-	if !WINDOWS()
-		set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
-	else
-	    set guifont=Consolas:h11
-	endif
-endif
+function Youcompleteme()
+	set completeopt=menu,longest
+	autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+	inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<CR>"
+	inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+	inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+	inoremap <expr><PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+	inoremap <expr><PageUp> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+	let ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
+	let ycm_confirm_extra_conf=0
+	let syntastic_always_populate_loc_list=1
+	nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+	nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+endfunction
 
 function Resize(line, column)
 	let &lines=a:line
@@ -219,6 +198,45 @@ function Tunesize(line, column)
 	let &columns+=a:column
 endfunction
 
-nmap <A-p> :call Resize(38,118)<cr>
-nmap <A-i> :call Tunesize(3,12)<cr>
-nmap <A-o> :call Tunesize(-3,-12)<cr>
+function Term_special()
+	colorscheme molokai
+	set t_Co=256
+	hi MatchParen ctermfg=white ctermbg=black
+	hi Comment ctermfg=brown cterm=bold
+	hi Folded ctermfg=darkgrey ctermbg=none cterm=bold
+endfunction
+
+function Gui_special()
+	" prohibit cursor blinking
+	set gcr=a:block-blinkon0
+	" prohibit to show scrollbar
+	set guioptions-=l
+	set guioptions-=L
+	set guioptions-=r
+	set guioptions-=R
+	set guioptions-=b
+	" prohibit to show menu & toolbar
+	set guioptions-=m
+	set guioptions-=T
+
+	if !WINDOWS()
+		set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
+	else
+	    set guifont=Consolas:h11
+	endif
+
+	call Resize(38,118)
+	nmap <A-g> :call Resize(38,118)<cr>
+	nmap <A-9> :call Tunesize(3,12)<cr>
+	nmap <A-0> :call Tunesize(-3,-12)<cr>
+endfunction
+
+call Leader()
+call BufferNerdtreeTagbar()
+call CtrlP()
+call Youcompleteme()
+if !has("gui_running")
+	call Term_special()
+else
+	call Gui_special()
+endif
