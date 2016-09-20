@@ -54,6 +54,7 @@ Plugin 'majutsushi/tagbar'
 "Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/ListToggle'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-generator', {'branch': 'stable'}
 
 "Plugin 'SirVer/ultisnips'
 "Plugin 'nathanaelkane/vim-indent-guides'
@@ -140,7 +141,7 @@ set helplang=cn
 
 " for c/c++ code
 set tags=./tags,/usr/include/tags
-set path+=./include
+"set path+=./include
 endfunction
 
 function s:leader()
@@ -156,6 +157,7 @@ function s:buffer_nerdtree_tagbar()
 	nmap <C-l><C-d> :bd<cr>
 	nmap <C-l><C-u> :bun<cr>
 	nmap <C-l><C-n> :bn<cr>
+	nmap <C-l><C-p> :bp<cr>
 
 	let g:tagbar_width=30
 	nmap <C-t> :TagbarToggle<cr>
@@ -223,7 +225,7 @@ function s:gui_special()
 	if LINUX() || OSX()
 		"set guifont=MonoSpace\ Regular\ 12
 		"set guifont=Courier\ New\ Regular\ 14
-		set guifont=Inconsolata\ Regular\ 14
+		set guifont=Inconsolata\ Regular\ 13
 		nmap <leader>fm :set guifont=MonoSpace\ Regular\ 12<cr>
 		nmap <leader>fc :set guifont=Courier\ New\ Regular\ 14<cr>
 		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 14<cr>

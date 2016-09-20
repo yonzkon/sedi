@@ -24,7 +24,9 @@ build_rootfs()
 	cd $PREFIX
 
 	# /
-	mkdir -p bin sbin lib etc usr var dev proc sys root home mnt tmp && chmod 1777 tmp
+	mkdir -p etc bin sbin lib usr var opt mnt tmp && chmod 1777 tmp
+	mkdir -p dev proc sys run
+	mkdir -p root home
 
 	# /etc
 	mkdir -p etc/init.d etc/udev/rules.d
