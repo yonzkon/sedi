@@ -2,7 +2,7 @@
 
 # if running bash
 #if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
+#    # include .bashrc if it exists
 #    if [ -f "$HOME/.bashrc" ]; then
 #        . "$HOME/.bashrc"
 #    fi
@@ -40,5 +40,7 @@ alias df="df -T"
 
 alias vimd="vim -c 'colorscheme default'"
 alias vimm="vim -c 'colorscheme molokai' -c 'set t_Co=256'"
+alias gvim="gvim --servername GVIM --remote-silent"
+alias svim="gvim --servername GVIM --remote-silent"
 alias ctags_cpp="ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q"
 alias yuml="yum --disablerepo=base --disablerepo=updates --disablerepo=extras --enablerepo=Local"

@@ -144,6 +144,9 @@ endfunction
 
 function s:leader_basics()
 	let g:mapleader = ','
+	nmap <leader><leader> :!
+	nmap <leader>li :set background=light<cr>
+	nmap <leader>da :set background=dark<cr>
 
 	nmap gb :bn<cr>
 	nmap gB :bp<cr>
