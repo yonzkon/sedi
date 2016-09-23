@@ -145,14 +145,15 @@ endfunction
 function s:leader_basics()
 	let g:mapleader = ','
 	nmap <leader><leader> :!
-	nmap <leader>li :set background=light<cr>
-	nmap <leader>da :set background=dark<cr>
+	nmap <leader>lt :set background=light<cr>
+	nmap <leader>dr :set background=dark<cr>
 
 	nmap gb :bn<cr>
 	nmap gB :bp<cr>
-	nmap <A-1> :bn<cr>
+	nmap <A-1> :bf<cr>
 	nmap <A-2> :bn<cr>
-	nmap <A-3> :bd<cr>
+	nmap <A-3> :bp<cr>
+	nmap <A-4> :bd<cr>
 
 	nmap <Leader>a :A<cr>
 	nmap <Leader>as :AS<cr>
@@ -184,7 +185,7 @@ function s:ctrlp()
 endfunction
 
 function s:nerdtree_tagbar()
-	let g:tagbar_width = 24
+	let g:tagbar_width = 30
 	"let g:tagbar_vertical = 24
 	"let g:tagbar_left = 1
 	let g:tagbar_autoclose = 1
@@ -207,7 +208,7 @@ function s:youcompleteme()
 	inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
 	inoremap <expr><PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
 	inoremap <expr><PageUp> pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-	let g:ycm_global_ycm_extra_conf = 'ycm_extra_conf.py'
+	let g:ycm_global_ycm_extra_conf = '.ycm_extra_conf.py'
 	let g:ycm_confirm_extra_conf = 0
 	let g:syntastic_always_populate_loc_list = 1
 	nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
