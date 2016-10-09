@@ -1,29 +1,29 @@
 " .vimrc by yiend
 
 " identify platform
-function OSX()
+function! OSX()
 	return has('macunix')
 endfunction
-function LINUX()
+function! LINUX()
 	return has('unix') && !has('macunix') && !has('win32unix')
 endfunction
-function WINDOWS()
+function! WINDOWS()
 	return (has('win16') || has('win32') || has('win64'))
 endfunction
 
 " Resize gvim window
-function Resize(line, column)
+function! Resize(line, column)
 	let &lines=a:line
 	let &columns=a:column
 endfunction
-function Tunesize(line, column)
+function! Tunesize(line, column)
 	let &lines+=a:line
 	let &columns+=a:column
 endfunction
 
 " script functions start ==================================================
 
-function s:vundle()
+function! s:vundle()
 	" basics
 	set nocompatible " Must be first line
 	filetype off     " required
@@ -90,7 +90,7 @@ function s:vundle()
 	" Put your non-Plugin stuff after this line
 endfunction
 
-function s:basics()
+function! s:basics()
 	set laststatus=2 "always show the status bar
 	set ruler
 	set number
@@ -140,9 +140,11 @@ function s:basics()
 	" for c/c++ code
 	set tags=./tags,/usr/include/tags
 	"set path+=./include
+
+	inoremap <C-g>U <esc>gUiwea
 endfunction
 
-function s:leader_basics()
+function! s:leader_basics()
 	let g:mapleader = ','
 	nmap <leader><leader> :!
 	nmap <leader>lt :set background=light<cr>
@@ -150,16 +152,13 @@ function s:leader_basics()
 
 	nmap gb :bn<cr>
 	nmap gB :bp<cr>
-	nmap <A-1> :bf<cr>
-	nmap <A-2> :bn<cr>
-	nmap <A-3> :bp<cr>
-	nmap <A-4> :bd<cr>
+	nmap <C-c> :bd<cr>
 
 	nmap <Leader>a :A<cr>
 	nmap <Leader>as :AS<cr>
 endfunction
 
-function s:airline()
+function! s:airline()
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#left_sep = ' '
 	let g:airline#extensions#tabline#left_alt_seq = '|'
@@ -168,7 +167,7 @@ function s:airline()
 	let g:airline#extensions#bufferline#overwrite_variables = 1
 endfunction
 
-function s:ctrlp()
+function! s:ctrlp()
 	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
 	set wildignore+=*.tar*,*.zip,*.rar
 	set wildignore+=*.pdf,*.doc,*.docx
@@ -184,7 +183,7 @@ function s:ctrlp()
 	nmap <leader>pr :CtrlPRoot<cr>
 endfunction
 
-function s:nerdtree_tagbar()
+function! s:nerdtree_tagbar()
 	let g:tagbar_width = 30
 	"let g:tagbar_vertical = 24
 	"let g:tagbar_left = 1
@@ -200,7 +199,7 @@ function s:nerdtree_tagbar()
 	nmap <C-e> :NERDTreeToggle<cr>
 endfunction
 
-function s:youcompleteme()
+function! s:youcompleteme()
 	set completeopt=menu,longest
 	autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 	inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<CR>"
@@ -215,7 +214,7 @@ function s:youcompleteme()
 	nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 endfunction
 
-function s:term_special()
+function! s:term_special()
 	colorscheme molokai
 	set t_Co=256
 	hi MatchParen ctermfg=white ctermbg=black
@@ -223,7 +222,7 @@ function s:term_special()
 	hi Folded ctermfg=darkgrey ctermbg=none cterm=bold
 endfunction
 
-function s:gui_special()
+function! s:gui_special()
 	" prohibit cursor blinking
 	set gcr=a:block-blinkon0
 	" prohibit to show scrollbar
@@ -237,9 +236,9 @@ function s:gui_special()
 	set guioptions-=T
 
 	if LINUX() || OSX()
-		"set guifont=MonoSpace\ Regular\ 12
+		set guifont=MonoSpace\ Regular\ 12
 		"set guifont=Courier\ New\ Regular\ 14
-		set guifont=Inconsolata\ Regular\ 13
+		"set guifont=Inconsolata\ Regular\ 14
 		nmap <leader>fm :set guifont=MonoSpace\ Regular\ 12<cr>
 		nmap <leader>fc :set guifont=Courier\ New\ Regular\ 14<cr>
 		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 14<cr>
