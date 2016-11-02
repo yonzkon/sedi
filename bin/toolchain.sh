@@ -131,7 +131,7 @@ glibc_install_simplify()
 	local fromlib=$PREFIX/glibc_install/lib
 	local tolib=$PREFIX/glibc_install/lib_simplify/
 	mkdir -p $tolib
-	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
+	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns libreadline libncurses; do
 		cp $fromlib/$item-*.so $tolib
 		cp -d $fromlib/$item.so.[*0-9] $tolib
 	done
