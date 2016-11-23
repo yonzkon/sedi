@@ -152,10 +152,10 @@ function! s:leader_basics()
 
 	nmap gb :bn<cr>
 	nmap gB :bp<cr>
-	nmap <C-c> :bd<cr>
+	nmap <C-x>k :bd<cr>
 
-	nmap <Leader>a :A<cr>
-	nmap <Leader>as :AS<cr>
+	nmap <leader>a :A<cr>
+	nmap <leader>as :AS<cr>
 endfunction
 
 function! s:airline()
@@ -190,13 +190,13 @@ function! s:nerdtree_tagbar()
 	let g:tagbar_autoclose = 1
 	let g:tagbar_autofocus = 1
 	let g:tagbar_compact = 1
-	nmap <C-g> :TagbarToggle<cr>
+	nmap <leader>t :TagbarToggle<cr>
 
 	let g:NERDTreeWinSize = 24
 	"let g:NERDTreeMinimalUI = 1
 	"let g:NERDTreeShowHidden = 1
 	"let g:NERDTreeAutoDeleteBuffer = 1
-	nmap <C-e> :NERDTreeToggle<cr>
+	nmap <leader>e :NERDTreeToggle<cr>
 endfunction
 
 function! s:youcompleteme()
@@ -241,7 +241,7 @@ function! s:gui_special()
 		"set guifont=Inconsolata\ Regular\ 14
 		nmap <leader>fm :set guifont=MonoSpace\ Regular\ 12<cr>
 		nmap <leader>fc :set guifont=Courier\ New\ Regular\ 14<cr>
-		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 14<cr>
+		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 13<cr>
 	elseif WINDOWS()
 		set guifont=Consolas:h11
 	endif
