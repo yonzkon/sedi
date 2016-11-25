@@ -1,13 +1,5 @@
 # .bash_profile
 
-# if running bash
-#if [ -n "$BASH_VERSION" ]; then
-#    # include .bashrc if it exists
-#    if [ -f "$HOME/.bashrc" ]; then
-#        . "$HOME/.bashrc"
-#    fi
-#fi
-
 # env
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
@@ -18,7 +10,7 @@ fi
 
 if [ -d "$HOME/.mss/" ] && [ -z "$MSS" ]; then
 	export MSS=$HOME/.mss
-	export PATH=$PATH:$MSS/bin
+	export PATH=$MSS/bin:$MSS/etc/.vim/bundle/YCM-generator:$PATH
 fi
 
 # for gcc & ld

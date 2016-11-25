@@ -139,9 +139,13 @@ function! s:basics()
 
 	" for c/c++ code
 	set tags=./tags,/usr/include/tags
-	"set path+=./include
+	set path+=$HOME
 
 	inoremap <C-g>U <esc>gUiwea
+	nmap <C-h> <C-w>h
+	nmap <C-l> <C-w>l
+	nmap <C-j> <C-w>j
+	nmap <C-k> <C-w>k
 endfunction
 
 function! s:leader_basics()
