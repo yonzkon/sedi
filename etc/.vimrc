@@ -43,11 +43,10 @@ function! s:vundle()
 	Plugin 'gmarik/Vundle.vim'
 	Plugin 'molokai'
 	Plugin 'altercation/vim-colors-solarized'
+	Plugin 'a.vim'
+
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
-	"Plugin 'bling/vim-bufferline'
-
-	Plugin 'a.vim'
 	Plugin 'kien/ctrlp.vim'
 	Plugin 'scrooloose/nerdtree'
 	Plugin 'scrooloose/nerdcommenter'
@@ -94,18 +93,15 @@ function! s:basics()
 	set laststatus=2 "always show the status bar
 	set ruler
 	set number
-	set cursorline
-	set cursorcolumn
+	"set cursorline
+	"set cursorcolumn
 	set hlsearch
 	set nowrap
 
 	syntax on "use syntax highlight other than default one
 	filetype indent on "auto indent between different languages or filetypes
-	colorscheme solarized
-	set background=dark
-	if (strftime("%H") >= 8 && strftime("%H") < 18)
-		set background=light
-	endif
+	colorscheme molokai
+	set t_Co=256
 
 	" tab & indent & fold & search
 	"set expandtab
@@ -123,6 +119,7 @@ function! s:basics()
 	set smartcase
 
 	" file & directory
+	set path+=$HOME
 	set autochdir
 	set fileformats=unix,dos,mac
 	set nobackup nowritebackup noswapfile
@@ -137,18 +134,10 @@ function! s:basics()
 	set nospell
 	set helplang=cn
 
-	" for c/c++ code
-	set tags=./tags,/usr/include/tags
-	set path+=$HOME
-
 	inoremap <C-g>U <esc>gUiwea
-	nmap <C-h> <C-w>h
-	nmap <C-l> <C-w>l
-	nmap <C-j> <C-w>j
-	nmap <C-k> <C-w>k
 endfunction
 
-function! s:leader_basics()
+function! s:leader()
 	let g:mapleader = ','
 	nmap <leader><leader> :!
 	nmap <leader>lt :set background=light<cr>
@@ -160,6 +149,38 @@ function! s:leader_basics()
 
 	nmap <leader>a :A<cr>
 	nmap <leader>as :AS<cr>
+endfunction
+
+function! s:gui_special()
+	colorscheme solarized
+	if (strftime("%H") >= 6 && strftime("%H") < 18)
+		set background=light
+	endif
+
+	" prohibit cursor blinking
+	set gcr=a:block-blinkon0
+	" prohibit to show scrollbar
+	set guioptions-=l
+	set guioptions-=L
+	set guioptions-=r
+	set guioptions-=R
+	set guioptions-=b
+	" prohibit to show menu & toolbar
+	set guioptions-=m
+	set guioptions-=T
+
+	if LINUX()
+		set guifont=MonoSpace\ Regular\ 12
+	elseif OSX()
+		set guifont=Menlo:h13
+	elseif WINDOWS()
+		set guifont=Consolas:h11
+	endif
+
+	call Resize(38,118)
+	nmap <leader>g :call Resize(38,118)<cr>
+	nmap <leader>n :call Tunesize(3,12)<cr>
+	nmap <leader>m :call Tunesize(-3,-12)<cr>
 endfunction
 
 function! s:airline()
@@ -187,7 +208,15 @@ function! s:ctrlp()
 	nmap <leader>pr :CtrlPRoot<cr>
 endfunction
 
-function! s:nerdtree_tagbar()
+function! s:nerdtree()
+	let g:NERDTreeWinSize = 24
+	"let g:NERDTreeMinimalUI = 1
+	"let g:NERDTreeShowHidden = 1
+	"let g:NERDTreeAutoDeleteBuffer = 1
+	nmap <leader>e :NERDTreeToggle<cr>
+endfunction
+
+function! s:tagbar()
 	let g:tagbar_width = 30
 	"let g:tagbar_vertical = 24
 	"let g:tagbar_left = 1
@@ -195,12 +224,6 @@ function! s:nerdtree_tagbar()
 	let g:tagbar_autofocus = 1
 	let g:tagbar_compact = 1
 	nmap <leader>t :TagbarToggle<cr>
-
-	let g:NERDTreeWinSize = 24
-	"let g:NERDTreeMinimalUI = 1
-	"let g:NERDTreeShowHidden = 1
-	"let g:NERDTreeAutoDeleteBuffer = 1
-	nmap <leader>e :NERDTreeToggle<cr>
 endfunction
 
 function! s:youcompleteme()
@@ -218,58 +241,18 @@ function! s:youcompleteme()
 	nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 endfunction
 
-function! s:term_special()
-	colorscheme molokai
-	set t_Co=256
-	hi MatchParen ctermfg=white ctermbg=black
-	hi Comment ctermfg=brown cterm=bold
-	hi Folded ctermfg=darkgrey ctermbg=none cterm=bold
-endfunction
-
-function! s:gui_special()
-	" prohibit cursor blinking
-	set gcr=a:block-blinkon0
-	" prohibit to show scrollbar
-	set guioptions-=l
-	set guioptions-=L
-	set guioptions-=r
-	set guioptions-=R
-	set guioptions-=b
-	" prohibit to show menu & toolbar
-	set guioptions-=m
-	set guioptions-=T
-
-	if LINUX() || OSX()
-		set guifont=MonoSpace\ Regular\ 12
-		"set guifont=Courier\ New\ Regular\ 14
-		"set guifont=Inconsolata\ Regular\ 14
-		nmap <leader>fm :set guifont=MonoSpace\ Regular\ 12<cr>
-		nmap <leader>fc :set guifont=Courier\ New\ Regular\ 14<cr>
-		nmap <leader>fi :set guifont=Inconsolata\ Regular\ 13<cr>
-	elseif WINDOWS()
-		set guifont=Consolas:h11
-	endif
-
-	call Resize(38,118)
-	nmap <leader>g :call Resize(38,118)<cr>
-	nmap <leader>n :call Tunesize(3,12)<cr>
-	nmap <leader>m :call Tunesize(-3,-12)<cr>
-endfunction
-
 " main ===================================================================
 
 call s:vundle()
+
 call s:basics()
-
-call s:leader_basics()
-call s:airline()
-
-call s:ctrlp()
-call s:nerdtree_tagbar()
-call s:youcompleteme()
-
-if !has("gui_running")
-	call s:term_special()
-else
+call s:leader()
+if has("gui_running")
 	call s:gui_special()
 endif
+
+call s:airline()
+call s:ctrlp()
+call s:nerdtree()
+call s:tagbar()
+call s:youcompleteme()
