@@ -2,20 +2,20 @@
 
 usage()
 {
-	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [SRC_DIR]]"
+	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [WORKSPACE]]"
 	echo ""
-	echo "    {ARCH}    arm | x86 | ..."
-	echo "    {COMMAND} binutils"
-	echo "              linux_kernel_headers"
-	echo "              gcc_compilers"
-	echo "              glibc_headers_and_startupfiles"
-	echo "              gcc_libgcc"
-	echo "              glibc"
-	echo "              gcc"
-	echo "              glibc_install"
-	echo "              glibc_install_simplify"
-	echo "    [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
-	echo "    [SRC_DIR] base directory which include the source files [default: $(pwd)/src]"
+	echo "	{ARCH}	arm | x86 | ..."
+	echo "	{COMMAND} binutils"
+	echo "			  linux_kernel_headers"
+	echo "			  gcc_compilers"
+	echo "			  glibc_headers_and_startupfiles"
+	echo "			  gcc_libgcc"
+	echo "			  glibc"
+	echo "			  gcc"
+	echo "			  glibc_install"
+	echo "			  glibc_install_simplify"
+	echo "	[PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
+	echo "	[WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
 
 # usage
@@ -38,92 +38,145 @@ else
 fi
 
 if [ -z "$4" ]; then
-	SRC_DIR=$(pwd)/src
+	WORKSPACE=$(pwd)
 elif [ -z $(grep -e '^/' <<<$4) ]; then
-	SRC_DIR=$(pwd)/$4
+	WORKSPACE=$(pwd)/$4
 else
-	SRC_DIR=$4
+	WORKSPACE=$4
 fi
 
-TARGET=$ARCH-linux-gnueabi
-JOBS=$(grep -c ^processor /proc/cpuinfo)
+TARGET=$ARCH-none-linux-gnueabi
+JOBS=1
+if [ -e "/proc/cpuinfo" ]; then
+	JOBS=$(grep -c ^processor /proc/cpuinfo)
+fi
 
 [[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
 mkdir -p $PREFIX
-mkdir -p build-binutils
-mkdir -p build-gcc
-mkdir -p build-glibc
-mkdir -p build-glibc_install
+mkdir -p $WORKSPACE/deps
 
 # main
 binutils()
 {
-	cd build-binutils
-	$SRC_DIR/binutils/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
+	local NAME=binutils
+	local VERSION=2.25.1
+	local FULL=$NAME-$VERSION
+	local COMPRESS=tar.bz2
+	local TARBALL=$NAME-$VERSION.$COMPRESS
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$TARBALL
+
+	if [ ! -e deps/$FULL ]; then
+		echo "fetching $TARBALL..."
+		curl $URI > deps/$TARBALL
+		tar -xf deps/$TARBALL -C deps/
+	fi
+
+	mkdir -p deps/build-$NAME && cd deps/build-$NAME
+	../$FULL/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
-	cd ..
+	cd -
 }
 
 linux_kernel_headers()
 {
-	cd $SRC_DIR/linux
+	local NAME=linux
+	local VERSION=3.19.3
+	local FULL=$NAME-$VERSION
+	local COMPRESS=tar.xz
+	local TARBALL=$NAME-$VERSION.$COMPRESS
+	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v3.x/$TARBALL
+
+	if [ ! -e deps/$FULL ]; then
+		echo "fetching $TARBALL..."
+		curl $URI > deps/$TARBALL
+		tar -xf deps/$TARBALL -C deps/
+	fi
+
+	cd deps/$FULL
 	make ARCH=$ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
-	cd $PWD
+	cd -
 }
 
 gcc_compilers()
 {
-	cd build-gcc
-	$SRC_DIR/gcc/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
+	local NAME=gcc
+	local VERSION=4.8.5
+	local FULL=$NAME-$VERSION
+	local COMPRESS=tar.bz2
+	local TARBALL=$NAME-$VERSION.$COMPRESS
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$FULL/$TARBALL
+
+	if [ ! -e deps/$FULL ]; then
+		echo "fetching $TARBALL..."
+		curl $URI > deps/$TARBALL
+		tar -xf deps/$TARBALL -C deps/
+	fi
+
+	mkdir -p deps/build-$NAME && cd deps/build-$NAME
+	../$FULL/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
 	make -j$JOBS all-gcc
 	make install-gcc
-	cd ..
+	cd -
 }
 
 glibc_headers_and_startupfiles()
 {
-	cd build-glibc
-	$SRC_DIR/glibc/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	local NAME=glibc
+	local VERSION=2.22
+	local FULL=$NAME-$VERSION
+	local COMPRESS=tar.xz
+	local TARBALL=$NAME-$VERSION.$COMPRESS
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$TARBALL
+
+	if [ ! -e deps/$FULL ]; then
+		echo "fetching $TARBALL..."
+		curl $URI > deps/$TARBALL
+		tar -xf deps/$TARBALL -C deps/
+		ln -s $FULL deps/$NAME
+	fi
+
+	mkdir -p deps/build-$NAME && cd deps/build-$NAME
+	../$FULL/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
 	make install-bootstrap-headers=yes install-headers
 	make -j$JOBS csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
 	$TARGET-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o $PREFIX/$TARGET/lib/libc.so
 	touch $PREFIX/$TARGET/include/gnu/stubs.h
-	cd ..
+	cd -
 }
 
 gcc_libgcc()
 {
-	cd build-gcc
+	cd deps/build-gcc
 	make -j$JOBS all-target-libgcc
 	make install-target-libgcc
-	cd ..
+	cd -
 }
 
 glibc()
 {
-	cd build-glibc
+	cd deps/build-glibc
 	make -j$JOBS
 	make install
-	cd ..
+	cd -
 }
 
 gcc()
 {
-	cd build-gcc
+	cd deps/build-gcc
 	make -j$JOBS
 	make install
-	cd ..
+	cd -
 }
 
 glibc_install()
 {
-	cd build-glibc_install
-	$SRC_DIR/glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	mkdir -p deps/build-glibc_install && cd deps/build-glibc_install
+	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
 	make -j$JOBS
 	make install install_root=$PREFIX/glibc_install
-	cd ..
+	cd -
 }
 
 glibc_install_simplify()
@@ -139,6 +192,8 @@ glibc_install_simplify()
 }
 
 echo "start build and install to $PREFIX"
+
+cd $WORKSPACE
 
 if [ "$COMMAND" == "binutils" ]; then
 	binutils # 1
@@ -161,3 +216,5 @@ elif [ "$COMMAND" == "glibc_install_simplify" ]; then
 else
 	usage && exit
 fi
+
+cd $PWD
