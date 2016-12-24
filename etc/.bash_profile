@@ -1,17 +1,21 @@
 # .bash_profile
 
-# env
+# PS1
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
-if [ -d "/home/yiend/" ]; then
-	export Y=/home/yiend
-	export YD=/home/yiend/yd
-fi
+# PATH
+if [[ ! $PATH =~ "opt" ]] && [[ ! $PATH =~ "mss" ]]; then
+	# opt
+	for d in /opt/*; do
+		[ -d "$d/bin" ] && PATH=$d/bin:$PATH
+		[ -d "$d/sbin" ] && PATH=$d/sbin:$PATH
+	done
 
-if [ -d "$HOME/.mss/" ] && [ -z "$MSS" ]; then
-	export MSS=$HOME/.mss
-	export PATH=$MSS/bin:$MSS/etc/.vim/bundle/YCM-generator:$PATH
+	# mss
+	MSS="$HOME/.mss"
+	[ -d "$MSS" ] && PATH=$MSS/bin:$MSS/etc/.vim/bundle/YCM-generator:$PATH
 fi
+export PATH
 
 # for gcc & ld
 #export C_INCLUDE_PATH=
@@ -22,10 +26,20 @@ fi
 
 # alias
 [ $(id -u) -eq 0 ] && alias his="history 50" || alias his="history 2400"
-alias ls="ls --color=auto"
-alias ll="ls -l --color=auto"
-alias l.="ls -dl .* --color=auto"
-alias la="ls -al --color=auto"
+case $(uname -s) in
+linux)
+	alias ls="ls --color=auto"
+	alias ll="ls -l --color=auto"
+	alias l.="ls -dl .* --color=auto"
+	alias la="ls -al --color=auto"
+	;;
+FreeBSD|Darwin)
+	alias ls="ls -G"
+	alias ll="ls -l -G"
+	alias l.="ls -dl .* -G"
+	alias la="ls -al -G"
+	;;
+esac
 alias grep="grep --color=auto"
 alias jobs="jobs -l"
 alias df="df -T"
