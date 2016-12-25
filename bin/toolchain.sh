@@ -30,6 +30,10 @@ SCRIPT_DIR=${SCRIPT_PATH%/*}
 #CFLAGS='-O2 -pipe -fomit-frame-pointer'
 #CXX=g++
 #CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
+#export CPLUS_INCLUDE_PATH=
+#export LIBRARY_PATH=
+#export C_INCLUDE_PATH=
+#export LD_LIBRARY_PATH=
 
 ARCH=$1
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
@@ -60,6 +64,7 @@ FreeBSD)
 	;;
 Darwin)
 	JOBS=$(sysctl -n hw.physicalcpu)
+	ulimit -n 1024
 	;;
 *)
 	JOBS=1
