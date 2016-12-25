@@ -4,18 +4,18 @@ usage()
 {
 	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [WORKSPACE]]"
 	echo ""
-	echo "	{ARCH}	arm | x86 | ..."
-	echo "	{COMMAND} binutils"
-	echo "			  linux_kernel_headers"
-	echo "			  gcc_compilers"
-	echo "			  glibc_headers_and_startupfiles"
-	echo "			  gcc_libgcc"
-	echo "			  glibc"
-	echo "			  gcc"
-	echo "			  glibc_install"
-	echo "			  glibc_install_simplify"
-	echo "	[PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
-	echo "	[WORKSPACE] base directory which include the source files [default: $(pwd)]"
+	echo "  {ARCH}    arm | x86 | ..."
+	echo "  {COMMAND} binutils"
+	echo "            linux_kernel_headers"
+	echo "            gcc_compilers"
+	echo "            glibc_headers_and_startupfiles"
+	echo "            gcc_libgcc"
+	echo "            glibc"
+	echo "            gcc"
+	echo "            glibc_install"
+	echo "            glibc_install_simplify"
+	echo "  [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
+	echo "  [WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
 
 # usage
@@ -25,6 +25,11 @@ usage()
 PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
+
+#CC=gcc
+#CFLAGS='-O2 -pipe -fomit-frame-pointer'
+#CXX=g++
+#CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
 
 ARCH=$1
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
@@ -46,33 +51,54 @@ else
 fi
 
 TARGET=$ARCH-none-linux-gnueabi
-JOBS=1
-if [ -e "/proc/cpuinfo" ]; then
+case $(uname -s) in
+linux)
 	JOBS=$(grep -c ^processor /proc/cpuinfo)
-fi
+	;;
+FreeBSD)
+	JOBS=$(sysctl -n hw.ncpu)
+	;;
+Darwin)
+	JOBS=$(sysctl -n hw.physicalcpu)
+	;;
+*)
+	JOBS=1
+	;;
+esac
 
 [[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
 mkdir -p $PREFIX
-mkdir -p $WORKSPACE/deps
+
+# common funcs
+tarball_fetch_and_extract()
+{
+	local URI=$1
+	local TARBALL=$(sed -e 's/^.*\///g' <<<$URI)
+	local FULL=$(sed -e 's/\.tar.*$//g' <<<$TARBALL)
+	local NAME=$(sed -e 's/-.*$//g' <<<$FULL)
+
+	if [ ! -e $TARBALL ]; then
+		echo "fetching $TARBALL..."
+		curl $URI > $TARBALL
+	fi
+
+	if [ ! -e $FULL ]; then
+		echo "extracting $TARBALL..."
+		tar -xf $TARBALL
+		ln -sf $FULL $NAME
+	fi
+}
 
 # main
 binutils()
 {
 	local NAME=binutils
-	local VERSION=2.25.1
-	local FULL=$NAME-$VERSION
-	local COMPRESS=tar.bz2
-	local TARBALL=$NAME-$VERSION.$COMPRESS
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$TARBALL
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.27.tar.bz2
 
-	if [ ! -e deps/$FULL ]; then
-		echo "fetching $TARBALL..."
-		curl $URI > deps/$TARBALL
-		tar -xf deps/$TARBALL -C deps/
-	fi
+	tarball_fetch_and_extract $URI
 
-	mkdir -p deps/build-$NAME && cd deps/build-$NAME
-	../$FULL/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
+	mkdir -p build-$NAME && cd build-$NAME
+	../$NAME/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
 	cd -
@@ -81,40 +107,74 @@ binutils()
 linux_kernel_headers()
 {
 	local NAME=linux
-	local VERSION=3.19.3
-	local FULL=$NAME-$VERSION
-	local COMPRESS=tar.xz
-	local TARBALL=$NAME-$VERSION.$COMPRESS
-	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v3.x/$TARBALL
+	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v3.x/$NAME-3.19.3.tar.xz
 
-	if [ ! -e deps/$FULL ]; then
-		echo "fetching $TARBALL..."
-		curl $URI > deps/$TARBALL
-		tar -xf deps/$TARBALL -C deps/
-	fi
+	tarball_fetch_and_extract $URI
 
-	cd deps/$FULL
+	cd $NAME
 	make ARCH=$ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
 	cd -
+}
+
+gmp()
+{
+	local NAME=gmp
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.1.1.tar.xz
+
+	tarball_fetch_and_extract $URI
+}
+
+mpfr()
+{
+	local NAME=mpfr
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-3.1.4.tar.xz
+
+	tarball_fetch_and_extract $URI
+}
+
+mpc()
+{
+	local NAME=mpc
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-1.0.3.tar.gz
+
+	tarball_fetch_and_extract $URI
+}
+
+isl()
+{
+	local NAME=isl
+	local URI=http://isl.gforge.inria.fr/$NAME-0.14.tar.xz
+
+	tarball_fetch_and_extract $URI
+}
+
+cloog()
+{
+	local NAME=cloog
+	local URI=http://www.bastoul.net/cloog/pages/download/$NAME-0.18.4.tar.gz
+
+	tarball_fetch_and_extract $URI
 }
 
 gcc_compilers()
 {
 	local NAME=gcc
-	local VERSION=4.8.5
-	local FULL=$NAME-$VERSION
-	local COMPRESS=tar.bz2
-	local TARBALL=$NAME-$VERSION.$COMPRESS
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$FULL/$TARBALL
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-4.8.5/$NAME-4.8.5.tar.bz2
 
-	if [ ! -e deps/$FULL ]; then
-		echo "fetching $TARBALL..."
-		curl $URI > deps/$TARBALL
-		tar -xf deps/$TARBALL -C deps/
-	fi
+	tarball_fetch_and_extract $URI
 
-	mkdir -p deps/build-$NAME && cd deps/build-$NAME
-	../$FULL/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
+	# deps of gcc
+	cd $NAME
+	gmp
+	mpfr
+	mpc
+	isl
+	cloog
+	cd -
+
+	# build gcc
+	mkdir -p build-$NAME && cd build-$NAME
+	../$NAME/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
 	make -j$JOBS all-gcc
 	make install-gcc
 	cd -
@@ -123,21 +183,14 @@ gcc_compilers()
 glibc_headers_and_startupfiles()
 {
 	local NAME=glibc
-	local VERSION=2.22
-	local FULL=$NAME-$VERSION
-	local COMPRESS=tar.xz
-	local TARBALL=$NAME-$VERSION.$COMPRESS
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$TARBALL
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.21.tar.xz
 
-	if [ ! -e deps/$FULL ]; then
-		echo "fetching $TARBALL..."
-		curl $URI > deps/$TARBALL
-		tar -xf deps/$TARBALL -C deps/
-		ln -s $FULL deps/$NAME
-	fi
+	tarball_fetch_and_extract $URI
 
-	mkdir -p deps/build-$NAME && cd deps/build-$NAME
-	../$FULL/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	mkdir -p build-$NAME && cd build-$NAME
+	../$NAME/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
+		--with-headers=$PREFIX/$TARGET/include --disable-multilib \
+		libc_cv_forced_unwind=yes
 	make install-bootstrap-headers=yes install-headers
 	make -j$JOBS csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
@@ -148,7 +201,7 @@ glibc_headers_and_startupfiles()
 
 gcc_libgcc()
 {
-	cd deps/build-gcc
+	cd build-gcc
 	make -j$JOBS all-target-libgcc
 	make install-target-libgcc
 	cd -
@@ -156,7 +209,7 @@ gcc_libgcc()
 
 glibc()
 {
-	cd deps/build-glibc
+	cd build-glibc
 	make -j$JOBS
 	make install
 	cd -
@@ -164,7 +217,7 @@ glibc()
 
 gcc()
 {
-	cd deps/build-gcc
+	cd build-gcc
 	make -j$JOBS
 	make install
 	cd -
@@ -172,8 +225,8 @@ gcc()
 
 glibc_install()
 {
-	mkdir -p deps/build-glibc_install && cd deps/build-glibc_install
-	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes
+	mkdir -p build-glibc_install && cd build-glibc_install
+	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS" CC=$CC
 	make -j$JOBS
 	make install install_root=$PREFIX/glibc_install
 	cd -
