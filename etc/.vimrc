@@ -139,6 +139,7 @@ endfunction
 
 function! s:leader()
 	let g:mapleader = ','
+	noremap \ ,
 	nmap <leader><leader> :!
 	nmap <leader>lt :set background=light<cr>
 	nmap <leader>dr :set background=dark<cr>
