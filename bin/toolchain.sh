@@ -56,7 +56,7 @@ fi
 
 TARGET=$ARCH-none-linux-gnueabi
 case $(uname -s) in
-linux)
+Linux)
 	JOBS=$(grep -c ^processor /proc/cpuinfo)
 	;;
 FreeBSD)
@@ -84,7 +84,12 @@ tarball_fetch_and_extract()
 
 	if [ ! -e $TARBALL ]; then
 		echo "fetching $TARBALL..."
-		curl $URI > $TARBALL
+		curl $URI -o $TARBALL
+		if [ $? -ne 0 ]; then
+			rm $TARBALL
+			echo "failed to fetch $TARBALL...exit"
+			exit
+		fi
 	fi
 
 	if [ ! -e $FULL ]; then
