@@ -44,6 +44,7 @@ function! s:vundle()
 	Plugin 'molokai'
 	Plugin 'altercation/vim-colors-solarized'
 	Plugin 'a.vim'
+	Plugin 'tpope/vim-surround'
 
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
@@ -134,11 +135,13 @@ function! s:basics()
 	set nospell
 	set helplang=cn
 
+	runtime macros/matchit.vim
 	inoremap <C-g>U <esc>gUiwea
 endfunction
 
 function! s:leader()
 	let g:mapleader = ','
+	noremap \ ,
 	nmap <leader><leader> :!
 	nmap <leader>lt :set background=light<cr>
 	nmap <leader>dr :set background=dark<cr>
