@@ -4,17 +4,18 @@
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
 # PATH
-if [[ ! $PATH =~ "opt" ]] && [[ ! $PATH =~ "mss" ]]; then
-	# opt
+if [[ ! $PATH =~ "opt" ]]; then
 	for d in /opt/*; do
 		[ -d "$d/bin" ] && PATH=$d/bin:$PATH
 		[ -d "$d/sbin" ] && PATH=$d/sbin:$PATH
 	done
+fi
 
-	# mss
+if [[ ! $PATH =~ "mss" ]]; then
 	MSS="$HOME/.mss"
 	[ -d "$MSS" ] && PATH=$MSS/bin:$MSS/etc/.vim/bundle/YCM-generator:$PATH
 fi
+
 export PATH
 
 # for gcc & ld
