@@ -4,7 +4,7 @@ usage()
 {
 	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [WORKSPACE]]"
 	echo ""
-	echo "  {ARCH}    arm | x86 | ..."
+	echo "  {ARCH}    arm | x86 | x86_64 | ..."
 	echo "  {COMMAND} binutils"
 	echo "            linux_kernel_headers"
 	echo "            gcc_compilers"
@@ -63,7 +63,7 @@ FreeBSD)
 	JOBS=$(sysctl -n hw.ncpu)
 	;;
 Darwin)
-	JOBS=$(sysctl -n hw.physicalcpu)
+	JOBS=$(sysctl -n machdep.cpu.core_count)
 	ulimit -n 1024
 	;;
 *)
@@ -122,7 +122,9 @@ linux_kernel_headers()
 	tarball_fetch_and_extract $URI
 
 	cd $NAME
-	make ARCH=$ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
+	local INNER_ARCH=$ARCH
+	[ "$ARCH" = x86_64 ] && INNER_ARCH=x86
+	make ARCH=$INNER_ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
 	cd -
 }
 
@@ -200,7 +202,7 @@ glibc_headers_and_startupfiles()
 	mkdir -p build-$NAME && cd build-$NAME
 	../$NAME/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
 		--with-headers=$PREFIX/$TARGET/include --disable-multilib \
-		libc_cv_forced_unwind=yes
+		libc_cv_forced_unwind=yes libc_cv_ssp=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
 	make install-bootstrap-headers=yes install-headers
 	make -j$JOBS csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
