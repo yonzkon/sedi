@@ -4,12 +4,15 @@
 test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
 # PATH
-if [[ ! $PATH =~ "opt" ]]; then
-	for d in /opt/*; do
+#PATH=$(sed 's#\(:\{0,1\}\)/opt/bin[^:]*:\{0,1\}#\1#' <<<$PATH)
+OPTWARE="emacs armcross"
+OPTPATH=$(sed 's#[^ ]*#/opt/&#g' <<<$OPTWARE)
+for d in $OPTPATH; do
+	if [[ ! $PATH =~ $d ]]; then
 		[ -d "$d/bin" ] && PATH=$d/bin:$PATH
 		[ -d "$d/sbin" ] && PATH=$d/sbin:$PATH
-	done
-fi
+	fi
+done
 
 if [[ ! $PATH =~ "mss" ]]; then
 	MSS="$HOME/.mss"
