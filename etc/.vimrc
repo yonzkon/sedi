@@ -140,8 +140,8 @@ function! s:basics()
 endfunction
 
 function! s:leader()
-	let g:mapleader = ','
-	noremap \ ,
+	let g:mapleader = "\<Space>"
+	"noremap \ ,
 	nmap <leader><leader> :!
 	nmap <leader>lt :set background=light<cr>
 	nmap <leader>dr :set background=dark<cr>
@@ -203,7 +203,7 @@ function! s:ctrlp()
 	"let g:ctrlp_regexp = 1
 	"let g:ctrlp_show_hidden = 1
 	"let g:ctrlp_custom_ignore = '\.(cache|config|ssh)$'
-	nmap <leader>pp :CtrlP<cr>
+	nmap <leader>pwd :CtrlP<cr>
 	nmap <leader>pd :CtrlP<space>
 	nmap <leader>pb :CtrlPBuffer<cr>
 	nmap <leader>pm :CtrlPMRU<cr>
