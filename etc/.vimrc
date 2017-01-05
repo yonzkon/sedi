@@ -119,6 +119,9 @@ function! s:basics()
 	set ignorecase
 	set smartcase
 
+	" wildmode & wildmenu
+	set wildmode=longest,list
+
 	" file & directory
 	set path+=$HOME
 	set autochdir
@@ -133,16 +136,19 @@ function! s:basics()
 	set backspace=eol,start,indent
 	set spell spelllang=en_us
 	set nospell
+	set history=200
 	set helplang=cn
 
 	runtime macros/matchit.vim
 	inoremap <C-g>U <esc>gUiwea
+	cnoremap <C-p> <Up>
+	cnoremap <C-n> <Down>
 endfunction
 
 function! s:leader()
 	let g:mapleader = "\<Space>"
 	"noremap \ ,
-	nmap <leader><leader> :!
+	set  pastetoggle=<leader>paste
 	nmap <leader>lt :set background=light<cr>
 	nmap <leader>dr :set background=dark<cr>
 
@@ -199,6 +205,7 @@ function! s:ctrlp()
 	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.o,*.a,*.so,*.swp
 	set wildignore+=*.tar*,*.zip,*.rar
 	set wildignore+=*.pdf,*.doc,*.docx
+	let g:ctrlp_map = '' "unmap <C-p>
 	"let g:ctrlp_by_filename = 1
 	"let g:ctrlp_regexp = 1
 	"let g:ctrlp_show_hidden = 1
