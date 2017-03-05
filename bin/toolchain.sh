@@ -12,8 +12,11 @@ usage()
 	echo "            gcc_libgcc"
 	echo "            glibc"
 	echo "            gcc"
-	echo "            glibc_install"
-	echo "            glibc_install_simplify"
+	echo "            host_glibc"
+	echo "            host_readline"
+	echo "            host_ncurses"
+	echo "            host_glibc_simplify"
+	echo "            host_gdb"
 	echo "  [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
 	echo "  [WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
@@ -235,25 +238,70 @@ gcc()
 	cd -
 }
 
-glibc_install()
+host_glibc()
 {
-	mkdir -p build-glibc_install && cd build-glibc_install
+	mkdir -p build-host_glibc && cd build-host_glibc
 	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS" CC="$CC"
 	make -j$JOBS
-	make install install_root=$PREFIX/glibc_install
+	make install install_root=$PREFIX/host_glibc
 	cd -
 }
 
-glibc_install_simplify()
+host_readline()
 {
-	local fromlib=$PREFIX/glibc_install/lib
-	local tolib=$PREFIX/glibc_install/lib_simplify/
+	local NAME=readline
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.3.tar.gz
+
+	tarball_fetch_and_extract $URI
+
+	mkdir -p build-host_readline && cd build-host_readline
+	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET
+	make -j$JOBS
+	make install
+	cd -
+}
+
+host_ncurses()
+{
+	local NAME=ncurses
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.0.tar.gz
+
+	tarball_fetch_and_extract $URI
+
+	mkdir -p build-host_ncurses && cd build-host_ncurses
+	../ncurses/configure --prefix=$PREFIX/host_glibc --host=$TARGET --with-shared
+	make -j$JOBS
+	make install
+	cd -
+}
+
+host_glibc_simplify()
+{
+	local fromlib=$PREFIX/host_glibc/lib
+	local tolib=$PREFIX/host_glibc/lib_simplify/
 	mkdir -p $tolib
-	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns libreadline libncurses; do
-		cp $fromlib/$item-*.so $tolib
-		cp -d $fromlib/$item.so.[*0-9] $tolib
+	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
+		cp -dp $fromlib/$item.* $tolib
+		cp -dp $fromlib/$item-* $tolib
 	done
-	cp -d $fromlib/ld*.so* $tolib
+	for item in ld libreadline libncurses; do
+		cp -dp $fromlib/$item* $tolib
+	done
+	rm $tolib/*.a
+}
+
+host_gdb()
+{
+	local NAME=gdb
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-7.10.1.tar.xz
+
+	tarball_fetch_and_extract $URI
+
+	mkdir -p build-host_gdb && cd build-host_gdb
+	../gdb/configure --prefix=$PREFIX/host_glibc --host=$TARGET
+	make -j$JOBS
+	make install
+	cd -
 }
 
 echo "start build and install to $PREFIX"
@@ -274,10 +322,16 @@ elif [ "$COMMAND" == "glibc" ]; then
 	glibc # 6
 elif [ "$COMMAND" == "gcc" ]; then
 	gcc # 7
-elif [ "$COMMAND" == "glibc_install" ]; then
-	glibc_install # 8
-elif [ "$COMMAND" == "glibc_install_simplify" ]; then
-	glibc_install_simplify # 9
+elif [ "$COMMAND" == "host_glibc" ]; then
+	host_glibc # 8
+elif [ "$COMMAND" == "host_readline" ]; then
+	host_readline # 9
+elif [ "$COMMAND" == "host_ncurses" ]; then
+	host_ncurses # 10
+elif [ "$COMMAND" == "host_glibc_simplify" ]; then
+	host_glibc_simplify # 11
+elif [ "$COMMAND" == "host_gdb" ]; then
+	host_gdb # 12
 else
 	usage && exit
 fi
