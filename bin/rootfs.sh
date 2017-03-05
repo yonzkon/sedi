@@ -24,9 +24,10 @@ build_rootfs()
 	cd $PREFIX
 
 	# /
-	mkdir -p etc bin sbin lib usr var opt mnt tmp && chmod 1777 tmp
-	mkdir -p dev proc sys run
+	mkdir -p etc bin sbin lib usr var
+	mkdir -p dev proc sys tmp && chmod 1777 tmp
 	mkdir -p root home
+	mkdir -p opt mnt
 
 	# /etc
 	mkdir -p etc/init.d etc/udev/rules.d
@@ -36,10 +37,10 @@ build_rootfs()
 	chmod 0600 etc/passwd etc/group
 
 	# /usr
-	mkdir -p usr/bin usr/sbin usr/lib usr/include usr/share usr/src
+	mkdir -p usr/bin usr/sbin usr/lib usr/include usr/share usr/src usr/local
 
 	# /var
-	mkdir -p var/lib var/lock var/log var/run var/tmp && chmod 1777 var/tmp
+	mkdir -p var/lib var/lock var/log var/mail var/run var/spool var/tmp && chmod 1777 var/tmp
 
 	# /dev
 	sudo mknod -m 600 dev/mem c 1 1

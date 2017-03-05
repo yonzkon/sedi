@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /etc/profile
+
 # proc sys tmp
 mount proc /proc -t proc
 mount sysfs /sys -t sysfs
@@ -17,11 +19,20 @@ mount tmpfs /dev/shm -t tmpfs
 echo /bin/mdev > /proc/sys/kernel/hotplug
 mdev -s
 
-# mount filesystems defined by user
+# fstab
+fsck -Ay
+mount -o remount,rw /
 mount -a
+
+# coredump
+mkdir -p /var/core
+sysctl -w kernel.core_pattern=/var/core/core.%e_%p_%s_%t
+
+# ethernet
+#udhcpc
 
 # deamon
 syslogd
-inetd
 crond -b
-ntpd -p time.windows.com
+inetd
+ntpd
