@@ -26,10 +26,10 @@ PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
 
-#CC=gcc
-#CFLAGS='-O2 -pipe -fomit-frame-pointer'
-#CXX=g++
-#CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
+CC=gcc
+CFLAGS='-O2 -pipe -fomit-frame-pointer -fno-stack-protector'
+CXX=g++
+CXXFLAGS='-O2 -pipe -fomit-frame-pointer -fno-stack-protector'
 #export CPLUS_INCLUDE_PATH=
 #export LIBRARY_PATH=
 #export C_INCLUDE_PATH=
@@ -117,7 +117,7 @@ binutils()
 linux_kernel_headers()
 {
 	local NAME=linux
-	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v3.x/$NAME-3.19.3.tar.xz
+	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v4.x/$NAME-4.4.48.tar.xz
 
 	tarball_fetch_and_extract $URI
 
@@ -238,7 +238,7 @@ gcc()
 glibc_install()
 {
 	mkdir -p build-glibc_install && cd build-glibc_install
-	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS" CC=$CC
+	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS" CC="$CC"
 	make -j$JOBS
 	make install install_root=$PREFIX/glibc_install
 	cd -
