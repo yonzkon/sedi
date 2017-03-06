@@ -4,7 +4,7 @@ usage()
 {
 	echo "Usage: toolchian.sh {ARCH} {COMMAND} [PREFIX, [WORKSPACE]]"
 	echo ""
-	echo "  {ARCH}    arm | x86 | x86_64 | ..."
+	echo "  {ARCH}    arm | i686 | x86_64 | ..."
 	echo "  {COMMAND} binutils"
 	echo "            linux_kernel_headers"
 	echo "            gcc_compilers"
@@ -49,13 +49,9 @@ else
 fi
 
 CC=gcc
-CFLAGS='-O2 -pipe -fomit-frame-pointer'
+CFLAGS='-O2 -pipe -fomit-frame-pointer' #-fno-stack-protector
 CXX=g++
 CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
-if [ "$ARCH" == "x86_64" ]; then
-	CFLAGS+=' -fno-stack-protector'
-	CXXFLAGS+=' -fno-stack-protector'
-fi
 #export CPLUS_INCLUDE_PATH=
 #export LIBRARY_PATH=
 #export C_INCLUDE_PATH=
@@ -130,7 +126,7 @@ linux_kernel_headers()
 
 	cd $NAME
 	local INNER_ARCH=$ARCH
-	[ "$ARCH" = x86_64 ] && INNER_ARCH=x86
+	[ "$ARCH" = i686 ] && INNER_ARCH=x86
 	make ARCH=$INNER_ARCH INSTALL_HDR_PATH=$PREFIX/$TARGET headers_install
 	cd -
 }
