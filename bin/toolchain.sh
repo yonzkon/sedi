@@ -29,15 +29,6 @@ PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
 
-CC=gcc
-CFLAGS='-O2 -pipe -fomit-frame-pointer -fno-stack-protector'
-CXX=g++
-CXXFLAGS='-O2 -pipe -fomit-frame-pointer -fno-stack-protector'
-#export CPLUS_INCLUDE_PATH=
-#export LIBRARY_PATH=
-#export C_INCLUDE_PATH=
-#export LD_LIBRARY_PATH=
-
 ARCH=$1
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
 
@@ -56,6 +47,19 @@ elif [ -z $(grep -e '^/' <<<$4) ]; then
 else
 	WORKSPACE=$4
 fi
+
+CC=gcc
+CFLAGS='-O2 -pipe -fomit-frame-pointer'
+CXX=g++
+CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
+if [ "$ARCH" == "x86_64" ]; then
+	CFLAGS+=' -fno-stack-protector'
+	CXXFLAGS+=' -fno-stack-protector'
+fi
+#export CPLUS_INCLUDE_PATH=
+#export LIBRARY_PATH=
+#export C_INCLUDE_PATH=
+#export LD_LIBRARY_PATH=
 
 TARGET=$ARCH-none-linux-gnueabi
 case $(uname -s) in
@@ -255,7 +259,7 @@ host_readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_readline && cd build-host_readline
-	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET
+	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install
 	cd -
