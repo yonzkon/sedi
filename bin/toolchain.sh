@@ -42,7 +42,7 @@ ARCH=$1
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
 
 if [ -z "$3" ]; then
-	PREFIX=/opt/cross_$ARCH
+	PREFIX=/opt/cross-$ARCH
 elif [ -z $(grep -e '^/' <<<$3) ]; then
 	PREFIX=$(pwd)/$3
 else
