@@ -48,14 +48,13 @@ else
 	WORKSPACE=$4
 fi
 
-CC=gcc
-CFLAGS='-O2 -pipe -fomit-frame-pointer' #-fno-stack-protector
-CXX=g++
+# depends on $ARCH
+CFLAGS='-O2 -pipe -fomit-frame-pointer'
 CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
-#export CPLUS_INCLUDE_PATH=
-#export LIBRARY_PATH=
-#export C_INCLUDE_PATH=
-#export LD_LIBRARY_PATH=
+if [ "$ARCH" == "i686" ]; then
+	CFLAGS+=' -fno-stack-protector'
+	CXXFLAGS+=' -fno-stack-protector'
+fi
 
 TARGET=$ARCH-none-linux-gnueabi
 case $(uname -s) in
@@ -241,7 +240,7 @@ gcc()
 host_glibc()
 {
 	mkdir -p build-host_glibc && cd build-host_glibc
-	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS" CC="$CC"
+	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS"
 	make -j$JOBS
 	make install install_root=$PREFIX/host_glibc
 	cd -
@@ -255,7 +254,7 @@ host_readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_readline && cd build-host_readline
-	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET bash_cv_wcwidth_broken=yes
+	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET bash_cv_wcwidth_broken=yes CFLAGS="$CFLAGS"
 	make -j$JOBS
 	make install
 	cd -
@@ -269,7 +268,7 @@ host_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_ncurses && cd build-host_ncurses
-	../ncurses/configure --prefix=$PREFIX/host_glibc --host=$TARGET --with-shared
+	../ncurses/configure --prefix=$PREFIX/host_glibc --host=$TARGET --with-shared CFLAGS="$CFLAGS"
 	make -j$JOBS
 	make install
 	cd -
@@ -298,7 +297,7 @@ host_gdb()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_gdb && cd build-host_gdb
-	../gdb/configure --prefix=$PREFIX/host_glibc --host=$TARGET
+	../gdb/configure --prefix=$PREFIX/host_glibc --host=$TARGET CFLAGS="$CFLAGS"
 	make -j$JOBS
 	make install
 	cd -
