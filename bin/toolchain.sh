@@ -29,6 +29,9 @@ PWD=$(pwd)
 SCRIPT_PATH=$0
 SCRIPT_DIR=${SCRIPT_PATH%/*}
 
+CFLAGS='-O2 -pipe -fomit-frame-pointer' #-fno-stack-protector
+CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
+
 ARCH=$1
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
 
@@ -46,14 +49,6 @@ elif [ -z $(grep -e '^/' <<<$4) ]; then
 	WORKSPACE=$(pwd)/$4
 else
 	WORKSPACE=$4
-fi
-
-# depends on $ARCH
-CFLAGS='-O2 -pipe -fomit-frame-pointer'
-CXXFLAGS='-O2 -pipe -fomit-frame-pointer'
-if [ "$ARCH" == "i686" ]; then
-	CFLAGS+=' -fno-stack-protector'
-	CXXFLAGS+=' -fno-stack-protector'
 fi
 
 TARGET=$ARCH-none-linux-gnueabi
