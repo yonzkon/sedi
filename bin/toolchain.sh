@@ -50,7 +50,9 @@ else
 	WORKSPACE=$4
 fi
 
-TARGET=$ARCH-unknown-linux-gnueabi
+TARGET=$ARCH-unknown-linux-gnu
+[ "$ARCH" == "arm" ] && TARGET+=eabi
+
 case $(uname -s) in
 Linux)
 	JOBS=$(grep -c ^processor /proc/cpuinfo)
@@ -241,7 +243,7 @@ readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_readline && cd build-host_readline
-	../readline/configure --prefix=$PREFIX/testtt --build=$MACHTYPE --host=$TARGET \
+	../readline/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install
