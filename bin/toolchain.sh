@@ -12,11 +12,10 @@ usage()
 	echo "            gcc_libgcc"
 	echo "            glibc"
 	echo "            gcc"
-	echo "            host_glibc"
-	echo "            host_readline"
-	echo "            host_ncurses"
-	echo "            host_glibc_simplify"
-	echo "            host_gdb"
+	echo "            readline"
+	echo "            ncurses"
+	echo "            glibc_simplify"
+	echo "            gdb"
 	echo "  [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
 	echo "  [WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
@@ -51,7 +50,7 @@ else
 	WORKSPACE=$4
 fi
 
-TARGET=$ARCH-none-linux-gnueabi
+TARGET=$ARCH-unknown-linux-gnueabi
 case $(uname -s) in
 Linux)
 	JOBS=$(grep -c ^processor /proc/cpuinfo)
@@ -68,8 +67,9 @@ Darwin)
 	;;
 esac
 
-[[ $PATH =~ "$PREFIX/bin" ]] || export PATH=$PREFIX/bin:$PATH
-mkdir -p $PREFIX
+# PATH & export PATH
+# bash & '.' / source
+[[ $PATH =~ "$PREFIX/bin" ]] || PATH=$PREFIX/bin:$PATH
 
 # common funcs
 tarball_fetch_and_extract()
@@ -168,7 +168,7 @@ cloog()
 gcc_compilers()
 {
 	local NAME=gcc
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-4.8.5/$NAME-4.8.5.tar.bz2
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-4.9.4/$NAME-4.9.4.tar.bz2
 
 	tarball_fetch_and_extract $URI
 
@@ -192,14 +192,15 @@ gcc_compilers()
 glibc_headers_and_startupfiles()
 {
 	local NAME=glibc
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.21.tar.xz
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.24.tar.xz
 
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-$NAME && cd build-$NAME
 	../$NAME/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
-		--with-headers=$PREFIX/$TARGET/include --disable-multilib \
-		libc_cv_forced_unwind=yes libc_cv_ssp=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
+		--disable-multilib --with-headers=$PREFIX/$TARGET/include \
+		libc_cv_forced_unwind=yes \
+		libc_cv_ssp=no libc_cv_ssp_strong=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
 	make install-bootstrap-headers=yes install-headers
 	make -j$JOBS csu/subdir_lib
 	install csu/crt1.o csu/crti.o csu/crtn.o $PREFIX/$TARGET/lib
@@ -232,16 +233,7 @@ gcc()
 	cd -
 }
 
-host_glibc()
-{
-	mkdir -p build-host_glibc && cd build-host_glibc
-	../glibc/configure --prefix=/ --build=$MACHTYPE --host=$TARGET --with-headers=$PREFIX/$TARGET/include --disable-multilib libc_cv_forced_unwind=yes CFLAGS="$CFLAGS"
-	make -j$JOBS
-	make install install_root=$PREFIX/host_glibc
-	cd -
-}
-
-host_readline()
+readline()
 {
 	local NAME=readline
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.3.tar.gz
@@ -249,13 +241,14 @@ host_readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_readline && cd build-host_readline
-	../readline/configure --prefix=$PREFIX/host_glibc --host=$TARGET bash_cv_wcwidth_broken=yes CFLAGS="$CFLAGS"
+	../readline/configure --prefix=$PREFIX/testtt --build=$MACHTYPE --host=$TARGET \
+		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install
 	cd -
 }
 
-host_ncurses()
+ncurses()
 {
 	local NAME=ncurses
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.0.tar.gz
@@ -263,16 +256,16 @@ host_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_ncurses && cd build-host_ncurses
-	../ncurses/configure --prefix=$PREFIX/host_glibc --host=$TARGET --with-shared CFLAGS="$CFLAGS"
+	../ncurses/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-shared
 	make -j$JOBS
 	make install
 	cd -
 }
 
-host_glibc_simplify()
+glibc_simplify()
 {
-	local fromlib=$PREFIX/host_glibc/lib
-	local tolib=$PREFIX/host_glibc/lib_simplify/
+	local fromlib=$PREFIX/$TARGET/lib
+	local tolib=$PREFIX/$TARGET/lib_simplify/
 	mkdir -p $tolib
 	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
 		cp -dp $fromlib/$item.* $tolib
@@ -284,7 +277,7 @@ host_glibc_simplify()
 	rm $tolib/*.a
 }
 
-host_gdb()
+gdb()
 {
 	local NAME=gdb
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-7.10.1.tar.xz
@@ -292,7 +285,7 @@ host_gdb()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p build-host_gdb && cd build-host_gdb
-	../gdb/configure --prefix=$PREFIX/host_glibc --host=$TARGET CFLAGS="$CFLAGS"
+	../gdb/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET
 	make -j$JOBS
 	make install
 	cd -
@@ -316,16 +309,14 @@ elif [ "$COMMAND" == "glibc" ]; then
 	glibc # 6
 elif [ "$COMMAND" == "gcc" ]; then
 	gcc # 7
-elif [ "$COMMAND" == "host_glibc" ]; then
-	host_glibc # 8
-elif [ "$COMMAND" == "host_readline" ]; then
-	host_readline # 9
-elif [ "$COMMAND" == "host_ncurses" ]; then
-	host_ncurses # 10
-elif [ "$COMMAND" == "host_glibc_simplify" ]; then
-	host_glibc_simplify # 11
-elif [ "$COMMAND" == "host_gdb" ]; then
-	host_gdb # 12
+elif [ "$COMMAND" == "readline" ]; then
+	readline # 8
+elif [ "$COMMAND" == "ncurses" ]; then
+	ncurses # 9
+elif [ "$COMMAND" == "glibc_simplify" ]; then
+	glibc_simplify # 10
+elif [ "$COMMAND" == "gdb" ]; then
+	gdb # 11
 else
 	usage && exit
 fi
