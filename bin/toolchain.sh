@@ -110,6 +110,7 @@ binutils()
 	../$NAME/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
+	mv $PREFIX/$TARGET/bin $PREFIX/$TARGET/bin-binutils
 	cd -
 }
 
@@ -242,7 +243,7 @@ readline()
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-host_readline && cd build-host_readline
+	mkdir -p build-readline && cd build-readline
 	../readline/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
@@ -257,7 +258,7 @@ ncurses()
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-host_ncurses && cd build-host_ncurses
+	mkdir -p build-ncurses && cd build-ncurses
 	../ncurses/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-shared
 	make -j$JOBS
 	make install
@@ -266,17 +267,26 @@ ncurses()
 
 glibc_simplify()
 {
-	local fromlib=$PREFIX/$TARGET/lib
-	local tolib=$PREFIX/$TARGET/lib_simplify/
-	mkdir -p $tolib
+	local from=$PREFIX/$TARGET
+	local to=$PREFIX/$TARGET/simplify
+
+	# lib
+	mkdir -p $to/lib
 	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
-		cp -dp $fromlib/$item.* $tolib
-		cp -dp $fromlib/$item-* $tolib
+		cp -dp $from/lib/$item.* $to/lib
+		cp -dp $from/lib/$item-* $to/lib
 	done
-	for item in ld libreadline libncurses; do
-		cp -dp $fromlib/$item* $tolib
+	for item in ld- libreadline libncurses; do
+		cp -dp $from/lib/$item* $to/lib
 	done
-	rm $tolib/*.a
+	rm $to/lib/*.a
+
+	# bin & sbin
+	mkdir -p $to/bin $to/sbin
+	cp -prd $from/bin $from/sbin $to
+
+	# strip
+	$TARGET-strip $to/lib/* $to/bin/* $to/sbin/* &>/dev/null
 }
 
 gdb()
@@ -286,7 +296,7 @@ gdb()
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-host_gdb && cd build-host_gdb
+	mkdir -p build-gdb && cd build-gdb
 	../gdb/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET
 	make -j$JOBS
 	make install
