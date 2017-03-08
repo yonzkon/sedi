@@ -6,9 +6,9 @@ usage()
 	echo ""
 	echo "  {ARCH}    arm | i686 | x86_64 | ..."
 	echo "  {COMMAND} binutils"
-	echo "            linux_kernel_headers"
+	echo "            linux_uapi_headers"
 	echo "            gcc_compilers"
-	echo "            glibc_headers_and_startupfiles"
+	echo "            glibc_headers_and_startup_files"
 	echo "            gcc_libgcc"
 	echo "            glibc"
 	echo "            gcc"
@@ -116,7 +116,7 @@ binutils()
 	cd -
 }
 
-linux_kernel_headers()
+linux_uapi_headers()
 {
 	local NAME=linux
 	local URI=http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v4.x/$NAME-4.4.48.tar.xz
@@ -195,7 +195,7 @@ gcc_compilers()
 	cd -
 }
 
-glibc_headers_and_startupfiles()
+glibc_headers_and_startup_files()
 {
 	local NAME=glibc
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.23.tar.xz
@@ -343,12 +343,12 @@ cd $WORKSPACE
 
 if [ "$COMMAND" == "binutils" ]; then
 	binutils # 1
-elif [ "$COMMAND" == "linux_kernel_headers" ]; then
-	linux_kernel_headers # 2
+elif [ "$COMMAND" == "linux_uapi_headers" ]; then
+	linux_uapi_headers # 2
 elif [ "$COMMAND" == "gcc_compilers" ]; then
 	gcc_compilers # 3
-elif [ "$COMMAND" == "glibc_headers_and_startupfiles" ]; then
-	glibc_headers_and_startupfiles # 4
+elif [ "$COMMAND" == "glibc_headers_and_startup_files" ]; then
+	glibc_headers_and_startup_files # 4
 elif [ "$COMMAND" == "gcc_libgcc" ]; then
 	gcc_libgcc # 5
 elif [ "$COMMAND" == "glibc" ]; then
@@ -365,7 +365,7 @@ elif [ "$COMMAND" == "target_ncurses" ]; then
 	target_ncurses # t4
 elif [ "$COMMAND" == "target_gdb" ]; then
 	target_gdb # t5
-elif [ "$COMMAND" == "glibc_simplify" ]; then
+elif [ "$COMMAND" == "simplify_target" ]; then
 	simplify_target # t6
 else
 	usage && exit
