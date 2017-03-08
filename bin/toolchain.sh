@@ -12,10 +12,12 @@ usage()
 	echo "            gcc_libgcc"
 	echo "            glibc"
 	echo "            gcc"
-	echo "            readline"
-	echo "            ncurses"
-	echo "            glibc_simplify"
-	echo "            gdb"
+	echo "            target_binutils"
+	echo "            target_glibc"
+	echo "            target_readline"
+	echo "            target_ncurses"
+	echo "            target_gdb"
+	echo "            simplify_target"
 	echo "  [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
 	echo "  [WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
@@ -103,14 +105,14 @@ binutils()
 {
 	local NAME=binutils
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.27.tar.bz2
+	local BUILD=build-$NAME
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-$NAME && cd build-$NAME
+	mkdir -p $BUILD && cd $BUILD
 	../$NAME/configure --prefix=$PREFIX --target=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
-	mv $PREFIX/$TARGET/bin $PREFIX/$TARGET/bin-binutils
 	cd -
 }
 
@@ -172,6 +174,7 @@ gcc_compilers()
 {
 	local NAME=gcc
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-4.9.4/$NAME-4.9.4.tar.bz2
+	local BUILD=build-$NAME
 
 	tarball_fetch_and_extract $URI
 
@@ -185,7 +188,7 @@ gcc_compilers()
 	cd -
 
 	# build gcc
-	mkdir -p build-$NAME && cd build-$NAME
+	mkdir -p $BUILD && cd $BUILD
 	../$NAME/configure --prefix=$PREFIX --target=$TARGET --enable-languages=c,c++ --disable-multilib
 	make -j$JOBS all-gcc
 	make install-gcc
@@ -195,11 +198,12 @@ gcc_compilers()
 glibc_headers_and_startupfiles()
 {
 	local NAME=glibc
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.24.tar.xz
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-2.23.tar.xz
+	local BUILD=build-$NAME
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-$NAME && cd build-$NAME
+	mkdir -p $BUILD && cd $BUILD
 	../$NAME/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
 		--disable-multilib --with-headers=$PREFIX/$TARGET/include \
 		libc_cv_forced_unwind=yes \
@@ -236,39 +240,83 @@ gcc()
 	cd -
 }
 
-readline()
+target_binutils()
+{
+	local NAME=binutils
+	local BUILD=build-$FUNCNAME
+
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET --disable-multilib
+	make -j$JOBS
+	make install
+	cd -
+}
+
+target_glibc()
+{
+	local NAME=glibc
+	local BUILD=build-$FUNCNAME
+
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix= --build=$MACHTYPE --host=$TARGET \
+		--disable-multilib --with-headers=$PREFIX/$TARGET/include \
+		libc_cv_forced_unwind=yes \
+		libc_cv_ssp=no libc_cv_ssp_strong=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
+	make -j$JOBS
+	make install install_root=$PREFIX/target
+	cd -
+}
+
+target_readline()
 {
 	local NAME=readline
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.3.tar.gz
+	local BUILD=build-$FUNCNAME
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-readline && cd build-readline
-	../readline/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET \
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install
 	cd -
 }
 
-ncurses()
+target_ncurses()
 {
 	local NAME=ncurses
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.0.tar.gz
+	local BUILD=build-$FUNCNAME
 
 	tarball_fetch_and_extract $URI
 
-	mkdir -p build-ncurses && cd build-ncurses
-	../ncurses/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET --with-shared
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET --with-shared
 	make -j$JOBS
 	make install
 	cd -
 }
 
-glibc_simplify()
+target_gdb()
 {
-	local from=$PREFIX/$TARGET
-	local to=$PREFIX/$TARGET/simplify
+	local NAME=gdb
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-7.10.1.tar.xz
+	local BUILD=build-$FUNCNAME
+
+	tarball_fetch_and_extract $URI
+
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET
+	make -j$JOBS
+	make install
+	cd -
+}
+
+simplify_target()
+{
+	local from=$PREFIX/target
+	local to=$PREFIX/target/simplify
 
 	# lib
 	mkdir -p $to/lib
@@ -289,20 +337,6 @@ glibc_simplify()
 	$TARGET-strip $to/lib/* $to/bin/* $to/sbin/* &>/dev/null
 }
 
-gdb()
-{
-	local NAME=gdb
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-7.10.1.tar.xz
-
-	tarball_fetch_and_extract $URI
-
-	mkdir -p build-gdb && cd build-gdb
-	../gdb/configure --prefix=$PREFIX/$TARGET --build=$MACHTYPE --host=$TARGET
-	make -j$JOBS
-	make install
-	cd -
-}
-
 echo "start build and install to $PREFIX"
 
 cd $WORKSPACE
@@ -321,14 +355,18 @@ elif [ "$COMMAND" == "glibc" ]; then
 	glibc # 6
 elif [ "$COMMAND" == "gcc" ]; then
 	gcc # 7
-elif [ "$COMMAND" == "readline" ]; then
-	readline # 8
-elif [ "$COMMAND" == "ncurses" ]; then
-	ncurses # 9
+elif [ "$COMMAND" == "target_binutils" ]; then
+	target_binutils # t1
+elif [ "$COMMAND" == "target_glibc" ]; then
+	target_glibc # t2
+elif [ "$COMMAND" == "target_readline" ]; then
+	target_readline tth # t2
+elif [ "$COMMAND" == "target_ncurses" ]; then
+	target_ncurses # t4
+elif [ "$COMMAND" == "target_gdb" ]; then
+	target_gdb # t5
 elif [ "$COMMAND" == "glibc_simplify" ]; then
-	glibc_simplify # 10
-elif [ "$COMMAND" == "gdb" ]; then
-	gdb # 11
+	simplify_target # t6
 else
 	usage && exit
 fi
