@@ -246,7 +246,7 @@ target_binutils()
 	local BUILD=build-$FUNCNAME
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET --disable-multilib
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
 	cd -
@@ -263,7 +263,7 @@ target_glibc()
 		libc_cv_forced_unwind=yes \
 		libc_cv_ssp=no libc_cv_ssp_strong=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
 	make -j$JOBS
-	make install install_root=$PREFIX/target
+	make install install_root=$PREFIX/$TARGET-install
 	cd -
 }
 
@@ -276,7 +276,7 @@ target_readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET \
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install
@@ -292,7 +292,7 @@ target_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET --with-shared
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --with-shared
 	make -j$JOBS
 	make install
 	cd -
@@ -307,7 +307,7 @@ target_gdb()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/target --build=$MACHTYPE --host=$TARGET
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET
 	make -j$JOBS
 	make install
 	cd -
@@ -315,8 +315,8 @@ target_gdb()
 
 simplify_target()
 {
-	local from=$PREFIX/target
-	local to=$PREFIX/target/simplify
+	local from=$PREFIX/$TARGET-install
+	local to=$PREFIX/$TARGET-install/simplify
 
 	# lib
 	mkdir -p $to/lib
@@ -360,7 +360,7 @@ elif [ "$COMMAND" == "target_binutils" ]; then
 elif [ "$COMMAND" == "target_glibc" ]; then
 	target_glibc # t2
 elif [ "$COMMAND" == "target_readline" ]; then
-	target_readline tth # t2
+	target_readline # t3
 elif [ "$COMMAND" == "target_ncurses" ]; then
 	target_ncurses # t4
 elif [ "$COMMAND" == "target_gdb" ]; then
