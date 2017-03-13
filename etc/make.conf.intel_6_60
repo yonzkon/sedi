@@ -19,4 +19,4 @@ PORTDIR="/usr/portage"
 DISTDIR="${PORTDIR}/distfiles"
 PKGDIR="${PORTDIR}/packages"
 
-GENTOO_MIRRORS="http://mirrors.ustc.edu.cn/gentoo/"
+GENTOO_MIRRORS="https://mirrors.ustc.edu.cn/gentoo/"
