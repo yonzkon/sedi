@@ -4,7 +4,6 @@
 # Since From:      2014/2/9
 # Last Change:     2014/2/9
 # Version:         0.1
-#   
 
     # I) - Set environment
 export PATH=/sbin/:/bin/:/usr/sbin/:/usr/bin/:/usr/local/sbin/:/usr/local/bin/
@@ -13,29 +12,26 @@ export LANG=C
     # II) - echo historys
 echo "\
 # 1) - system
+    find . -type f -exec chmod -x {} \\;
+    localdef -f UTF-8 -i en_US en_US.UTF-8
     useradd -umu -gmu -Gmu,wheel -Md/home/mu mu
     useradd -uguest -gmu -Gmu -md/home/guest guest
     grub-install --boot-directory=/home/linux/boot/ /dev/sda
     grub-install --target=x86_64-efi --efi-direcotry=/boot
-    fdisk -l
-    ln -s/home/linux/etc/.bash_profile .
     lvcreate -sl320 -nlvsslinux /dev/mapper/vglinux-lvlinux
     lvremove /dev/mapper/vglinux-lvsslinux\
     pacman -Syu
     pacman -Ss php |grep -A2 -B2 -ie'gre'
     pacman -Sc
-    pacman -U broadcom-wl-6.30.223.141-3-x86_64.pkg.tar.xz 
-    pacman -U uuid-1.6.2-11-x86_64.pkg.tar.xz 
-    pacman -U postgresql-uuid-ossp-9.3.1-1-x86_64.pkg.tar.xz 
+    pacman -U broadcom-wl-6.30.223.141-3-x86_64.pkg.tar.xz
+    pacman -U uuid-1.6.2-11-x86_64.pkg.tar.xz
+    pacman -U postgresql-uuid-ossp-9.3.1-1-x86_64.pkg.tar.xz
     makepkg
     tar -cjpv --exclude={linux/boot/*,linux/kernel_distribution/*} -f - linux/ |openssl des3 -salt -k 'sar' -out /home/backup/linux-$(date +%Y_%m_%d).tar.bz2
     openssl des3 -k sar -d -salt -in linux-2014_01_29.tar.bz2 |tar -xjvf -
-    ntpdate time.windows.com
-    ntpdate asia.pool.ntp.org
     nohup ./start &>/dev/null &
     nohup ./start 1>/dev/null 2>&1
     export SVN_EDITOR='vim' && svn propedit svn:ignore .
-    find . -type f -exec chmod -x {} \\;
 # 2) - edit
     iconv -fgb2312 -tutf8 quintessence
     ctags -R --languages=c++ --c++-kinds=+px --fields=+aiKSz --extra=+q
@@ -50,7 +46,6 @@ echo "\
     route add -net 192.168.0.0/16 gw 10.0.15.254
     route add -net 172.16.0.0/12 gw 10.0.15.254
     route add -net 10.0.0.0/8 gw 10.0.15.254
-    netstat -pnlt
     nmap -sP 10.10.10.0/20
     tcpdump -niwlp4s0 -X 'tcp port 21 and src host 192.168.1.24 and dst net 192.168'
 # 4) - programming
