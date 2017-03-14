@@ -146,7 +146,7 @@ function! s:basics()
 endfunction
 
 function! s:leader()
-	let g:mapleader = "\<Space>"
+	"let g:mapleader = "\<Space>"
 	"noremap \ ,
 	set  pastetoggle=<leader>paste
 	nmap <leader>lt :set background=light<cr>

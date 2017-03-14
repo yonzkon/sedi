@@ -292,7 +292,7 @@ target_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --with-shared
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --with-shared --without-gpm
 	make -j$JOBS
 	make install
 	cd -
@@ -330,7 +330,6 @@ simplify_target()
 	rm $to/lib/*.a
 
 	# bin & sbin
-	mkdir -p $to/bin $to/sbin
 	cp -prd $from/bin $from/sbin $to
 
 	# strip

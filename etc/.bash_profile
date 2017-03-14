@@ -5,7 +5,7 @@ test $(id -u) -eq 0 && PS1="[\u@\H \W \A #\#]# " || PS1="[\u@\H \W \A #\#]$ "
 
 # PATH
 #PATH=$(sed 's#\(:\{0,1\}\)/opt/bin[^:]*:\{0,1\}#\1#' <<<$PATH)
-OPTWARE="emacs armcross"
+OPTWARE="emacs"
 OPTPATH=$(sed 's#[^ ]*#/opt/&#g' <<<$OPTWARE)
 for d in $OPTPATH; do
 	if [[ ! $PATH =~ $d ]]; then
