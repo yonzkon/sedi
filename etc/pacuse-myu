@@ -1,0 +1,4 @@
+app-editors/vim python
+app-editors/gvim python
+app-i18n/fcitx gtk2 gtk3
+dev-db/sqlitebrowser qt4
