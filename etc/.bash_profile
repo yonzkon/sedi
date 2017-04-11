@@ -31,7 +31,7 @@ export PATH
 # alias
 [ $(id -u) -eq 0 ] && alias his="history 50" || alias his="history 2400"
 case $(uname -s) in
-Linux)
+Linux|MINGW*)
 	alias ls="ls --color=auto"
 	alias ll="ls -l --color=auto"
 	alias l.="ls -dl .* --color=auto"
