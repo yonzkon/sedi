@@ -292,7 +292,8 @@ target_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --with-shared --without-gpm
+	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
+		--with-shared --without-gpm --with-xterm-kbs=DEL
 	make -j$JOBS
 	make install
 	cd -
@@ -320,13 +321,14 @@ simplify_target()
 
 	# lib
 	mkdir -p $to/lib
-	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns; do
+	for item in libc libm libcrypt libdl libpthread libutil libresolv libnss_dns libthread_db; do
 		cp -dp $from/lib/$item.* $to/lib
 		cp -dp $from/lib/$item-* $to/lib
 	done
 	for item in ld- libreadline libncurses; do
 		cp -dp $from/lib/$item* $to/lib
 	done
+	cp -prd $from/lib/gconv $to/lib
 	rm $to/lib/*.a
 
 	# bin & sbin
