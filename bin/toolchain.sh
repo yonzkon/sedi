@@ -73,7 +73,12 @@ esac
 
 # PATH & export PATH
 # bash & '.' / source
-[[ $PATH =~ "$PREFIX/bin" ]] || PATH=$PREFIX/bin:$PATH
+#[[ $PATH =~ "$PREFIX/bin" ]] || PATH=$PREFIX/bin:$PATH
+export PATH=$PREFIX/bin:$PATH
+export LD_LIBRARY_PATH=$PREFIX/$TARGET-install/lib
+export C_INCLUDE_PATH=$PREFIX/$TARGET-install/include
+export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
+#export PKG_CONFIG_PATH=$PREFIX/$TARGET-install/lib/pkgconfig:$PKG_CONFIG_PATH
 
 # common funcs
 tarball_fetch_and_extract()
@@ -269,6 +274,9 @@ target_glibc()
 
 target_readline()
 {
+	echo "[Unsolved Problem] missing simbol UP error ..."
+	exit
+
 	local NAME=readline
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.3.tar.gz
 	local BUILD=build-$FUNCNAME
@@ -276,10 +284,11 @@ target_readline()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
+	../$NAME/configure --prefix= --build=$MACHTYPE --host=$TARGET \
+		--enable-shared --disable-static \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
-	make install
+	make install DESTDIR=$PREFIX/$TARGET-install
 	cd -
 }
 
@@ -293,7 +302,7 @@ target_ncurses()
 
 	mkdir -p $BUILD && cd $BUILD
 	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
-		--with-shared --without-gpm
+		--with-shared --without-gpm --with-termlib
 	make -j$JOBS
 	make install
 	cd -
