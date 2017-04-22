@@ -12,12 +12,13 @@ usage()
 	echo "            gcc_libgcc"
 	echo "            glibc"
 	echo "            gcc"
-	echo "            target_binutils"
-	echo "            target_glibc"
-	echo "            target_readline"
-	echo "            target_ncurses"
-	echo "            target_gdb"
-	echo "            simplify_target"
+	echo "            rootfs_busybox"
+	echo "            rootfs_binutils"
+	echo "            rootfs_glibc"
+	echo "            rootfs_readline"
+	echo "            rootfs_ncurses"
+	echo "            rootfs_gdb"
+	echo "            simplify_rootfs"
 	echo "  [PREFIX]  where to install the toolchain [default: /opt/cross_\$ARCH]"
 	echo "  [WORKSPACE] base directory which include the source files [default: $(pwd)]"
 }
@@ -52,6 +53,7 @@ else
 	WORKSPACE=$4
 fi
 
+ROOTFS=$PREFIX/rootfs
 TARGET=$ARCH-unknown-linux-gnu
 [ "$ARCH" == "arm" ] && TARGET+=eabi
 
@@ -73,12 +75,12 @@ esac
 
 # PATH & export PATH
 # bash & '.' / source
-#[[ $PATH =~ "$PREFIX/bin" ]] || PATH=$PREFIX/bin:$PATH
-export PATH=$PREFIX/bin:$PATH
-export LD_LIBRARY_PATH=$PREFIX/$TARGET-install/lib
-export C_INCLUDE_PATH=$PREFIX/$TARGET-install/include
-export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
-#export PKG_CONFIG_PATH=$PREFIX/$TARGET-install/lib/pkgconfig:$PKG_CONFIG_PATH
+[[ $PATH =~ "$PREFIX/bin" ]] || PATH=$PATH:$PREFIX/bin
+#export PATH=$PREFIX/bin:$PATH
+#export LD_LIBRARY_PATH=$ROOTFS/lib
+#export C_INCLUDE_PATH=$ROOTFS/include
+#export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
+#export PKG_CONFIG_PATH=$ROOTFS/lib/pkgconfig:$PKG_CONFIG_PATH
 
 # common funcs
 tarball_fetch_and_extract()
@@ -245,19 +247,33 @@ gcc()
 	cd -
 }
 
-target_binutils()
+rootfs_busybox()
+{
+	local NAME=busybox
+	local URI=https://www.busybox.net/downloads/$NAME-1.24.2.tar.bz2
+	local BUILD=build-$FUNCNAME
+
+	tarball_fetch_and_extract $URI
+
+	cd $NAME
+	make gconfig && make -j$JOBS && make install
+	mkdir -p $ROOTFS && cp -a _install/* $ROOTFS
+	cd -
+}
+
+rootfs_binutils()
 {
 	local NAME=binutils
 	local BUILD=build-$FUNCNAME
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET --disable-multilib
+	../$NAME/configure --prefix=$ROOTFS --build=$MACHTYPE --host=$TARGET --disable-multilib
 	make -j$JOBS
 	make install
 	cd -
 }
 
-target_glibc()
+rootfs_glibc()
 {
 	local NAME=glibc
 	local BUILD=build-$FUNCNAME
@@ -268,11 +284,11 @@ target_glibc()
 		libc_cv_forced_unwind=yes \
 		libc_cv_ssp=no libc_cv_ssp_strong=no # libc_cv_ssp is to resolv __stack_chk_gurad for x86_64
 	make -j$JOBS
-	make install install_root=$PREFIX/$TARGET-install
+	make install install_root=$ROOTFS
 	cd -
 }
 
-target_readline()
+rootfs_readline()
 {
 	echo "[Unsolved Problem] missing simbol UP error ..."
 	exit
@@ -288,11 +304,11 @@ target_readline()
 		--enable-shared --disable-static \
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
-	make install DESTDIR=$PREFIX/$TARGET-install
+	make install DESTDIR=$ROOTFS
 	cd -
 }
 
-target_ncurses()
+rootfs_ncurses()
 {
 	local NAME=ncurses
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-5.9.tar.gz
@@ -301,14 +317,14 @@ target_ncurses()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
-		--with-shared --without-gpm --with-termlib
+	../$NAME/configure --prefix=$ROOTFS --build=$MACHTYPE --host=$TARGET \
+		--with-shared --without-gpm #--with-termlib
 	make -j$JOBS
-	make install
+	make install #DESTDIR=$ROOTFS
 	cd -
 }
 
-target_gdb()
+rootfs_gdb()
 {
 	local NAME=gdb
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-7.10.1.tar.xz
@@ -317,16 +333,16 @@ target_gdb()
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
-	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET
+	../$NAME/configure --prefix=$ROOTFS --build=$MACHTYPE --host=$TARGET
 	make -j$JOBS
 	make install
 	cd -
 }
 
-simplify_target()
+simplify_rootfs()
 {
-	local from=$PREFIX/$TARGET-install
-	local to=$PREFIX/$TARGET-install/simplify
+	local from=$ROOTFS
+	local to=$ROOTFS/simplify
 
 	# lib
 	mkdir -p $to/lib
@@ -365,18 +381,20 @@ elif [ "$COMMAND" == "glibc" ]; then
 	glibc # 6
 elif [ "$COMMAND" == "gcc" ]; then
 	gcc # 7
-elif [ "$COMMAND" == "target_binutils" ]; then
-	target_binutils # t1
-elif [ "$COMMAND" == "target_glibc" ]; then
-	target_glibc # t2
-elif [ "$COMMAND" == "target_readline" ]; then
-	target_readline # t3
-elif [ "$COMMAND" == "target_ncurses" ]; then
-	target_ncurses # t4
-elif [ "$COMMAND" == "target_gdb" ]; then
-	target_gdb # t5
-elif [ "$COMMAND" == "simplify_target" ]; then
-	simplify_target # t6
+elif [ "$COMMAND" == "rootfs_busybox" ]; then
+	rootfs_busybox # r0
+elif [ "$COMMAND" == "rootfs_binutils" ]; then
+	rootfs_binutils # r1
+elif [ "$COMMAND" == "rootfs_glibc" ]; then
+	rootfs_glibc # r2
+elif [ "$COMMAND" == "rootfs_readline" ]; then
+	rootfs_readline # r3
+elif [ "$COMMAND" == "rootfs_ncurses" ]; then
+	rootfs_ncurses # r4
+elif [ "$COMMAND" == "rootfs_gdb" ]; then
+	rootfs_gdb # r5
+elif [ "$COMMAND" == "simplify_rootfs" ]; then
+	simplify_rootfs # r6
 else
 	usage && exit
 fi
