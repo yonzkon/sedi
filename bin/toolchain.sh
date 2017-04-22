@@ -286,14 +286,14 @@ target_readline()
 target_ncurses()
 {
 	local NAME=ncurses
-	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.0.tar.gz
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-5.9.tar.gz
 	local BUILD=build-$FUNCNAME
 
 	tarball_fetch_and_extract $URI
 
 	mkdir -p $BUILD && cd $BUILD
 	../$NAME/configure --prefix=$PREFIX/$TARGET-install --build=$MACHTYPE --host=$TARGET \
-		--with-shared --without-gpm --with-xterm-kbs=DEL
+		--with-shared --without-gpm
 	make -j$JOBS
 	make install
 	cd -
