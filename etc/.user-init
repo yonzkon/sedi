@@ -1,0 +1,35 @@
+; .user-init
+
+(set 'mac-option-modifier 'super)
+(set 'mac-command-modifier 'meta)
+(set 'org-agenda-files '("~/mind/freedom_as_autonomy/activity.org"))
+
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "M-.") nil))
+
+(with-eval-after-load 'company
+  (global-company-mode)
+  (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "C-p")
+    (lambda ()
+      (interactive)
+      (company-complete-common-or-cycle -1))))
+
+(defun custom-c-mode ()
+  "custom c-mode"
+  (set 'tab-width 4)
+  (set 'backward-delete-char-untabify-method 'hungry)
+  (set 'indent-tabs-mode t)
+  (set 'c-default-style "linux")
+  (set 'c-basic-offset 4)
+  (linum-mode)
+  (hs-minor-mode)
+  (set 'hs-hide-comments-when-hiding-all nil)
+  (set 'hs-allow-nesting 1)
+  (modify-syntax-entry ?_ "w")
+  (ggtags-mode))
+(add-hook 'c-mode-hook 'custom-c-mode)
+(add-hook 'c++-mode-hook 'custom-c-mode)
+(add-hook 'sh-mode-hook 'custom-c-mode)
+
+;(provide '.user-init)
