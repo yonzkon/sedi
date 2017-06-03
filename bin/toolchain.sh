@@ -54,7 +54,7 @@ else
 fi
 
 ROOTFS=$PREFIX/rootfs
-TARGET=$ARCH-unknown-linux-gnu
+TARGET=$ARCH-none-linux-gnu
 [ "$ARCH" == "arm" ] && TARGET+=eabi
 
 case $(uname -s) in
