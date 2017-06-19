@@ -4,11 +4,19 @@
 (set 'mac-command-modifier 'meta)
 (set 'org-agenda-files '("~/mind/freedom_as_autonomy/activity.org"))
 
+; coding-system
+(prefer-coding-system 'chinese-gbk-dos)
+(prefer-coding-system 'utf-8-unix)
+(defun gbk ()
+  "revert buffer coding to chinese-gbk"
+  (interactive)
+  (revert-buffer-with-coding-system 'chinese-gbk-dos))
+
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil))
 
 (with-eval-after-load 'company
-  (global-company-mode)
+  (global-company-mode t)
   (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "C-p")
     (lambda ()
