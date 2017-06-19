@@ -16,6 +16,7 @@ usage()
 	echo "            rootfs_binutils"
 	echo "            rootfs_glibc"
 	echo "            rootfs_readline"
+	echo "            rootfs_bash"
 	echo "            rootfs_ncurses"
 	echo "            rootfs_gdb"
 	echo "            simplify_rootfs"
@@ -290,8 +291,8 @@ rootfs_glibc()
 
 rootfs_readline()
 {
-	echo "[Unsolved Problem] missing simbol UP error ..."
-	exit
+	#echo "[Unsolved Problem] missing simbol UP error ..."
+	#exit
 
 	local NAME=readline
 	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-6.3.tar.gz
@@ -305,6 +306,21 @@ rootfs_readline()
 		bash_cv_wcwidth_broken=yes
 	make -j$JOBS
 	make install DESTDIR=$ROOTFS
+	cd -
+}
+
+rootfs_bash()
+{
+	local NAME=bash
+	local URI=http://mirrors.ustc.edu.cn/gnu/$NAME/$NAME-4.3.30.tar.gz
+	local BUILD=build-$FUNCNAME
+
+	tarball_fetch_and_extract $URI
+
+	mkdir -p $BUILD && cd $BUILD
+	../$NAME/configure --prefix=$ROOTFS --build=$MACHTYPE --host=$TARGET --without-curses
+	make -j$JOBS
+	make install
 	cd -
 }
 
@@ -389,12 +405,14 @@ elif [ "$COMMAND" == "rootfs_glibc" ]; then
 	rootfs_glibc # r2
 elif [ "$COMMAND" == "rootfs_readline" ]; then
 	rootfs_readline # r3
+elif [ "$COMMAND" == "rootfs_bash" ]; then
+	rootfs_bash # r4
 elif [ "$COMMAND" == "rootfs_ncurses" ]; then
-	rootfs_ncurses # r4
+	rootfs_ncurses # r5
 elif [ "$COMMAND" == "rootfs_gdb" ]; then
-	rootfs_gdb # r5
+	rootfs_gdb # r6
 elif [ "$COMMAND" == "simplify_rootfs" ]; then
-	simplify_rootfs # r6
+	simplify_rootfs # r7
 else
 	usage && exit
 fi
