@@ -1,4 +1,5 @@
 app-editors/vim python
 app-editors/gvim python
+app-editors/emacs gsettings xft
 app-i18n/fcitx gtk2 gtk3 qt4 qt5
 #sys-libs/ncurses tinfo
