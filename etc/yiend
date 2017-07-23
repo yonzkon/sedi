@@ -12,6 +12,7 @@ SS_PASSWORD=
 
 start() {
 	/opt/shadowsocks/shadowsocks/local.py -s $SS_SERVER_ADDR -k $SS_PASSWORD -d start
+	/opt/alidns/src/main.py &>/tmp/alidns.log &
 }
 
 stop() {
