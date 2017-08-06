@@ -1,15 +1,13 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
+if [ -z "$2" ]; then
 	usage && exit -1
-else
-	COMMAND=$(tr [A-Z] [a-z] <<<$1);
-	if [ -z "$2" ]; then
-		MANAGER=pacman;
-	else
-		MANAGER=$(tr [A-Z] [a-z] <<<$2);
-	fi
 fi
+
+MANAGER=$(tr [A-Z] [a-z] <<<$1)
+COMMAND=$(tr [A-Z] [a-z] <<<$2)
+DESKTOP=cinnamon
+[ -n "$3" ] && DESKTOP=$(tr [A-Z] [a-z] <<<$3)
 
 case $MANAGER in
 pacman)
@@ -36,7 +34,7 @@ install_base()
 {
 	$MANAGER $UPDATE
 	$MANAGER $INSTALL grub #efibootmgr
-	$MANAGER $INSTALL lshw pciutils usbutils iputils net-tools wpa_supplicant
+	$MANAGER $INSTALL lshw pciutils usbutils iputils net-tools iw wpa_supplicant
 	$MANAGER $INSTALL vim git bash zsh sudo
 	$MANAGER $INSTALL nmap tcpdump iptables iproute2 #netcat traceroute dnsutils
 	$MANAGER $INSTALL openssh ntp
@@ -51,7 +49,8 @@ install_xorg()
 {
 	if [ "$MANAGER" = "pacman" ]; then
 		$MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
-		$MANAGER $INSTALL cinnamon/mate emacs lilyterm wireshark-gtk qemu
+		$MANAGER $INSTALL $DESKTOP
+		$MANAGER $INSTALL emacs lilyterm wireshark-gtk qemu qemu-arch-extra
 		$MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
 		$MANAGER $INSTALL chromium evince mpv
 	elif [ "$MANAGER" = "yum" ]; then
