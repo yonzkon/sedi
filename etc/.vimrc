@@ -53,8 +53,8 @@ function! s:vundle()
 	Plugin 'scrooloose/nerdcommenter'
 	Plugin 'majutsushi/tagbar'
 
-	Plugin 'Valloric/YouCompleteMe'
-	Plugin 'rdnetto/YCM-generator', {'branch': 'stable'}
+	"Plugin 'Valloric/YouCompleteMe'
+	"Plugin 'rdnetto/YCM-generator', {'branch': 'stable'}
 	"Plugin 'SirVer/ultisnips'
 
 	" The following are examples of different formats supported.
