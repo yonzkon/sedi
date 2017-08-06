@@ -34,7 +34,7 @@ install_base()
 {
 	$MANAGER $UPDATE
 	$MANAGER $INSTALL grub #efibootmgr
-	$MANAGER $INSTALL lshw pciutils usbutils iputils net-tools iw wpa_supplicant
+	$MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools iw wpa_supplicant
 	$MANAGER $INSTALL vim git bash zsh sudo
 	$MANAGER $INSTALL nmap tcpdump iptables iproute2 #netcat traceroute dnsutils
 	$MANAGER $INSTALL openssh ntp
