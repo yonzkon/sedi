@@ -25,11 +25,11 @@
 
 (defun custom-c-mode ()
   "custom c-mode"
-  (set 'tab-width 4)
+  (set 'tab-width 8)
   (set 'backward-delete-char-untabify-method 'hungry)
   (set 'indent-tabs-mode t)
   (set 'c-default-style "linux")
-  (set 'c-basic-offset 4)
+  (set 'c-basic-offset 8)
   (linum-mode)
   (hs-minor-mode)
   (set 'hs-hide-comments-when-hiding-all nil)
