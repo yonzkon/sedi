@@ -12,6 +12,9 @@
   (interactive)
   (revert-buffer-with-coding-system 'chinese-gbk-dos))
 
+; fcitx
+(global-set-key (kbd "C-SPC") 'nil)
+
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil))
 
