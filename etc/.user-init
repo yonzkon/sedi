@@ -43,5 +43,6 @@
 (add-hook 'c++-mode-hook 'custom-c-mode)
 (add-hook 'sh-mode-hook 'custom-c-mode)
 (add-hook 'asm-mode-hook 'custom-c-mode)
+(add-hook 'perl-mode-hook 'custom-c-mode)
 
 ;(provide '.user-init)
