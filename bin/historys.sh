@@ -45,6 +45,10 @@ echo "\
 	route add -net 10.0.0.0/8 gw 10.0.15.254
 	nmap -sP 10.10.10.0/20
 	tcpdump -niwlp4s0 -X 'tcp port 21 and src host 192.168.1.24 and dst net 192.168'
+	modprobe tun
+	tunctl -t tap0 -g kvm
+	brctl addif br0 tap0
+	ifconfig tap0 up
 
 # 3) - edit
 	iconv -fgb2312 -tutf8 quintessence
