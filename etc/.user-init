@@ -41,8 +41,20 @@
   (ggtags-mode))
 (add-hook 'c-mode-hook 'custom-c-mode)
 (add-hook 'c++-mode-hook 'custom-c-mode)
-(add-hook 'sh-mode-hook 'custom-c-mode)
 (add-hook 'asm-mode-hook 'custom-c-mode)
-(add-hook 'perl-mode-hook 'custom-c-mode)
+(add-hook 'java-mode-hook 'custom-c-mode)
+
+(defun custom-sh-mode ()
+  "custom sh-mode"
+  (set 'tab-width 4)
+  (set 'backward-delete-char-untabify-method 'hungry)
+  (set 'indent-tabs-mode t)
+  (linum-mode)
+  (hs-minor-mode)
+  (set 'hs-hide-comments-when-hiding-all nil)
+  (set 'hs-allow-nesting 1)
+  (modify-syntax-entry ?_ "w"))
+(add-hook 'sh-mode-hook 'custom-sh-mode)
+(add-hook 'perl-mode-hook 'custom-sh-mode)
 
 ;(provide '.user-init)
