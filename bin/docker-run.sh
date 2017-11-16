@@ -9,6 +9,7 @@ usage()
 archlinux()
 {
     docker run -d -it --name=archlinux -h archlinux \
+           -e 'LANG=en_US.UTF-8' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
@@ -19,6 +20,7 @@ archlinux()
 debian()
 {
     docker run -d -it --name=debian -h debian \
+           -e 'LANG=en_US.UTF-8' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
@@ -29,6 +31,7 @@ debian()
 wine()
 {
     docker run --rm -d --name=wine -h wine \
+           -e 'LANG=zh_US.UTF-8' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /var/wine/:/root/.wine/ \
@@ -40,6 +43,7 @@ wine()
 poseidon()
 {
     docker run --rm -d --name=cro -h cro \
+           -e 'LANG=en_US.UTF-8' \
            -p 24390:24390 -p 6900:6900 \
            -p 6901-6903:6901-6903 \
            -v /root/:/root/ \
