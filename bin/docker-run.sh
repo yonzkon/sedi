@@ -11,6 +11,7 @@ archlinux()
     docker run -d -it --name=archlinux -h archlinux \
            -e 'LANG=en_US.UTF-8' \
            -e 'DISPLAY=:0' \
+           -p 10000-10999:10000-10999 \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
@@ -23,6 +24,7 @@ debian()
     docker run -d -it --name=debian -h debian \
            -e 'LANG=en_US.UTF-8' \
            -e 'DISPLAY=:0' \
+           -p 11000-11999:11000-11999 \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
