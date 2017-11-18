@@ -10,6 +10,7 @@ archlinux()
 {
     docker run -d -it --name=archlinux -h archlinux \
            -e 'LANG=en_US.UTF-8' \
+           -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
@@ -21,6 +22,7 @@ debian()
 {
     docker run -d -it --name=debian -h debian \
            -e 'LANG=en_US.UTF-8' \
+           -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
@@ -32,6 +34,7 @@ wine()
 {
     docker run --rm -d --name=wine -h wine \
            -e 'LANG=zh_US.UTF-8' \
+           -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /var/wine/:/root/.wine/ \
