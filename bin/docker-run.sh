@@ -15,7 +15,7 @@ archlinux()
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
-           -v /home/myu/:/home/myu/ \
+           -v /home/:/home/ \
            base/archlinux
 }
 
@@ -28,21 +28,22 @@ debian()
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
-           -v /home/myu/:/home/myu/ \
+           -v /home/:/home/ \
            debian
 }
 
 wine()
 {
-    docker run --rm -d --name=wine -h wine \
+    docker run --rm -it --name=wine -h wine \
            -e 'LANG=zh_US.UTF-8' \
            -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
-           -v /var/wine/:/root/.wine/ \
+           -v /wine/:/wine/ \
            -v /root/:/root/ \
-           -v /home/myu/:/home/myu/ \
-           yon2kong/wine
+           -v /home/:/home/ \
+           --entrypoint='' \
+           yon2kong/wine bash
 }
 
 poseidon()
@@ -52,7 +53,7 @@ poseidon()
            -p 24390:24390 -p 6900:6900 \
            -p 6901-6903:6901-6903 \
            -v /root/:/root/ \
-           -v /home/myu/:/home/myu/ \
+           -v /home/:/home/ \
            yon2kong/poseidon
 }
 
@@ -62,7 +63,7 @@ mssql()
            -p 1433:1433 \
            -v /var/docker-data/mssql/:/var/opt/mssql/ \
            -v /root/:/root/ \
-           -v /home/myu/:/home/myu/ \
+           -v /home/:/home/ \
            -e'ACCEPT_EULA=Y' -e'SA_PASSWORD=Test1234' \
            microsoft/mssql-server-linux
 }
