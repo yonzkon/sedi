@@ -1,0 +1,3 @@
+REGEDIT4
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment]
+"PATH"="C:\\windows\\system32;C:\\windows;C:\\windows\\system32\\wbem;C:\\Program Files\\Thunder Network\\MiniThunder\\Bin;C:\\Program Files\\Microsoft Office\\Office12"
