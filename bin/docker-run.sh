@@ -35,7 +35,7 @@ debian()
 wine()
 {
     docker run --rm -it --name=wine -h wine \
-           -e 'LANG=zh_US.UTF-8' \
+           -e 'LANG=zh_CN.UTF-8' \
            -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
