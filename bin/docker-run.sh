@@ -36,14 +36,22 @@ wine()
 {
     docker run --rm -it --name=wine -h wine \
            -e 'LANG=zh_CN.UTF-8' \
-           -e 'DISPLAY=:0' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
-           -v /wine/:/wine/ \
            -v /root/:/root/ \
            -v /home/:/home/ \
            --entrypoint='' \
            yon2kong/wine bash
+}
+
+playonlinux()
+{
+    docker run --rm --name=playonlinux -h playonlinux \
+           -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+           -v /dev/dri/:/dev/dri/ \
+           -v /root/:/root/ \
+           -v /home/:/home/ \
+           yon2kong/playonlinux playonlinux
 }
 
 poseidon()
@@ -72,6 +80,7 @@ case $1 in
     archlinux) archlinux;;
     debian) debian;;
     wine) wine;;
+    playonlinux) playonlinux;;
     poseidon) poseidon;;
     mssql) mssql;;
     *) usage && exit 1;;
