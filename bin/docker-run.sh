@@ -47,6 +47,7 @@ wine()
 playonlinux()
 {
     docker run --rm --name=playonlinux -h playonlinux \
+           -e 'LANG=zh_CN.UTF-8' \
            -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
            -v /dev/dri/:/dev/dri/ \
            -v /root/:/root/ \
