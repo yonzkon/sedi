@@ -12,6 +12,7 @@ app-i18n/fcitx-configtool
 app-i18n/fcitx-sunpinyin
 app-portage/cpuid2cpuflags
 app-portage/gentoolkit
+app-shells/zsh
 app-text/evince
 app-text/tree
 dev-cpp/glog
@@ -23,12 +24,12 @@ dev-python/pip
 dev-tcltk/expect
 dev-util/ccache
 dev-util/global
-dev-util/premake
 dev-util/strace
 dev-util/valgrind
 dev-vcs/git
 dev-vcs/subversion
 gnome-extra/cinnamon
+gnome-extra/synapse
 mail-client/mutt
 media-fonts/dejavu
 media-fonts/wqy-zenhei
@@ -47,7 +48,9 @@ net-ftp/filezilla
 net-ftp/ftp
 net-ftp/tftp-hpa
 net-misc/bridge-utils
+net-misc/freerdp
 net-misc/iperf
+net-misc/remmina
 net-misc/telnet-bsd
 net-misc/tigervnc
 sys-apps/dmidecode
