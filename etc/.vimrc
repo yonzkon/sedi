@@ -46,6 +46,9 @@ function! s:vundle()
 	Plugin 'a.vim'
 	Plugin 'tpope/vim-surround'
 
+	Plugin 'godlygeek/tabular'
+	Plugin 'plasticboy/vim-markdown'
+
 	Plugin 'vim-airline/vim-airline'
 	Plugin 'vim-airline/vim-airline-themes'
 	Plugin 'kien/ctrlp.vim'
