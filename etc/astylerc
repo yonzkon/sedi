@@ -1,0 +1,14 @@
+--style=kr
+--indent=tab
+--lineend=windows
+--pad-oper
+--pad-comma
+--pad-header
+--unpad-paren
+--align-pointer=name
+--align-reference=name
+--remove-braces
+--attach-namespaces
+--attach-classes
+--attach-extern-c
+--attach-closing-while
