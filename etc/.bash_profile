@@ -19,6 +19,7 @@ if [[ ! $PATH =~ "mss" ]]; then
 	[ -d "$MSS" ] && PATH=$MSS/bin:$MSS/etc/.vim/bundle/YCM-generator:$PATH
 fi
 
+PATH=$HOME/.local/bin:$PATH
 export PATH
 
 # for gcc & ld
@@ -48,10 +49,7 @@ alias grep="grep --color=auto"
 alias jobs="jobs -l"
 alias df="df -T"
 
-alias vimd="vim -c 'colorscheme default'"
-alias vimm="vim -c 'colorscheme molokai' -c 'set t_Co=256'"
-alias gvim="gvim --servername GVIM --remote-silent"
-alias svim="gvim --servername GVIM --remote-silent"
-alias ctags_cpp="ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q"
-alias yuml="yum --disablerepo=base --disablerepo=updates --disablerepo=extras --enablerepo=Local"
-alias bcom="LD_LIBRARY_PATH=/opt/bcompare/lib64/beyondcompare /opt/bcompare/lib64/beyondcompare/BCompare &"
+# docker
+alias arch="docker exec archlinux bash -ic '"
+alias iarch="docker exec -it archlinux bash -ic '"
+alias barch="docker exec -it archlinux bash"
