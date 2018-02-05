@@ -50,6 +50,6 @@ alias jobs="jobs -l"
 alias df="df -T"
 
 # docker
-alias arch="docker exec archlinux bash -ic '"
+alias arch="docker exec -t archlinux bash -ic '"
 alias iarch="docker exec -it archlinux bash -ic '"
 alias barch="docker exec -it archlinux bash"
