@@ -1,6 +1,6 @@
 --style=kr
 --indent=tab
---lineend=windows
+--lineend=lineend
 --pad-oper
 --pad-comma
 --pad-header
