@@ -3,6 +3,9 @@
 # PS1
 [ -z $ZSH ] && PS1="[\u@\H \W \A #\#]$ "
 
+# TERM
+export TERM=xterm-256color
+
 # PATH
 #PATH=$(sed 's#\(:\{0,1\}\)/opt/bin[^:]*:\{0,1\}#\1#' <<<$PATH)
 OPTWARE=""
