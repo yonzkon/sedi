@@ -106,6 +106,7 @@ function! s:basics()
 	filetype indent on "auto indent between different languages or filetypes
 	colorscheme molokai
 	set t_Co=256
+	set term=xterm-256color
 
 	" tab & indent & fold & search
 	"set expandtab
