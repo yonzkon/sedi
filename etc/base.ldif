@@ -1,0 +1,31 @@
+dn: dc=zjrealtech,dc=com
+objectclass: dcObject
+objectclass: organization
+objectclass: top
+o: zjrealtech,inc.
+dc: zjrealtech
+
+dn: ou=people,dc=zjrealtech,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: people
+
+dn: ou=groups,dc=zjrealtech,dc=com
+objectclass: organizationalUnit
+objectclass: top
+ou: groups
+
+dn: cn=xiedd,ou=people,dc=zjrealtech,dc=com
+objectclass: person
+objectclass: inetOrgPerson
+objectclass: top
+cn: xiedd
+sn: Xie
+userPassword: 123456
+mail: xiedd@zjrealtech.com
+
+dn: cn=iot,ou=groups,dc=zjrealtech,dc=com
+objectclass: groupOfNames
+objectclass: top
+cn: iot
+member: cn=xiedd,ou=people,dc=zjrealtech,dc=com
