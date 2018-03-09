@@ -32,8 +32,15 @@ export PATH
 #export LD_LIBRARY_PATH=
 #export HISTSIZE=2400
 
+# for java
+if [ -e "/opt/jdk" ]; then
+	export JAVA_HOME=/opt/jdk
+	export JRE_HOME=$JAVA_HOME/jre
+	export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib
+	export PATH=$JAVA_HOME/bin:$PATH
+fi
+
 # alias
-[ $(id -u) -eq 0 ] && alias his="history 50" || alias his="history 2400"
 case $(uname -s) in
 Linux|MINGW*|MSYS*)
 	alias ls="ls --color=auto"
