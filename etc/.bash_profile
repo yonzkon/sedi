@@ -8,9 +8,9 @@ export TERM=xterm-256color
 
 # PATH
 #PATH=$(sed 's#\(:\{0,1\}\)/opt/bin[^:]*:\{0,1\}#\1#' <<<$PATH)
-OPTWARE="node"
+OPTWARE=""
 OPTPATH=$(sed 's#[^ ]*#/opt/&#g' <<<$OPTWARE)
-for d in $OPTPATH; do
+for d in $(echo $OPTPATH); do
 	if [[ ! $PATH =~ $d ]]; then
 		[ -d "$d/bin" ] && PATH=$d/bin:$PATH
 		[ -d "$d/sbin" ] && PATH=$d/sbin:$PATH

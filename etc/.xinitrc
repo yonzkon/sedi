@@ -7,6 +7,6 @@ export GTK_IM_MODULE="fcitx"
 [ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 fcitx -d
-emacs --daemon &
+#emacs --daemon &
 
 exec cinnamon-session
