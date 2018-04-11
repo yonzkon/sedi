@@ -38,6 +38,8 @@
   (set 'hs-hide-comments-when-hiding-all nil)
   (set 'hs-allow-nesting 1)
   (modify-syntax-entry ?_ "w")
+  (set 'whitespace-style '(face tab-mark lines))
+  (whitespace-mode)
   (ggtags-mode))
 (add-hook 'c-mode-hook 'custom-c-mode)
 (add-hook 'c++-mode-hook 'custom-c-mode)
