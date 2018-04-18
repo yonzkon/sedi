@@ -26,6 +26,10 @@
       (interactive)
       (company-complete-common-or-cycle -1))))
 
+; smart-tabs-mode
+(load-file "~/.smart-tabs-mode.el")
+(smart-tabs-insinuate 'c 'c++ 'cperl)
+
 (defun custom-c-mode ()
   "custom c-mode"
   (set 'tab-width 8)
