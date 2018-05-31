@@ -257,7 +257,9 @@ endfunction
 
 " main ===================================================================
 
-call s:vundle()
+if strlen(globpath(&rtp, "bundle/Vundle.vim")) > 0
+	call s:vundle()
+endif
 
 call s:basics()
 call s:leader()
