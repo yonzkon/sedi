@@ -28,7 +28,7 @@
 
 ; smart-tabs-mode
 (load-file "~/.smart-tabs-mode.el")
-(smart-tabs-insinuate 'c 'c++ 'cperl)
+(smart-tabs-insinuate 'c 'c++ 'cperl 'python)
 
 (defun custom-c-mode ()
   "custom c-mode"
@@ -78,15 +78,22 @@
   (ggtags-mode))
 (add-hook 'sh-mode-hook 'custom-sh-mode)
 (add-hook 'perl-mode-hook 'custom-sh-mode)
-(add-hook 'python-mode-hook 'custom-sh-mode)
+;(add-hook 'python-mode-hook 'custom-sh-mode)
 
 (defun custom-web-mode ()
   "custom web-mode"
+  (set 'web-mode-style-padding 2)
+  (set 'web-mode-script-padding 2)
   (set 'web-mode-markup-indent-offset 2)
+  (set 'web-mode-css-indent-offset 2)
+  (set 'web-mode-code-indent-offset 2)
   (set 'indent-tabs-mode nil)
   (set 'whitespace-style '(face tab-mark lines))
   (whitespace-mode)
   (linum-mode))
 (add-hook 'web-mode-hook 'custom-web-mode)
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
 
 ;(provide '.user-init)
