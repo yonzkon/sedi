@@ -1,0 +1,9 @@
+disable-rules:
+  - UselessParentheses
+rule-configurations:
+  - key: CYCLOMATIC_COMPLEXITY
+    value: 10
+  - key: LONG_LINE
+    value: 100
+  - key: SHORT_VARIABLE_NAME
+    value: 2
