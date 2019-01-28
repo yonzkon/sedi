@@ -109,13 +109,32 @@ function! s:basics()
 	set term=xterm-256color
 
 	" tab & indent & fold & search
-	"set expandtab
+    "if set expandtab
+    "   always uses <BS>
+    "else
+    "   if softtabstop == 0
+    "       always uses <Tab> // the number of columns is equal to tabstop
+    "   else if softtabstop < 0
+    "       the number of columns for <Tab> is equal to :shiftwidth
+    "       && uses a mix of <BS> and <Tab>
+    "   else
+    "       uses a mix of <BS> and <Tab>
+    "   end
+    "end
 	set smarttab
+	set expandtab
 	set tabstop=4     "for tab
-	set shiftwidth=4  "for indent
-	set softtabstop=4 "for mix space and tab
+	set shiftwidth=4  "for indent, like new line
+	set softtabstop=0 "for mix space and tab, like new tab
 	set autoindent
 	set smartindent
+	autocmd Filetype c setlocal noexpandtab ts=8 sw=8 sts=0
+	autocmd Filetype cpp setlocal noexpandtab ts=8 sw=8 sts=0
+	autocmd Filetype c setlocal noexpandtab
+	autocmd Filetype cpp setlocal noexpandtab
+	autocmd Filetype javascript setlocal ts=2 sw=2 sts=0
+	autocmd Filetype css setlocal ts=2 sw=2 sts=0
+	autocmd Filetype html setlocal ts=2 sw=2 sts=0
 	set foldmethod=syntax
 	"set foldlevel=2
 	set foldcolumn=0
