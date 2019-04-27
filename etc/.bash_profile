@@ -62,11 +62,7 @@ FreeBSD|Darwin)
     alias la="ls -al -G"
     ;;
 esac
+alias vi="vim"
 alias grep="grep --color=auto"
 alias jobs="jobs -l"
 alias df="df -T"
-
-# docker
-alias arch="docker exec -t archlinux bash -ic '"
-alias iarch="docker exec -it archlinux bash -ic '"
-alias barch="docker exec -it archlinux bash"
