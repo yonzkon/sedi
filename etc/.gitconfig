@@ -1,4 +1,5 @@
 [core]
+    editor = vim
     excludesfile = ~/.gitignore
 [user]
     email = yonzkon@gmail.com
