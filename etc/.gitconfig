@@ -1,0 +1,5 @@
+[core]
+    excludesfile = ~/.gitignore
+[user]
+    email = yonzkon@gmail.com
+    name = yonzkon

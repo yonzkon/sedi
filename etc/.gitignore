@@ -1,0 +1,13 @@
+# .gitignore
+
+# gdb
+.gdb_history
+
+# emacs
+GTAGS
+GRTAGS
+GPATH
+.projectile
+
+# idea
+.idea/
