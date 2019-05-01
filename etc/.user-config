@@ -1,0 +1,6 @@
+; .user-config
+
+(persp-mode)
+(persp-add-new "gdb")
+
+;(provide '.user-config)
