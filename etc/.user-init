@@ -30,8 +30,8 @@
 (load-file "~/.smart-tabs-mode.el")
 (smart-tabs-insinuate 'c 'c++ 'cperl 'python)
 
-(defun custom-mode ()
-  "custom mode"
+(defun yonz-mode ()
+  "yonz mode"
   (set 'backward-delete-char-untabify-method 'hungry)
   (linum-mode)
   (hs-minor-mode)
@@ -42,30 +42,30 @@
   (whitespace-mode)
   (ggtags-mode))
 
-(defun custom-c-mode ()
-  "custom c-mode"
+(defun yonz-c-mode ()
+  "yonz c-mode"
   (set 'tab-width 8)
   (set 'indent-tabs-mode t)
   (set 'c-default-style "linux")
   (set 'c-basic-offset 8)
-  (custom-mode))
-(add-hook 'c-mode-hook 'custom-c-mode)
-(add-hook 'c++-mode-hook 'custom-c-mode)
-(add-hook 'asm-mode-hook 'custom-c-mode)
+  (yonz-mode))
+(add-hook 'c-mode-hook 'yonz-c-mode)
+(add-hook 'c++-mode-hook 'yonz-c-mode)
+(add-hook 'asm-mode-hook 'yonz-c-mode)
 
-(defun custom-sh-mode ()
-  "custom sh-mode"
+(defun yonz-sh-mode ()
+  "yonz sh-mode"
   (set 'tab-width 4)
   (set 'indent-tabs-mode nil)
   (set 'python-indent-offset 4)
-  (custom-mode))
-(add-hook 'sh-mode-hook 'custom-sh-mode)
-(add-hook 'perl-mode-hook 'custom-sh-mode)
-(add-hook 'python-mode-hook 'custom-sh-mode)
-(add-hook 'java-mode-hook 'custom-sh-mode)
+  (yonz-mode))
+(add-hook 'sh-mode-hook 'yonz-sh-mode)
+(add-hook 'perl-mode-hook 'yonz-sh-mode)
+(add-hook 'python-mode-hook 'yonz-sh-mode)
+(add-hook 'java-mode-hook 'yonz-sh-mode)
 
-(defun custom-web-mode ()
-  "custom web-mode"
+(defun yonz-web-mode ()
+  "yonz web-mode"
   (set 'web-mode-style-padding 2)
   (set 'web-mode-script-padding 2)
   (set 'web-mode-markup-indent-offset 2)
@@ -74,8 +74,8 @@
   (set 'js2-basic-offset 2)
   (set 'css-indent-offset 2)
   (set 'indent-tabs-mode nil)
-  (custom-mode))
-(add-hook 'web-mode-hook 'custom-web-mode)
+  (yonz-mode))
+(add-hook 'web-mode-hook 'yonz-web-mode)
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
