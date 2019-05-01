@@ -18,6 +18,10 @@
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil))
 
+(with-eval-after-load 'gud
+  (define-key evil-insert-state-map (kbd "C-p") 'comint-previous-input)
+  (define-key evil-insert-state-map (kbd "C-n") 'comint-next-input))
+
 (with-eval-after-load 'company
   (global-company-mode t)
   (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
