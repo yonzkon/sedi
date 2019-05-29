@@ -7,6 +7,7 @@ export GTK_IM_MODULE="fcitx"
 [ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 fcitx -d
+synapse -s &
 #emacs --daemon &
 
-exec cinnamon-session
+exec xfce4-session
