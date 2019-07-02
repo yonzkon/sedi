@@ -16,7 +16,9 @@
 (global-set-key (kbd "C-SPC") 'nil)
 
 (with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "M-.") nil))
+  (define-key evil-normal-state-map (kbd "M-.") nil)
+  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
+  (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack))
 
 (with-eval-after-load 'gud
   (define-key evil-insert-state-map (kbd "C-p") 'comint-previous-input)
