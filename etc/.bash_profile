@@ -49,7 +49,7 @@ fi
 
 # alias
 case $(uname -s) in
-Linux|MINGW*|MSYS*)
+Linux|CYGWIN*|MINGW*|MSYS*)
     alias ls="ls --color=auto"
     alias ll="ls -l --color=auto"
     alias l.="ls -dl .* --color=auto"
