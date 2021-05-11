@@ -25,9 +25,9 @@ esac
 
 usage()
 {
-    echo "Usage: {package.sh \$COMMAND \$MANAGER}"
-    echo "Usage: \$COMMAND {base | xorg}"
+    echo "Usage: {package.sh \$MANAGER \$COMMAND}"
     echo "Usage: \$MANAGER {pacman | yum}"
+    echo "Usage: \$COMMAND {base | xorg}"
 }
 
 install_base()
