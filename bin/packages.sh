@@ -35,7 +35,7 @@ install_base()
     $MANAGER $UPDATE
     $MANAGER $INSTALL grub #efibootmgr
     $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools iw wpa_supplicant
-    $MANAGER $INSTALL vim git bash zsh sudo
+    $MANAGER $INSTALL vim git bash zsh sudo tmux
     $MANAGER $INSTALL nmap tcpdump iptables iproute2 #netcat traceroute dnsutils
     $MANAGER $INSTALL openssh ntp
     $MANAGER $INSTALL gcc gdb make minicom
@@ -50,9 +50,9 @@ install_xorg()
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
         $MANAGER $INSTALL $DESKTOP
-        $MANAGER $INSTALL emacs lilyterm wireshark-gtk qemu qemu-arch-extra
+        $MANAGER $INSTALL emacs wireshark-qt qemu qemu-arch-extra
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
-        $MANAGER $INSTALL chromium evince mpv
+        $MANAGER $INSTALL synapse chromium evince mpv
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
