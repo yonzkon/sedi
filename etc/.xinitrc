@@ -10,4 +10,4 @@ fcitx -d
 synapse -s &
 #emacs --daemon &
 
-exec xfce4-session
+exec cinnamon-session
