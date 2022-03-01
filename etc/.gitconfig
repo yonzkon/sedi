@@ -4,6 +4,8 @@
 [user]
     email = yonzkon@gmail.com
     name = yonzkon
+[credential]
+    helper = cache
 #[https]
 #    proxy = socks5://127.0.0.1:1080
 #[http]
