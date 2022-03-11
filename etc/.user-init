@@ -17,6 +17,8 @@
 
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil)
+  (define-key evil-normal-state-map (kbd "<tab>") 'c-indent-line-or-region)
+  (define-key evil-normal-state-map (kbd "TAB") 'c-indent-line-or-region)
   (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
   (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack))
 
@@ -50,10 +52,10 @@
 
 (defun yonz-c-mode ()
   "yonz c-mode"
-  (set 'tab-width 8)
-  (set 'indent-tabs-mode t)
+  (set 'tab-width 4)
+  (set 'indent-tabs-mode nil)
   (set 'c-default-style "linux")
-  (set 'c-basic-offset 8)
+  (set 'c-basic-offset 4)
   (yonz-mode))
 (add-hook 'c-mode-hook 'yonz-c-mode)
 (add-hook 'c++-mode-hook 'yonz-c-mode)
