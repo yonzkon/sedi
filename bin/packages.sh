@@ -33,13 +33,13 @@ usage()
 install_base()
 {
     $MANAGER $UPDATE
-    $MANAGER $INSTALL grub #efibootmgr
+    $MANAGER $INSTALL grub efibootmgr
     $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools iw wpa_supplicant
     $MANAGER $INSTALL vim git bash zsh sudo tmux
-    $MANAGER $INSTALL nmap tcpdump iptables iproute2 #netcat traceroute dnsutils
-    $MANAGER $INSTALL openssh ntp
+    $MANAGER $INSTALL nmap tcpdump iptables iproute2 traceroute dnsutils # netcat
+    $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
     $MANAGER $INSTALL gcc gdb make minicom
-    #$MANAGER $INSTALL base-devel #autoconf automake bison fakeroot flex m4 pkg-config
+    $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers
     fi
