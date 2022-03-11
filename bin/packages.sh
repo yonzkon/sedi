@@ -53,6 +53,7 @@ install_xorg()
         $MANAGER $INSTALL emacs wireshark-qt qemu qemu-arch-extra
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         $MANAGER $INSTALL synapse chromium evince mpv
+        $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
