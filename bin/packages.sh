@@ -35,7 +35,7 @@ install_base()
     $MANAGER $UPDATE
     $MANAGER $INSTALL grub efibootmgr
     $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools iw wpa_supplicant
-    $MANAGER $INSTALL vim git bash zsh sudo tmux
+    $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
     $MANAGER $INSTALL nmap tcpdump iptables iproute2 traceroute dnsutils # netcat
     $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
     $MANAGER $INSTALL gcc gdb make minicom
