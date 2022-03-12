@@ -34,14 +34,14 @@ install_base()
 {
     $MANAGER $UPDATE
     $MANAGER $INSTALL grub efibootmgr
-    $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools iw wpa_supplicant
+    $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools #iw wpa_supplicant
     $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
     $MANAGER $INSTALL nmap tcpdump iptables iproute2 traceroute dnsutils # netcat
     $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
     $MANAGER $INSTALL gcc gdb make minicom
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
     if [ "$MANAGER" = "pacman" ]; then
-        $MANAGER $INSTALL linux-headers
+        $MANAGER $INSTALL linux-headers archlinux-keyring
     fi
 }
 
@@ -50,9 +50,10 @@ install_xorg()
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
         $MANAGER $INSTALL $DESKTOP
-        $MANAGER $INSTALL emacs wireshark-qt qemu qemu-arch-extra
+        $MANAGER $INSTALL gnome-terminal terminator emacs synapse chromium
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
-        $MANAGER $INSTALL synapse chromium evince mpv
+        $MANAGER $INSTALL wireshark-qt qemu qemu-arch-extra
+        $MANAGER $INSTALL evince mpv
         $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
