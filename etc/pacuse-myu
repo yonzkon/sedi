@@ -1,8 +1,0 @@
-#sys-libs/ncurses tinfo
-app-editors/vim python
-app-editors/gvim python
-app-editors/emacs gsettings xft
-app-i18n/fcitx gtk2 gtk3 qt4 qt5
-app-emulation/qemu qemu_softmmu_targets_i386 qemu_softmmu_targets_arm
-sys-devel/gdb multitarget
-net-misc/remmina rdp
