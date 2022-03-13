@@ -34,11 +34,12 @@ install_base()
 {
     $MANAGER $UPDATE
     $MANAGER $INSTALL grub efibootmgr
-    $MANAGER $INSTALL lshw pciutils usbutils alsa-utils iputils net-tools #iw wpa_supplicant
-    $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
+    $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils
+    $MANAGER $INSTALL iputils net-tools #iw wpa_supplicant
     $MANAGER $INSTALL nmap tcpdump iptables iproute2 traceroute dnsutils # netcat
+    $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
     $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
-    $MANAGER $INSTALL gcc gdb make minicom
+    $MANAGER $INSTALL gcc gdb make cmake minicom
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers archlinux-keyring
@@ -49,12 +50,12 @@ install_xorg()
 {
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
-        $MANAGER $INSTALL $DESKTOP
-        $MANAGER $INSTALL gnome-terminal terminator emacs synapse chromium
+        $MANAGER $INSTALL $DESKTOP lightdm mesa-utils
+        $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         $MANAGER $INSTALL wireshark-qt qemu qemu-arch-extra
         $MANAGER $INSTALL evince mpv
-        $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk
+        $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk x2goserver x2goclient
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
