@@ -27,7 +27,7 @@ usage()
 {
     echo "Usage: {package.sh \$MANAGER \$COMMAND}"
     echo "Usage: \$MANAGER {pacman | yum}"
-    echo "Usage: \$COMMAND {base | xorg}"
+    echo "Usage: \$COMMAND {base | xorg | spider}"
 }
 
 install_base()
@@ -64,10 +64,18 @@ install_xorg()
     fi
 }
 
+install_spider()
+{
+        $MANAGER $INSTALL nlohmann-json cmocka spdlog
+        $MANAGER $INSTALL zeromq libwebsockets
+        $MANAGER $INSTALL npm
+}
+
 # main
 case $COMMAND in
 base) install_base;;
 xorg) install_xorg;;
+spider) install_spider;;
 *) usage && exit 1;;
 esac
 
