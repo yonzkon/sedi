@@ -33,14 +33,22 @@ usage()
 install_base()
 {
     $MANAGER $UPDATE
+    # bootloader
     $MANAGER $INSTALL grub efibootmgr
+    # utils
     $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils
-    $MANAGER $INSTALL iputils net-tools #iw wpa_supplicant
-    $MANAGER $INSTALL nmap tcpdump iptables iproute2 traceroute dnsutils # netcat
+    # develop
     $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
-    $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
-    $MANAGER $INSTALL gcc gdb make cmake minicom
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
+    $MANAGER $INSTALL gcc gdb make cmake minicom lsof ltrace strace valgrind
+    # performance
+    $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig #vmstat mpstat pidstat sadf sar
+    # network
+    $MANAGER $INSTALL net-tools iputils iptables iproute2 # netcat ss
+    $MANAGER $INSTALL nmap tcpdump traceroute dnsutils #iw wpa_supplicant
+    # services
+    $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
+    # something else
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers archlinux-keyring
     fi
