@@ -57,9 +57,10 @@
   (set 'c-default-style "linux")
   (set 'c-basic-offset 4)
   (yonz-mode))
+(add-hook 'asm-mode-hook 'yonz-c-mode)
 (add-hook 'c-mode-hook 'yonz-c-mode)
 (add-hook 'c++-mode-hook 'yonz-c-mode)
-(add-hook 'asm-mode-hook 'yonz-c-mode)
+(add-hook 'csharp-mode-hook 'yonz-c-mode)
 
 (defun yonz-sh-mode ()
   "yonz sh-mode"
