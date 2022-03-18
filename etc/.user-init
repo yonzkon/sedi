@@ -36,7 +36,8 @@
 
 ; smart-tabs-mode
 (load-file "~/.smart-tabs-mode.el")
-(smart-tabs-insinuate 'c 'c++ 'cperl 'python)
+;(smart-tabs-insinuate 'c 'c++ 'cperl 'python)
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (defun yonz-mode ()
   "yonz mode"
