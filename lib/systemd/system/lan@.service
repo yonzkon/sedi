@@ -5,7 +5,6 @@ Description=Launch lan
 Environment="ARGS=%I"
 
 Type=oneshot
-ExecStart=/usr/bin/sleep 1
 #ExecStart=/bin/bash -x -c "/usr/bin/ifconfig enp2s0 $${ARGS% *}"
 #ExecStart=/bin/bash -x -c "/usr/bin/route add default gw $${ARGS#* }"
 ExecStart=/bin/bash -x -c "/usr/bin/ifconfig $(echo $ARGS |cut -d' ' -f1) $(echo $ARGS |cut -d' ' -f2) up"
