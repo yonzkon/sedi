@@ -47,7 +47,7 @@ install_base()
     $MANAGER $INSTALL net-tools iputils iptables iproute2 # netcat ss
     $MANAGER $INSTALL nmap tcpdump traceroute dnsutils #iw wpa_supplicant
     # services
-    $MANAGER $INSTALL openssh ntp openvpn shadowsocks-libev
+    $MANAGER $INSTALL openssh dhcpcd ntp openvpn shadowsocks-libev
     # something else
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers archlinux-keyring
@@ -62,7 +62,7 @@ install_xorg()
         $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         $MANAGER $INSTALL wireshark-qt qemu qemu-arch-extra
-        $MANAGER $INSTALL evince mpv
+        $MANAGER $INSTALL evince flameshot mpv
         $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk x2goserver x2goclient
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
