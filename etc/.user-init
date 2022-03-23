@@ -19,8 +19,7 @@
   (define-key evil-normal-state-map (kbd "M-.") nil)
   (define-key evil-normal-state-map (kbd "<tab>") 'c-indent-line-or-region)
   (define-key evil-normal-state-map (kbd "TAB") 'c-indent-line-or-region)
-  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
-  (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack))
+  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward))
 
 (with-eval-after-load 'gud
   (define-key evil-insert-state-map (kbd "C-p") 'comint-previous-input)
@@ -41,6 +40,7 @@
 
 (defun yonz-mode ()
   "yonz mode"
+  (interactive)
   (set 'backward-delete-char-untabify-method 'hungry)
   (linum-mode)
   (hs-minor-mode)
@@ -48,15 +48,17 @@
   (set 'hs-allow-nesting 1)
   (modify-syntax-entry ?_ "w")
   (set 'whitespace-style '(face tab-mark lines))
-  (whitespace-mode)
-  (ggtags-mode))
+  (whitespace-mode))
 
 (defun yonz-c-mode ()
   "yonz c-mode"
+  (interactive)
   (set 'tab-width 4)
   (set 'indent-tabs-mode nil)
   (set 'c-default-style "linux")
   (set 'c-basic-offset 4)
+  (ggtags-mode)
+  (lsp)
   (yonz-mode))
 (add-hook 'asm-mode-hook 'yonz-c-mode)
 (add-hook 'c-mode-hook 'yonz-c-mode)
@@ -65,6 +67,7 @@
 
 (defun yonz-sh-mode ()
   "yonz sh-mode"
+  (interactive)
   (set 'tab-width 4)
   (set 'indent-tabs-mode nil)
   (set 'python-indent-offset 4)
@@ -76,6 +79,7 @@
 
 (defun yonz-web-mode ()
   "yonz web-mode"
+  (interactive)
   (set 'web-mode-style-padding 2)
   (set 'web-mode-script-padding 2)
   (set 'web-mode-markup-indent-offset 2)
@@ -85,10 +89,11 @@
   (set 'css-indent-offset 2)
   (set 'indent-tabs-mode nil)
   (yonz-mode))
-(add-hook 'web-mode-hook 'yonz-web-mode)
-(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
-(set 'web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+(add-hook 'rjsx-mode-hook 'yonz-web-mode)
+;(add-hook 'web-mode-hook 'yonz-web-mode)
+;(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+;(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+;(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+;(set 'web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
 
 ;(provide '.user-init)
