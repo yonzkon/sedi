@@ -60,7 +60,7 @@ install_xorg()
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
         $MANAGER $INSTALL $DESKTOP lightdm mesa-utils
         $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
-        $MANAGER $INSTALL fcitx fcitx-configtool fcitx-sunpinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
+        $MANAGER $INSTALL fcitx fcitx-configtool fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         $MANAGER $INSTALL wireshark-qt qemu qemu-arch-extra
         $MANAGER $INSTALL evince flameshot mpv
         $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk x2goserver x2goclient
