@@ -4,6 +4,9 @@
 (setq mac-command-modifier 'meta)
 (setq org-agenda-files '("~/mind/freedom_as_autonomy/activity.org"))
 
+; undo-tree
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+
 ; coding-system
 (prefer-coding-system 'chinese-gbk-dos)
 (prefer-coding-system 'utf-8-unix)
