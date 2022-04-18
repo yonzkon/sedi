@@ -41,6 +41,8 @@ install_base()
     $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
     $MANAGER $INSTALL gcc gdb make cmake minicom lsof ltrace strace valgrind
+    $MANAGER $INSTALL go rust
+    #$MANAGER $INSTALL cmocka gtest spdlog nlohmann-json libyaml yaml-cpp
     # performance
     $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig #vmstat mpstat pidstat sadf sar
     # network
@@ -57,13 +59,20 @@ install_base()
 install_xorg()
 {
     if [ "$MANAGER" = "pacman" ]; then
+        # Xorg
         $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
+        # Desktop
         $MANAGER $INSTALL $DESKTOP lightdm mesa-utils
-        $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
+        # Input chinese
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
-        $MANAGER $INSTALL wireshark-qt qemu qemu-arch-extra
+        # Base GUI apps
+        $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
+        # Extra GUI apps
         $MANAGER $INSTALL evince flameshot mpv
-        $MANAGER $INSTALL remmina libvncserver freerdp spice-gtk x2goserver x2goclient
+        # Other GUI apps
+        $MANAGER $INSTALL wireshark-qt
+        #$MANAGER $INSTALL qemu qemu-arch-extra
+        #$MANAGER $INSTALL remmina libvncserver freerdp spice-gtk x2goserver x2goclient
     elif [ "$MANAGER" = "yum" ]; then
         $MANAGER -y groupinstall "X Window System"
         $MANAGER -y install wqy-zenhei-fonts
