@@ -3,6 +3,7 @@
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
 (setq org-agenda-files '("~/mind/freedom_as_autonomy/activity.org"))
+(setq undo-tree-auto-save-history nil)
 
 ; undo-tree
 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
@@ -43,6 +44,9 @@
 ; auto-mode-alist
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+; disable auto indent
+(setq-default spacemacs-yank-indent-threshold 0)
+
 (defun yonz-mode ()
   "yonz mode"
   (interactive)
@@ -67,6 +71,7 @@
   (yonz-mode))
 (add-hook 'asm-mode-hook 'yonz-c-mode)
 (add-hook 'c-mode-hook 'yonz-c-mode)
+(add-hook 'go-mode-hook 'yonz-c-mode)
 (add-hook 'c++-mode-hook 'yonz-c-mode)
 (add-hook 'csharp-mode-hook 'yonz-c-mode)
 
