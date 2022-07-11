@@ -100,6 +100,8 @@
   (setq indent-tabs-mode nil)
   (yonz-mode))
 (add-hook 'rjsx-mode-hook 'yonz-web-mode)
+(add-hook 'typescript-mode-hook 'yonz-web-mode)
+(add-hook 'typescript-tsx-mode-hook 'yonz-web-mode)
 ;(add-hook 'web-mode-hook 'yonz-web-mode)
 ;(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 ;(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
