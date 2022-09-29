@@ -20,7 +20,7 @@ build() {
 
   export CFLAGS_FOR_TARGET='-g -O2 -ffunction-sections -fdata-sections'
   cd "$srcdir"/build-newlib
-  ../configure \
+  ../newlib-$_upstream_ver/configure \
     --target=$_target \
     --prefix=/usr \
     --enable-newlib-io-long-long \
@@ -33,7 +33,7 @@ build() {
 
   export CFLAGS_FOR_TARGET='-g -Os -ffunction-sections -fdata-sections'
   cd "$srcdir"/build-nano
-  ../configure \
+  ../newlib-$_upstream_ver/configure \
     --target=$_target \
     --prefix=/usr \
     --disable-newlib-supplied-syscalls \
