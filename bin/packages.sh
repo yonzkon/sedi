@@ -40,14 +40,14 @@ install_base()
     # develop
     $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
     $MANAGER $INSTALL man-db man-pages
-    $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config
+    $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config bc
     $MANAGER $INSTALL gcc clang gdb make cmake minicom lsof ltrace strace valgrind
     $MANAGER $INSTALL go rust
     #$MANAGER $INSTALL cmocka gtest spdlog nlohmann-json libyaml yaml-cpp
     # performance
     $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig #vmstat mpstat pidstat sadf sar
     # network
-    $MANAGER $INSTALL net-tools iputils iptables iproute2 # netcat ss
+    $MANAGER $INSTALL net-tools iputils iptables iproute2 inetutils # netcat ss
     $MANAGER $INSTALL nmap tcpdump traceroute dnsutils #iw wpa_supplicant
     # services
     $MANAGER $INSTALL openssh dhcpcd ntp openvpn shadowsocks-libev

@@ -123,7 +123,7 @@ function! s:basics()
     "end
     set smarttab
     set expandtab
-    set tabstop=4     "for tab
+    set tabstop=8     "for tab
     set shiftwidth=4  "for indent, like new line
     set softtabstop=0 "for mix space and tab, like new tab
     set autoindent
