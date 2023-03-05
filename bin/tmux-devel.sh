@@ -1,8 +1,6 @@
 #!/bin/bash
 
 tmux new-session -s devel -d
-tmux rename-window base
-tmux new-window -n devel
-tmux new-window -n tmp
-tmux next-window
+tmux split-window -v
+tmux resize-pane -D 10
 tmux attach-session -t devel
