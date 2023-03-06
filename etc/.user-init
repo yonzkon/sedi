@@ -21,6 +21,8 @@
 
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil)
+  ;(define-key evil-normal-state-map (kbd "<tab>") 'indent-region)
+  ;(define-key evil-normal-state-map (kbd "TAB") 'indent-region)
   (define-key evil-normal-state-map (kbd "<tab>") 'c-indent-line-or-region)
   (define-key evil-normal-state-map (kbd "TAB") 'c-indent-line-or-region)
   (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward))
@@ -68,6 +70,8 @@
   (setq c-basic-offset 4)
   (ggtags-mode)
   (lsp)
+  (define-key evil-normal-state-map (kbd "<tab>") 'c-indent-line-or-region)
+  (define-key evil-normal-state-map (kbd "TAB") 'c-indent-line-or-region)
   (yonz-mode))
 (add-hook 'asm-mode-hook 'yonz-c-mode)
 (add-hook 'c-mode-hook 'yonz-c-mode)
@@ -102,7 +106,7 @@
 (add-hook 'rjsx-mode-hook 'yonz-web-mode)
 (add-hook 'typescript-mode-hook 'yonz-web-mode)
 (add-hook 'typescript-tsx-mode-hook 'yonz-web-mode)
-;(add-hook 'web-mode-hook 'yonz-web-mode)
+(add-hook 'web-mode-hook 'yonz-web-mode)
 ;(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 ;(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
 ;(add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
