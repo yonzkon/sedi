@@ -14,13 +14,17 @@ options=(!emptydirs !strip)
 source=(https://sourceware.org/pub/newlib/newlib-$_upstream_ver.tar.gz)
 sha256sums=('c3a0e8b63bc3bef1aeee4ca3906b53b3b86c8d139867607369cb2915ffc54435')
 
+srcdir=$(pwd)
+pkgdir=$(pwd)/pkg
+mkdir -p $pkgdir
+
 build() {
   rm -rf build-{newlib,nano}
   mkdir build-{newlib,nano}
 
   export CFLAGS_FOR_TARGET='-g -O2 -ffunction-sections -fdata-sections'
   cd "$srcdir"/build-newlib
-  ../newlib-$_upstream_ver/configure \
+  ../configure \
     --target=$_target \
     --prefix=/usr \
     --enable-newlib-io-long-long \
@@ -33,7 +37,7 @@ build() {
 
   export CFLAGS_FOR_TARGET='-g -Os -ffunction-sections -fdata-sections'
   cd "$srcdir"/build-nano
-  ../newlib-$_upstream_ver/configure \
+  ../configure \
     --target=$_target \
     --prefix=/usr \
     --disable-newlib-supplied-syscalls \
@@ -64,5 +68,7 @@ package() {
   find "$pkgdir"/usr/$_target/lib \( -name "*.a" -or -name "*.o" \) -exec $_target-objcopy -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc '{}' \;
 
   install -d "$pkgdir"/usr/share/licenses/$pkgname/
-  install -m644 -t "$pkgdir"/usr/share/licenses/$pkgname/ "$srcdir"/newlib-$_upstream_ver/COPYING*
+  install -m644 -t "$pkgdir"/usr/share/licenses/$pkgname/ "$srcdir"/COPYING*
 }
+
+package
