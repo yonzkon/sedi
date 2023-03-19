@@ -36,3 +36,14 @@ read -p "> Press any key to continue ..."
 #python -c "import pty;pty.spawn('/bin/bash')"
 #stty raw -echo
 #fg
+
+# Check for suspicious logins
+#last
+#last -f /var/log/wtmp
+#lastb
+#last -f /var/log/btmp
+#lastlog
+#last -f /var/log/lastlog
+#who
+#w
+#last -f /var/run/utmp
