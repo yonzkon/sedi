@@ -6,6 +6,9 @@
 # TERM
 export TERM=xterm-256color
 
+# xfce4-terminal
+export LC_ALL="en_US.UTF-8"
+
 # PATH
 #PATH=$(sed 's#\(:\{0,1\}\)/opt/bin[^:]*:\{0,1\}#\1#' <<<$PATH)
 OPTWARE=""
