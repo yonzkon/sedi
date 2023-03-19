@@ -36,7 +36,7 @@ export PATH
 #export C_INCLUDE_PATH=
 #export CPLUS_INCLUDE_PATH=
 #export LIBRARY_PATH=
-#export LD_LIBRARY_PATH=
+export LD_LIBRARY_PATH=/usr/local/lib
 #export HISTSIZE=2400
 
 # for java
