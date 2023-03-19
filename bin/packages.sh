@@ -6,7 +6,7 @@ fi
 
 MANAGER=$(tr [A-Z] [a-z] <<<$1)
 COMMAND=$(tr [A-Z] [a-z] <<<$2)
-DESKTOP=cinnamon
+DESKTOP=xfce4
 [ -n "$3" ] && DESKTOP=$(tr [A-Z] [a-z] <<<$3)
 
 case $MANAGER in
@@ -42,15 +42,25 @@ install_base()
     $MANAGER $INSTALL man-db man-pages
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config bc
     $MANAGER $INSTALL gcc clang gdb make cmake minicom lsof ltrace strace valgrind
-    $MANAGER $INSTALL go rust
+    $MANAGER $INSTALL rustup go ruby
     #$MANAGER $INSTALL cmocka gtest spdlog nlohmann-json libyaml yaml-cpp
     # performance
-    $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig #vmstat mpstat pidstat sadf sar
+    $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig
+                    # vmstat mpstat pidstat sadf sar
     # network
-    $MANAGER $INSTALL net-tools iputils iptables iproute2 inetutils # netcat ss
-    $MANAGER $INSTALL nmap tcpdump traceroute dnsutils #iw wpa_supplicant
+    $MANAGER $INSTALL net-tools iproute2
+    $MANAGER $INSTALL iptables
+    $MANAGER $INSTALL nmap netcat tcpdump traceroute
+    $MANAGER $INSTALL iputils inetutils dnsutils whois
+                    # bind ss iw wpa_supplicant
     # services
-    $MANAGER $INSTALL openssh dhcpcd ntp openvpn shadowsocks-libev
+    $MANAGER $INSTALL openssh dhcpcd ntp
+    $MANAGER $INSTALL openvpn shadowsocks-libev
+    # exploit
+    $MANAGER $INSTALL metasploit exploitdb john nikto
+                    # seclists wordlists
+                    # gobuster dirb feroxbuster
+                    # hash-identifier
     # something else
     if [ "$MANAGER" = "pacman" ]; then
         $MANAGER $INSTALL linux-headers archlinux-keyring
@@ -61,13 +71,15 @@ install_xorg()
 {
     if [ "$MANAGER" = "pacman" ]; then
         # Xorg
-        $MANAGER $INSTALL xorg-server xorg-xinit wqy-zenhei ttf-dejavu
+        $MANAGER $INSTALL xorg-server xorg-xinit
+        # Font
+        $MANAGER $INSTALL wqy-zenhei ttf-dejavu adobe-source-code-pro-fonts
         # Desktop
-        $MANAGER $INSTALL $DESKTOP lightdm mesa-utils
+        $MANAGER $INSTALL $DESKTOP mesa-utils # lightdm
         # Input chinese
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         # Base GUI apps
-        $MANAGER $INSTALL gnome-terminal terminator emacs global synapse chromium
+        $MANAGER $INSTALL terminator emacs global synapse chromium # google-chrome
         # Extra GUI apps
         $MANAGER $INSTALL evince flameshot mpv
         # Other GUI apps
@@ -82,18 +94,10 @@ install_xorg()
     fi
 }
 
-install_spider()
-{
-        $MANAGER $INSTALL nlohmann-json cmocka spdlog
-        $MANAGER $INSTALL zeromq libwebsockets
-        $MANAGER $INSTALL npm
-}
-
 # main
 case $COMMAND in
 base) install_base;;
 xorg) install_xorg;;
-spider) install_spider;;
 *) usage && exit 1;;
 esac
 
