@@ -38,7 +38,7 @@ install_base()
     # utils
     $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils f2fs-tools
     # develop
-    $MANAGER $INSTALL vim git bash zsh sudo tmux xclip
+    $MANAGER $INSTALL vim git bash zsh sudo tmux xsel
     $MANAGER $INSTALL man-db man-pages
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config bc
     $MANAGER $INSTALL gcc clang gdb make cmake minicom lsof ltrace strace valgrind
