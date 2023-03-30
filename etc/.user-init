@@ -75,9 +75,10 @@
   (yonz-mode))
 (add-hook 'asm-mode-hook 'yonz-c-mode)
 (add-hook 'c-mode-hook 'yonz-c-mode)
-(add-hook 'go-mode-hook 'yonz-c-mode)
 (add-hook 'c++-mode-hook 'yonz-c-mode)
+(add-hook 'rust-mode-hook 'yonz-c-mode)
 (add-hook 'csharp-mode-hook 'yonz-c-mode)
+(add-hook 'go-mode-hook 'yonz-c-mode)
 
 (defun yonz-sh-mode ()
   "yonz sh-mode"
