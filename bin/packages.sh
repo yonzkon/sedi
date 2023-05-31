@@ -42,7 +42,7 @@ install_base()
     $MANAGER $INSTALL man-db man-pages
     $MANAGER $INSTALL base-devel autoconf automake bison fakeroot flex m4 pkg-config bc
     $MANAGER $INSTALL gcc clang gdb make cmake minicom lsof ltrace strace valgrind
-    $MANAGER $INSTALL rustup go ruby
+    $MANAGER $INSTALL rustup go
     #$MANAGER $INSTALL cmocka gtest spdlog nlohmann-json libyaml yaml-cpp
     # performance
     $MANAGER $INSTALL procps-ng sysstat dstat iotop htop sysdig
@@ -55,7 +55,7 @@ install_base()
                     # bind ss iw wpa_supplicant
     # services
     $MANAGER $INSTALL openssh dhcpcd ntp
-    $MANAGER $INSTALL openvpn shadowsocks-libev
+    $MANAGER $INSTALL openvpn shadowsocks
     # exploit
     $MANAGER $INSTALL metasploit exploitdb john nikto
                     # seclists wordlists
