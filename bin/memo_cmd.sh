@@ -47,3 +47,9 @@ read -p "> Press any key to continue ..."
 #who
 #w
 #last -f /var/run/utmp
+
+#nmap -sn 192.168.99.0/24 -oN nmap-ip
+#nmap --min-rate=10000 -p- 192.168.99.128 -oN nmap-port
+#sudo nmap -sT -sV -O -p22,25,80,631 192.168.99.128 -oN nmap-serv
+#sudo nmap -sU -p22,25,80,631 192.168.99.128 -oN nmap-serv-udp
+#sudo nmap --script=vuln -p22,25,80,631 192.168.99.128 -oN nmap-vuln
