@@ -53,3 +53,8 @@ read -p "> Press any key to continue ..."
 #sudo nmap -sT -sV -O -p22,25,80,631 192.168.99.128 -oN nmap-serv
 #sudo nmap -sU -p22,25,80,631 192.168.99.128 -oN nmap-serv-udp
 #sudo nmap --script=vuln -p22,25,80,631 192.168.99.128 -oN nmap-vuln
+
+# frappe
+# mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+# systemctl start mariadb
+# mysql_secure_installation

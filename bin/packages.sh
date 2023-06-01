@@ -92,7 +92,8 @@ install_devel() {
         # spider
         $MANAGER $INSTALL libwebsockets mosquitto
         # frappe framework
-        $MANAGER $INSTALL mariadb redis
+        $MANAGER $INSTALL nodejs npm yarn
+        $MANAGER $INSTALL mariadb redis cronie
     fi
 }
 
