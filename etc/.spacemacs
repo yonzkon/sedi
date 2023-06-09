@@ -32,16 +32,15 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(typescript
+   '(gtags
+     rust
+     javascript
+     typescript
+     html
+     go
      python
      yaml
      lua
-     go
-     html
-     react
-     javascript
-     csharp
-     gtags
      chinese
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -56,7 +55,7 @@ This function should only modify configuration layer settings."
      lsp
      ;; markdown
      multiple-cursors
-     org
+     ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
