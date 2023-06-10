@@ -9,5 +9,5 @@ GRTAGS
 GPATH
 .projectile
 
-# idea
-.idea/
+# rust
+Cargo.lock
