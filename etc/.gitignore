@@ -11,3 +11,7 @@ GPATH
 
 # rust
 Cargo.lock
+
+# javascript
+yarn.lock
+.yarnclean
