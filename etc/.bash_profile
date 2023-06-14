@@ -36,9 +36,9 @@ export PATH
 # export PATH=$PATH:$ANDROID_HOME/emulator
 
 # for gcc & ld
-#export C_INCLUDE_PATH=
-#export CPLUS_INCLUDE_PATH=
-#export LIBRARY_PATH=
+export C_INCLUDE_PATH=/usr/local/include
+export CPLUS_INCLUDE_PATH=/usr/local/include
+export LIBRARY_PATH=/usr/local/lib
 export LD_LIBRARY_PATH=/usr/local/lib
 #export HISTSIZE=2400
 
