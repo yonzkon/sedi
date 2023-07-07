@@ -33,7 +33,7 @@ install_base()
         # bootloader
         $MANAGER $INSTALL grub efibootmgr
         # utils
-        $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils f2fs-tools
+        $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils f2fs-tools lm_sensors
         # develop
         $MANAGER $INSTALL vim emacs global git bash zsh sudo tmux xsel
         $MANAGER $INSTALL man-db man-pages
@@ -70,7 +70,7 @@ install_xorg()
         # Font
         $MANAGER $INSTALL wqy-zenhei ttf-dejavu adobe-source-code-pro-fonts
         # Desktop
-        $MANAGER $INSTALL $DESKTOP mesa-utils # lightdm
+        $MANAGER $INSTALL $DESKTOP mesa-utils pulseaudio # lightdm
         # Input chinese
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         # Base GUI apps
