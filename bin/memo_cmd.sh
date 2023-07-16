@@ -15,6 +15,15 @@ read -p "> Press any key to continue ..."
 pacman -Q -l whois
 read -p "> Press any key to continue ..."
 
+pacman -Qdtq | sudo pacman -Rus -
+read -p "> Press any key to continue ..."
+
+sudo pacman -Sc
+read -p "> Press any key to continue ..."
+
+sudo pacman -Scc
+read -p "> Press any key to continue ..."
+
 msfvenom -p cmd/unix/reverse_python lhost=127.0.0.1 lport=443 -f raw
 read -p "> Press any key to continue ..."
 
