@@ -70,7 +70,7 @@ install_xorg()
         # Font
         $MANAGER $INSTALL wqy-zenhei ttf-dejavu adobe-source-code-pro-fonts
         # Desktop
-        $MANAGER $INSTALL $DESKTOP mesa-utils pulseaudio # lightdm
+        $MANAGER $INSTALL $DESKTOP mesa-utils pulseaudio pavucontrol # lightdm
         # Input chinese
         $MANAGER $INSTALL fcitx fcitx-configtool fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5
         # Base GUI apps
