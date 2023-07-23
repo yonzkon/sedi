@@ -33,7 +33,7 @@ install_base()
         # bootloader
         $MANAGER $INSTALL grub efibootmgr
         # utils
-        $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils f2fs-tools lm_sensors
+        $MANAGER $INSTALL binutils tree lshw pciutils usbutils alsa-utils f2fs-tools exfat-utils lm_sensors
         # develop
         $MANAGER $INSTALL vim emacs global git bash zsh sudo tmux xsel
         $MANAGER $INSTALL man-db man-pages
