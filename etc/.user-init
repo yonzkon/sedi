@@ -17,7 +17,7 @@
   (revert-buffer-with-coding-system 'chinese-gbk-dos))
 
 ; fcitx
-(global-set-key (kbd "C-SPC") 'nil)
+(global-set-key (kbd "C-SPC") nil)
 
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "M-.") nil)
@@ -53,7 +53,7 @@
   "yonz mode"
   (interactive)
   (setq backward-delete-char-untabify-method 'hungry)
-  (linum-mode)
+  (display-line-numbers-mode)
   (hs-minor-mode)
   (setq hs-hide-comments-when-hiding-all nil)
   (setq hs-allow-nesting 1)
